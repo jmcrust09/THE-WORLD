@@ -1,6 +1,5 @@
 ﻿import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import WindowPanel from '../components/WindowPanel';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Shop() {
@@ -30,53 +29,132 @@ export default function Shop() {
   };
 
   if (loading) {
-    return <div className="p-4 text-center text-grey font-mono animate-pulse">cargando tienda...</div>;
+    return <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '40px' }}>cargando tienda...</div>;
   }
 
   return (
-    <div className="grid gap-6">
-      <WindowPanel title="tienda" subtitle="comprar huevos" icon="🥚" extra={`saldo ${balance} pts`}>
-        <div className="section-grid cols-3">
-          <div className="tile-card">
-            <div className="panel-label">saldo actual</div>
-            <div className="panel-value">{balance.toLocaleString()}</div>
-            <div className="panel-note">Tus puntos disponibles para comprar huevos.</div>
+    <div className="tiles-grid">
+      {/* TILE - CATÁLOGO DE HUEVOS */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
           </div>
-          <div className="tile-card">
-            <div className="panel-label">total items</div>
-            <div className="panel-value">{items.length}</div>
-            <div className="panel-note">Huevos disponibles en la tienda.</div>
-          </div>
-          <div className="tile-card">
-            <div className="panel-label">objetivo</div>
-            <div className="panel-value">15,000 pts</div>
-            <div className="panel-note">Alcanza este umbral para huevos legendarios.</div>
+          <div className="tile-title">
+            <i className="fas fa-store"></i> catálogo de huevos
           </div>
         </div>
-      </WindowPanel>
+        <div className="tile-content">
+          <div className="info-row">
+            <span className="info-label">básico</span>
+            <span>500 pts</span>
+          </div>
+          <div className="info-row">
+            <span className="info-label">premium</span>
+            <span>1.500 pts · + chance épico</span>
+          </div>
+          <div className="info-row">
+            <span className="info-label">épico</span>
+            <span>5.000 pts</span>
+          </div>
+          <div className="info-row">
+            <span className="info-label">legendario</span>
+            <span>15.000 pts</span>
+          </div>
+          <div className="info-row">
+            <span className="info-label">mítico</span>
+            <span>50.000 pts</span>
+          </div>
+          <hr />
+          <div><i className="fas fa-coins"></i> tus puntos: <strong>{balance.toLocaleString()} pts</strong></div>
+        </div>
+      </div>
 
-      <WindowPanel title="resumen" subtitle="tipos de huevos" icon="🎯">
-        <div className="tile-grid">
-          {items.map((item) => (
-            <div key={item._id} className="tile-card">
-              <div className="flex justify-between items-start gap-3 mb-3">
-                <div>
-                  <h3 className="text-sm font-semibold text-dark">{item.name}</h3>
-                  <p className="text-xs text-grey mt-1">{item.description}</p>
-                </div>
-                <span className="info-badge">{item.cost} pts</span>
-              </div>
-              <button
-                className={`w-full py-3 rounded-2xl transition-all ${item.purchased || item.cost > balance ? 'bg-[rgba(227,221,212,0.3)] text-grey cursor-not-allowed' : 'bg-beige2 text-dark hover:bg-beige'}`}
-                onClick={() => handlePurchase(item)}
-                disabled={item.purchased || item.cost > balance}
-              >
-                {item.purchased ? 'Comprado' : item.cost > balance ? 'Falta saldo' : 'Comprar'}
-              </button>
-            </div>
-          ))}
+      {/* TILE - OFERTAS */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+          </div>
+          <div className="tile-title">
+            <i className="fas fa-calendar-alt"></i> ofertas actuales
+          </div>
         </div>
-      </WindowPanel>
+        <div className="tile-content">
+          <div className="badge">🍂 huevo otoño dorado: +20% rareza legendaria</div>
+          <div className="badge">🎁 descuento premium -10% (1.350 pts)</div>
+          <div className="badge">🐉 mascota exclusiva: fénix de cobre</div>
+        </div>
+      </div>
+
+      {/* TILE - MULTIPLICADORES */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+          </div>
+          <div className="tile-title">
+            <i className="fas fa-chart-line"></i> multiplicadores
+          </div>
+        </div>
+        <div className="tile-content">
+          <div>★ racha: x1.5 (9 días)</div>
+          <div>★ bonus rarezas: <strong>+1.85x</strong></div>
+          <div>★ favorita: +5% extra</div>
+          <div className="progress-bg">
+            <div className="progress-fill" style={{ width: '74%' }}></div>
+          </div>
+        </div>
+      </div>
+
+      {/* TILES - ITEMS DE TIENDA */}
+      {items.map((item) => (
+        <div key={item._id} className="tile">
+          <div className="tile-header">
+            <div className="tile-dots">
+              <span className="tile-dot"></span>
+              <span className="tile-dot"></span>
+              <span className="tile-dot"></span>
+            </div>
+            <div className="tile-title">
+              <i className="fas fa-egg"></i> {item.name}
+            </div>
+          </div>
+          <div className="tile-content">
+            <div style={{ marginBottom: '12px' }}>
+              {item.description}
+            </div>
+            <div className="info-row">
+              <span className="info-label"><i className="fas fa-coins"></i> costo</span>
+              <span><strong>{item.cost} pts</strong></span>
+            </div>
+            <button
+              onClick={() => handlePurchase(item)}
+              disabled={item.purchased || item.cost > balance}
+              style={{
+                width: '100%',
+                background: item.purchased || item.cost > balance ? 'var(--tile-header)' : 'var(--accent)',
+                color: item.purchased || item.cost > balance ? 'var(--text-muted)' : 'var(--tile-bg)',
+                border: `1px solid ${item.purchased || item.cost > balance ? 'var(--border-color)' : 'var(--accent)'}`,
+                padding: '8px',
+                marginTop: '10px',
+                cursor: item.purchased || item.cost > balance ? 'not-allowed' : 'pointer',
+                fontWeight: 600,
+                fontSize: '13px'
+              }}
+              className="btn-primary"
+            >
+              {item.purchased ? '✓ Comprado' : item.cost > balance ? 'Falta saldo' : 'Comprar'}
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

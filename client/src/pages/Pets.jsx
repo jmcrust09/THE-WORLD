@@ -1,6 +1,4 @@
 ﻿import React, { useEffect, useState } from 'react';
-import PetAsciiDisplay from '../components/pets/PetAsciiDisplay';
-import WindowPanel from '../components/WindowPanel';
 
 const defaultPets = [
   { _id: '1', species: 'Dragón de Fuego', name: 'Ignis', rarity: 'legendario', stage: 'adulto', isFavorite: false },
@@ -17,6 +15,15 @@ const rarityLabels = {
   raro: 'Raro',
   poco_comun: 'Poco común',
   comun: 'Común'
+};
+
+const rarityEmoji = {
+  mitico: '🐉',
+  legendario: '👑',
+  epico: '✨',
+  raro: '🌟',
+  poco_comun: '💫',
+  comun: '⭐'
 };
 
 export default function Pets() {
@@ -57,89 +64,177 @@ export default function Pets() {
   const rarityFilters = ['all', 'mitico', 'legendario', 'epico', 'raro', 'poco_comun', 'comun'];
 
   if (loading) {
-    return <div className="p-4 text-center text-grey font-mono animate-pulse">cargando colección...</div>;
+    return <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '40px' }}>cargando colección...</div>;
   }
 
   return (
-    <div className="grid gap-6">
-      <WindowPanel title="mascotas" subtitle="colección" icon="🐾" extra={`bonus +${totalBonus.toFixed(1)}x`}>
-        <div className="section-grid cols-3">
-          <div className="tile-card">
-            <div className="panel-label">total</div>
-            <div className="panel-value">{pets.length}</div>
-            <div className="panel-note">Mascotas registradas en tu mundo.</div>
+    <div className="tiles-grid">
+      {/* TILE - COLECCIÓN VIVA */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
           </div>
-          <div className="tile-card">
-            <div className="panel-label">favorita</div>
-            <div className="panel-value">{pets.find((pet) => pet.isFavorite)?.name || 'ninguna'}</div>
-            <div className="panel-note">La mascota favorita obtiene un bonus extra.</div>
-          </div>
-          <div className="tile-card">
-            <div className="panel-label">etapas</div>
-            <div className="panel-value">6</div>
-            <div className="panel-note">Desde huevo hasta ascendido con crecimiento.</div>
+          <div className="tile-title">
+            <i className="fas fa-paw"></i> colección viva
           </div>
         </div>
-      </WindowPanel>
-
-      <WindowPanel title="explorar" subtitle="filtrar rarezas" icon="🔎">
-        <div className="flex flex-wrap gap-2">
-          {rarityFilters.map((key) => (
-            <button
-              key={key}
-              onClick={() => setFilter(key)}
-              className={`action-button ${filter === key ? 'bg-beige2 border-dark text-dark' : ''}`}
-            >
-              {key === 'all' ? 'todas' : rarityLabels[key]}
-            </button>
-          ))}
+        <div className="tile-content">
+          <div><span className="badge">75+ especies</span> <span className="badge">desbloqueadas: {pets.length}</span></div>
+          <div className="info-row">
+            <span className="info-label">rareza</span>
+            <span>común(+0%) · poco común(+10%) · raro(+30%) · épico(+50%) · legendario(+80%) · mítico(+150%)</span>
+          </div>
+          <div className="stat-group">
+            <div className="stat-card-sm">🐉 mítico: 1</div>
+            <div className="stat-card-sm">👑 legendario: 1</div>
+            <div className="stat-card-sm">✨ épico: 1</div>
+          </div>
         </div>
-      </WindowPanel>
+      </div>
 
-      <WindowPanel title="colección" subtitle="tarjetas de mascotas" icon="📚">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((pet) => (
-            <button
-              key={pet._id}
-              onClick={() => setSelectedPet(pet)}
-              className={`p-4 rounded-3xl border border-beige bg-[rgba(248,244,239,0.85)] hover:shadow-lg transition-all text-left ${selectedPet?._id === pet._id ? 'ring-1 ring-dark' : ''}`}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <div className="text-sm text-grey uppercase tracking-[.2em]">{rarityLabels[pet.rarity]}</div>
-                  <div className="text-base font-semibold text-dark">{pet.name}</div>
-                </div>
-                <div className="text-[12px] text-grey">{pet.stage}</div>
+      {/* TILE - ETAPAS DE CRECIMIENTO */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+          </div>
+          <div className="tile-title">
+            <i className="fas fa-chart-line"></i> etapas crecimiento
+          </div>
+        </div>
+        <div className="tile-content">
+          <div>huevo → bebé → joven → adulto → evolucionado → ascendido</div>
+          <div className="progress-bg">
+            <div className="progress-fill" style={{ width: '68%' }}></div>
+          </div>
+          <div className="badge">🥚0-200</div>
+          <div className="badge">🐣200-800</div>
+          <div className="badge">🐥800-2500</div>
+          <div className="badge">🦊2500-8000</div>
+          <div className="badge">✨8k-25k</div>
+          <div className="badge">🌟25k+</div>
+        </div>
+      </div>
+
+      {/* TILE - DISTRIBUCIÓN RAREZA */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+          </div>
+          <div className="tile-title">
+            <i className="fas fa-chart-pie"></i> distribución rareza
+          </div>
+        </div>
+        <div className="tile-content">
+          <div className="info-row">
+            común 36%
+            <div className="progress-bg"><div className="progress-fill" style={{ width: '36%', background: '#bdbdbd' }}></div></div>
+          </div>
+          <div className="info-row">
+            poco común 28%
+            <div className="progress-bg"><div className="progress-fill" style={{ width: '28%', background: '#66BB6A' }}></div></div>
+          </div>
+          <div className="info-row">
+            raro 18%
+            <div className="progress-bg"><div className="progress-fill" style={{ width: '18%', background: '#42A5F5' }}></div></div>
+          </div>
+          <div className="info-row">
+            épico 11%
+            <div className="progress-bg"><div className="progress-fill" style={{ width: '11%', background: '#AB47BC' }}></div></div>
+          </div>
+        </div>
+      </div>
+
+      {/* TILES - CADA MASCOTA */}
+      {filtered.map((pet) => (
+        <div
+          key={pet._id}
+          className="tile"
+          onClick={() => setSelectedPet(pet)}
+          style={{ cursor: 'pointer', opacity: selectedPet?._id === pet._id ? 1 : 0.85 }}
+        >
+          <div className="tile-header">
+            <div className="tile-dots">
+              <span className="tile-dot"></span>
+              <span className="tile-dot"></span>
+              <span className="tile-dot"></span>
+            </div>
+            <div className="tile-title">
+              <i className="fas fa-paw"></i> {pet.name}
+            </div>
+          </div>
+          <div className="tile-content">
+            <div className="info-row">
+              <span className="info-label"><i className="fas fa-crown"></i> rareza</span>
+              <span>{rarityEmoji[pet.rarity]} {rarityLabels[pet.rarity]}</span>
+            </div>
+            <div className="info-row">
+              <span className="info-label"><i className="fas fa-egg"></i> especie</span>
+              <span>{pet.species}</span>
+            </div>
+            <div className="info-row">
+              <span className="info-label"><i className="fas fa-ruler"></i> etapa</span>
+              <span>{pet.stage}</span>
+            </div>
+            {pet.isFavorite && (
+              <div className="badge" style={{ background: 'rgba(212, 163, 115, 0.2)', borderColor: 'var(--accent)' }}>
+                ❤️ mascota favorita
               </div>
-              <PetAsciiDisplay pet={pet} compact={true} />
-            </button>
-          ))}
+            )}
+          </div>
         </div>
-      </WindowPanel>
+      ))}
 
+      {/* TILE - DETALLES SELECCIONADO */}
       {selectedPet && (
-        <WindowPanel title="detalle" subtitle="mascota seleccionada" icon="✨">
-          <div className="grid gap-5 lg:grid-cols-[0.95fr_0.75fr]">
-            <div className="tile-card">
-              <PetAsciiDisplay pet={selectedPet} accessory={selectedPet.isFavorite ? 'corona' : 'none'} />
+        <div className="tile">
+          <div className="tile-header">
+            <div className="tile-dots">
+              <span className="tile-dot"></span>
+              <span className="tile-dot"></span>
+              <span className="tile-dot"></span>
             </div>
-            <div className="grid gap-3">
-              <div className="tile-card">
-                <div className="panel-label">especie</div>
-                <div className="panel-value">{selectedPet.species}</div>
-              </div>
-              <div className="tile-card">
-                <div className="panel-label">rareza</div>
-                <div className="panel-value">{rarityLabels[selectedPet.rarity]}</div>
-              </div>
-              <div className="tile-card">
-                <div className="panel-label">etapa</div>
-                <div className="panel-value">{selectedPet.stage}</div>
-              </div>
-              <button onClick={() => setSelectedPet(null)} className="action-button">Cerrar detalle</button>
+            <div className="tile-title">
+              <i className="fas fa-info-circle"></i> detalles de {selectedPet.name}
             </div>
           </div>
-        </WindowPanel>
+          <div className="tile-content">
+            <div className="info-row">
+              <span className="info-label"><i className="fas fa-paw"></i> nombre</span>
+              <span><strong>{selectedPet.name}</strong></span>
+            </div>
+            <div className="info-row">
+              <span className="info-label"><i className="fas fa-dna"></i> especie</span>
+              <span>{selectedPet.species}</span>
+            </div>
+            <div className="info-row">
+              <span className="info-label"><i className="fas fa-crown"></i> rareza</span>
+              <span>{rarityEmoji[selectedPet.rarity]} {rarityLabels[selectedPet.rarity]}</span>
+            </div>
+            <div className="info-row">
+              <span className="info-label"><i className="fas fa-chart-line"></i> etapa</span>
+              <span>{selectedPet.stage}</span>
+            </div>
+            <button
+              onClick={() => setSelectedPet(null)}
+              style={{
+                width: '100%',
+                marginTop: '12px'
+              }}
+              className="btn-secondary"
+            >
+              Cerrar detalles
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -1,42 +1,94 @@
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Activities from './pages/Activities';
 import Pets from './pages/Pets';
 import Shop from './pages/Shop';
 import Auth from './pages/Auth';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 
-function Layout({ children }) {
+function DesktopLayout({ children, activeSection, setActiveSection }) {
   return (
-    <div className="min-h-screen flex items-center justify-center p-5">
-      <div className="terminal">
-        <div className="window-bar">
-          <div className="window-dots">
-            <span className="dot"></span>
-            <span className="dot"></span>
-            <span className="dot"></span>
-          </div>
-          <div className="window-title">🌍 <span>the world</span></div>
-          <div className="flex-1"></div>
-          <nav className="flex flex-wrap gap-2">
-            <NavLink to="/" className={({isActive}) => `nav-btn ${isActive ? 'active' : ''}`}>Home</NavLink>
-            <NavLink to="/actividades" className={({isActive}) => `nav-btn ${isActive ? 'active' : ''}`}>Actividades</NavLink>
-            <NavLink to="/mascotas" className={({isActive}) => `nav-btn ${isActive ? 'active' : ''}`}>Mascotas</NavLink>
-            <NavLink to="/tienda" className={({isActive}) => `nav-btn ${isActive ? 'active' : ''}`}>Tienda</NavLink>
-          </nav>
-        </div>
-        <div className="desktop-shell">
-          {children}
-        </div>
-        <div className="mt-8 pt-4 border-t border-beige flex flex-col gap-2 sm:flex-row sm:justify-between text-[13px] text-grey tracking-wide">
-          <span className="bg-[rgba(227,221,212,0.3)] px-4 py-1 rounded-full border border-beige font-light">
-            ✶ made by <em className="not-italic text-dark font-medium">wm</em> ✶
-          </span>
-          <span className="text-[11px] text-grey2 uppercase tracking-[0.2em]">monarch-style tiles · productividad + mascotas</span>
+    <div className="desktop-container">
+      {/* BARRA SUPERIOR - Sistema info */}
+      <div className="top-bar">
+        <div className="sys-info">
+          <span><i className="fas fa-tux"></i> theworld@linux</span>
+          <span><i className="fas fa-microchip"></i> uptime: 12d 8h</span>
+          <span><i className="fas fa-dragon"></i> mascotas: 14</span>
+          <span><i className="fas fa-coins"></i> pts: 18.4k</span>
+          <span><i className="fas fa-fire"></i> racha: 9d</span>
         </div>
       </div>
+
+      {/* ÁREA PRINCIPAL - Contenido de tiles */}
+      <div className="main-area">
+        {children}
+      </div>
+
+      {/* BARRA INFERIOR - Taskbar */}
+      <div className="bottom-bar">
+        <button
+          className={`task-button ${activeSection === 'home' ? 'active-task' : ''}`}
+          onClick={() => setActiveSection('home')}
+        >
+          <i className="fas fa-home"></i> inicio
+        </button>
+        <button
+          className={`task-button ${activeSection === 'activities' ? 'active-task' : ''}`}
+          onClick={() => setActiveSection('activities')}
+        >
+          <i className="fas fa-tasks"></i> actividades
+        </button>
+        <button
+          className={`task-button ${activeSection === 'shop' ? 'active-task' : ''}`}
+          onClick={() => setActiveSection('shop')}
+        >
+          <i className="fas fa-store"></i> tienda
+        </button>
+        <button
+          className={`task-button ${activeSection === 'pets' ? 'active-task' : ''}`}
+          onClick={() => setActiveSection('pets')}
+        >
+          <i className="fas fa-paw"></i> mascotas
+        </button>
+        <button
+          className="task-button"
+          onClick={() => {
+            localStorage.removeItem('token');
+            window.location.href = '/auth';
+          }}
+        >
+          <i className="fas fa-sign-out-alt"></i> salir
+        </button>
+      </div>
     </div>
+  );
+}
+
+function AppContent() {
+  const { user, token } = useAuth();
+  const [activeSection, setActiveSection] = useState('home');
+
+  if (!token) {
+    return <Auth />;
+  }
+
+  return (
+    <Routes>
+      <Route
+        path="/*"
+        element={
+          <DesktopLayout activeSection={activeSection} setActiveSection={setActiveSection}>
+            {activeSection === 'home' && <Home />}
+            {activeSection === 'activities' && <Activities />}
+            {activeSection === 'shop' && <Shop />}
+            {activeSection === 'pets' && <Pets />}
+          </DesktopLayout>
+        }
+      />
+    </Routes>
   );
 }
 
@@ -44,52 +96,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
-          {/* Ruta pública para login/registro */}
-          <Route path="/auth" element={<Auth />} />
-
-          {/* Rutas protegidas (envueltas en PrivateRoute + Layout) */}
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <Layout>
-                  <Home />
-                </Layout>
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/actividades"
-            element={
-              <PrivateRoute>
-                <Layout>
-                  <Activities />
-                </Layout>
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/mascotas"
-            element={
-              <PrivateRoute>
-                <Layout>
-                  <Pets />
-                </Layout>
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/tienda"
-            element={
-              <PrivateRoute>
-                <Layout>
-                  <Shop />
-                </Layout>
-              </PrivateRoute>
-            }
-          />
-        </Routes>
+        <AppContent />
       </BrowserRouter>
     </AuthProvider>
   );

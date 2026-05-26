@@ -1,7 +1,6 @@
 ﻿import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import WindowPanel from '../components/WindowPanel';
 
 const categoryOptions = [
   { value: 'Deporte', label: 'Deporte' },
@@ -104,108 +103,183 @@ export default function Activities() {
   const totalPoints = tasks.reduce((sum, task) => sum + (task.pointsEarned || 0), 0);
 
   return (
-    <div className="grid gap-6">
-      <WindowPanel title="actividades" subtitle="panel de control" icon="📝" extra={`${completedTasks}/${tasks.length} completadas`}>
-        <div className="section-grid cols-2">
-          <div className="tile-card">
-            <div className="panel-label">puntos potenciales</div>
-            <div className="panel-value">{totalPoints}</div>
-            <div className="panel-note">Suma de todos los valores actuales de las tareas.</div>
+    <div className="tiles-grid">
+      {/* TILE - ESTADÍSTICAS */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
           </div>
-          <div className="tile-card">
-            <div className="panel-label">tareas activas</div>
-            <div className="panel-value">{tasks.length}</div>
-            <div className="panel-note">Registra lo que debes completar hoy y en los próximos días.</div>
+          <div className="tile-title">
+            <i className="fas fa-chart-bar"></i> estadísticas
           </div>
         </div>
-      </WindowPanel>
+        <div className="tile-content">
+          <div className="stat-group">
+            <div className="stat-card-sm">
+              <i className="fas fa-tasks"></i> tareas activas<br />
+              <strong>{tasks.length}</strong>
+            </div>
+            <div className="stat-card-sm">
+              <i className="fas fa-check-circle"></i> completadas<br />
+              <strong>{completedTasks}</strong>
+            </div>
+            <div className="stat-card-sm">
+              <i className="fas fa-coins"></i> puntos potenciales<br />
+              <strong>{totalPoints}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <WindowPanel title="lista" subtitle="bitácora diaria" icon="▣">
-        <div className="grid gap-4">
+      {/* TILE - LISTA DE TAREAS */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+          </div>
+          <div className="tile-title">
+            <i className="fas fa-tasks"></i> bitácora diaria
+          </div>
+        </div>
+        <div className="tile-content">
           {tasks.length === 0 ? (
-            <div className="text-center text-grey py-10 text-sm">✨ No hay actividades. Añade tu primera tarea para activar el dashboard. ✨</div>
+            <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '20px 0' }}>
+              ✨ No hay actividades. Añade tu primera tarea ✨
+            </div>
           ) : (
-            tasks.map((task) => (
-              <div key={task._id} className={`task-row ${task.completed ? 'completed' : ''}`}>
-                <div className="task-header">
-                  <div className="task-title">{task.title}</div>
-                  <div className="task-meta">
-                    <span>{task.day}</span>
-                    <span>{task.schedule}</span>
-                    <span>{task.category}</span>
-                    <span>{task.priority}</span>
-                    <span>+{task.pointsEarned || 0} pts</span>
+            <div style={{ display: 'grid', gap: '8px' }}>
+              {tasks.map((task) => (
+                <div key={task._id} style={{
+                  background: task.completed ? 'rgba(80, 60, 50, 0.3)' : 'transparent',
+                  border: `1px dashed var(--separator)`,
+                  padding: '8px',
+                  borderRadius: '0'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 600, textDecoration: task.completed ? 'line-through' : 'none' }}>
+                        {task.title}
+                      </div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                        {task.day} · {task.schedule} · {task.category} · {task.priority} · +{task.pointsEarned || 0} pts
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <button
+                        onClick={() => toggleComplete(task)}
+                        style={{
+                          background: task.completed ? 'var(--accent)' : 'var(--tile-dark)',
+                          border: `1px solid var(--border-color)`,
+                          color: task.completed ? 'var(--tile-bg)' : 'var(--text-muted)',
+                          padding: '4px 8px',
+                          fontSize: '11px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {task.completed ? '✓' : '·'}
+                      </button>
+                      <button
+                        onClick={() => deleteTask(task._id)}
+                        style={{
+                          background: 'var(--tile-dark)',
+                          border: `1px solid var(--border-color)`,
+                          color: 'var(--text-muted)',
+                          padding: '4px 8px',
+                          fontSize: '11px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        ✕
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <label className="inline-flex items-center gap-2 text-sm text-grey">
-                    <input type="checkbox" className="accent-blue" checked={task.completed} onChange={() => toggleComplete(task)} />
-                    {task.completed ? 'Completada' : 'Marcar como completada'}
-                  </label>
-                  <button onClick={() => deleteTask(task._id)} className="action-button">Eliminar</button>
-                </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
-      </WindowPanel>
+      </div>
 
-      <WindowPanel title="nueva tarea" subtitle="añadir actividad" icon="＋">
-        <form onSubmit={addTask} className="grid gap-4">
-          <input
-            type="text"
-            value={newTaskTitle}
-            onChange={(e) => setNewTaskTitle(e.target.value)}
-            placeholder="Ej: Meditar 15 min"
-            className="w-full p-3 rounded-2xl border border-beige bg-white focus:outline-none focus:ring-1 focus:ring-blue"
-            required
-          />
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <select value={newCategory} onChange={(e) => setNewCategory(e.target.value)} className="rounded-2xl border border-beige p-3 bg-white">
-              {categoryOptions.map((item) => (
-                <option key={item.value} value={item.value}>{item.label}</option>
-              ))}
-            </select>
-            <select value={newPriority} onChange={(e) => setNewPriority(e.target.value)} className="rounded-2xl border border-beige p-3 bg-white">
-              {priorityOptions.map((item) => (
-                <option key={item.value} value={item.value}>{item.label}</option>
-              ))}
-            </select>
+      {/* TILE - NUEVA TAREA */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
           </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <select value={newDay} onChange={(e) => setNewDay(e.target.value)} className="rounded-2xl border border-beige p-3 bg-white">
-              {dayOptions.map((day) => (
-                <option key={day} value={day}>{day}</option>
-              ))}
-            </select>
-            <select value={newSchedule} onChange={(e) => setNewSchedule(e.target.value)} className="rounded-2xl border border-beige p-3 bg-white">
-              {scheduleOptions.map((hour) => (
-                <option key={hour} value={hour}>{hour}</option>
-              ))}
-            </select>
+          <div className="tile-title">
+            <i className="fas fa-plus"></i> nueva actividad
           </div>
+        </div>
+        <div className="tile-content">
+          <form onSubmit={addTask} style={{ display: 'grid', gap: '10px' }}>
+            <div>
+              <label className="form-label">título</label>
+              <input
+                type="text"
+                value={newTaskTitle}
+                onChange={(e) => setNewTaskTitle(e.target.value)}
+                placeholder="Ej: Meditar 15 min"
+                className="form-input"
+                required
+              />
+            </div>
 
-          <div className="flex flex-wrap gap-3 items-center">
-            <span className="info-badge">valor estimado: {calculatePoints(newCategory, newPriority)} pts</span>
-            <button type="submit" className="action-button">Guardar actividad</button>
-            <button
-              type="button"
-              className="action-button"
-              onClick={() => {
-                setNewTaskTitle('');
-                setNewCategory('Aprendizaje');
-                setNewPriority('Necesaria');
-                setNewDay('Lunes');
-                setNewSchedule('Mañana');
-              }}
-            >
-              Limpiar
-            </button>
-          </div>
-        </form>
-      </WindowPanel>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div>
+                <label className="form-label">categoría</label>
+                <select value={newCategory} onChange={(e) => setNewCategory(e.target.value)} className="form-select">
+                  {categoryOptions.map((item) => (
+                    <option key={item.value} value={item.value}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="form-label">prioridad</label>
+                <select value={newPriority} onChange={(e) => setNewPriority(e.target.value)} className="form-select">
+                  {priorityOptions.map((item) => (
+                    <option key={item.value} value={item.value}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div>
+                <label className="form-label">día</label>
+                <select value={newDay} onChange={(e) => setNewDay(e.target.value)} className="form-select">
+                  {dayOptions.map((day) => (
+                    <option key={day} value={day}>{day}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="form-label">horario</label>
+                <select value={newSchedule} onChange={(e) => setNewSchedule(e.target.value)} className="form-select">
+                  {scheduleOptions.map((hour) => (
+                    <option key={hour} value={hour}>{hour}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div style={{ marginTop: '10px' }}>
+              <div className="badge" style={{ display: 'block', marginBottom: '10px' }}>
+                <i className="fas fa-star"></i> valor estimado: <strong>{calculatePoints(newCategory, newPriority)} pts</strong>
+              </div>
+              <button type="submit" className="btn-primary" style={{ width: '100%' }}>
+                Guardar actividad
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }

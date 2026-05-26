@@ -1,5 +1,4 @@
 import React from 'react';
-import WindowPanel from '../components/WindowPanel';
 
 const asciiEarth = `                  *+++*++==+#*##                  
              @#@+***##*@@@@%*=**#*+*#             
@@ -29,84 +28,166 @@ const asciiEarth = `                  *+++*++==+#*##
              ======*@*#*=----=+-++==-              
                   ===+==++==++=+                   `;
 
-const stats = [
-  { label: 'puntos', value: '2,450', note: 'acumulados esta semana' },
-  { label: 'racha', value: '7 días', note: 'mejor racha activa' },
-  { label: 'mascota', value: 'Aurelion', note: 'favorita seleccionada' },
-  { label: 'rareza', value: 'Épico', note: 'bonus +0.5x aplicado' }
-];
-
 export default function Home() {
   return (
-    <div className="grid gap-6">
-      <div className="grid gap-6 xl:grid-cols-[0.92fr_1.3fr]">
-        <WindowPanel title="mundo" subtitle="pantalla principal" icon="🌍">
-          <div className="ascii-zone min-h-[340px]">
-            <pre className="text-[10px] leading-tight">{asciiEarth}</pre>
+    <div className="tiles-grid">
+      {/* TILE PRINCIPAL - ASCII TIERRA */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
           </div>
-        </WindowPanel>
-        <div className="grid gap-6">
-          <WindowPanel title="resumen" subtitle="sistema de progreso" icon="⚡">
-            <div className="grid gap-4 md:grid-cols-2">
-              {stats.map((item) => (
-                <div key={item.label} className="tile-card">
-                  <div className="panel-label">{item.label}</div>
-                  <div className="panel-value">{item.value}</div>
-                  <div className="panel-note">{item.note}</div>
-                </div>
-              ))}
-            </div>
-          </WindowPanel>
-          <WindowPanel title="tendencias" subtitle="sistema de rutinas" icon="📈">
-            <div className="tile-grid">
-              <div className="tile-card">
-                <div className="panel-label">actividad estrella</div>
-                <div className="panel-value">Ejercicio</div>
-                <div className="panel-note">Maximiza tus puntos y desbloquea huevos raros.</div>
-              </div>
-              <div className="tile-card">
-                <div className="panel-label">próximo objetivo</div>
-                <div className="panel-value">500 pts</div>
-                <div className="panel-note">Compra tu próximo huevo básico en la tienda.</div>
-              </div>
-              <div className="tile-card">
-                <div className="panel-label">bono total</div>
-                <div className="panel-value">+1.3x</div>
-                <div className="panel-note">Tus mascotas aumentan la eficiencia de cada actividad.</div>
-              </div>
-            </div>
-          </WindowPanel>
+          <div className="tile-title">
+            <i className="fas fa-globe-americas"></i> planeta the world
+          </div>
+        </div>
+        <div className="tile-content">
+          <div className="ascii-earth">
+            {asciiEarth}
+          </div>
+          <div className="info-row" style={{ marginTop: '14px' }}>
+            <span className="info-label"><i className="fas fa-quote-left"></i> esencia</span>
+            <span className="value">"convierte tu productividad en un ecosistema vivo"</span>
+          </div>
+          <div className="badge">🌍 gamificación · 75+ especies · rarezas míticas</div>
+          <div className="badge">⚡ tareas diarias · rachas · evolución de mascotas</div>
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <WindowPanel title="estado" subtitle="sistema de rarezas" icon="✨">
-          <div className="section-grid cols-3">
-            <div className="tile-card">
-              <div className="panel-label">mítico</div>
-              <div className="panel-value">1</div>
-              <div className="panel-note">Mascota ascendido lista para bonificar tus rutinas.</div>
+      {/* TILE - ESTADO DEL MUNDO */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+          </div>
+          <div className="tile-title">
+            <i className="fas fa-chart-line"></i> estado del mundo
+          </div>
+        </div>
+        <div className="tile-content">
+          <div className="stat-group">
+            <div className="stat-card-sm">
+              <i className="fas fa-egg"></i> huevos totales<br />
+              <strong>2.4k</strong>
             </div>
-            <div className="tile-card">
-              <div className="panel-label">legendario</div>
-              <div className="panel-value">2</div>
-              <div className="panel-note">Más probabilidades de puntos extra en la tienda.</div>
+            <div className="stat-card-sm">
+              <i className="fas fa-crown"></i> míticos obtenidos<br />
+              <strong>2</strong>
             </div>
-            <div className="tile-card">
-              <div className="panel-label">épico</div>
-              <div className="panel-value">4</div>
-              <div className="panel-note">Ideal para desbloquear nuevos huevos premium.</div>
+            <div className="stat-card-sm">
+              <i className="fas fa-chart-simple"></i> bonus activo<br />
+              <strong>+1.85x</strong>
             </div>
           </div>
-        </WindowPanel>
+          <div className="info-row">
+            <span className="info-label"><i className="fas fa-star"></i> rareza legendaria</span>
+            <span>multiplicador +80% · ejemplar: fénix ancestral</span>
+          </div>
+          <div className="progress-bg">
+            <div className="progress-fill" style={{ width: '68%' }}></div>
+          </div>
+          <div><i className="fas fa-heart"></i> tu mascota favorita: "Ignis" (legendario) +5% extra</div>
+        </div>
+      </div>
 
-        <WindowPanel title="acciones" subtitle="acceso rápido" icon="⌘">
-          <div className="grid gap-4">
-            <button className="action-button">Abrir bitácora de tareas</button>
-            <button className="action-button">Ir a la colección</button>
-            <button className="action-button">Visitar tienda de huevos</button>
+      {/* TILE - FILOSOFÍA STACK */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
           </div>
-        </WindowPanel>
+          <div className="tile-title">
+            <i className="fas fa-code-branch"></i> filosofía neofetch
+          </div>
+        </div>
+        <div className="tile-content">
+          <div>✦ stack: react · node.js · mongodb · redis</div>
+          <div>✦ frontend: tailwind · framer motion · zustand</div>
+          <div>✦ backend: express, socket.io, jwt</div>
+          <div className="ascii-earth" style={{ fontSize: '9px', marginTop: '12px' }}>
+{`    "cada tarea fortalece tu ecosistema"
+    — the world, v2.0`}
+          </div>
+        </div>
+      </div>
+
+      {/* TILE - PUNTOS Y RACHA */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+          </div>
+          <div className="tile-title">
+            <i className="fas fa-fire"></i> progreso y racha
+          </div>
+        </div>
+        <div className="tile-content">
+          <div className="info-row">
+            <span className="info-label"><i className="fas fa-coins"></i> puntos</span>
+            <span><strong>18,400 pts</strong> · histórico: 24,200</span>
+          </div>
+          <div className="info-row">
+            <span className="info-label"><i className="fas fa-fire"></i> racha actual</span>
+            <span><strong>9 días</strong> · mejor racha: 34d</span>
+          </div>
+          <div className="progress-bg">
+            <div className="progress-fill" style={{ width: '74%' }}></div>
+          </div>
+          <div className="badge">🎯 próximo hito: 20k pts</div>
+          <div className="badge">🏆 mejor mes: 45k pts (ago)</div>
+        </div>
+      </div>
+
+      {/* TILE - ACTIVIDADES PENDIENTES */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+          </div>
+          <div className="tile-title">
+            <i className="fas fa-tasks"></i> actividades pendientes
+          </div>
+        </div>
+        <div className="tile-content">
+          <div className="badge">📚 Aprendizaje: 3 tareas</div>
+          <div className="badge">💪 Deporte: 2 tareas</div>
+          <div className="badge">🧹 Hogar: 1 tarea</div>
+          <div style={{ marginTop: '12px', textAlign: 'center' }}>
+            <strong>6 tareas pendientes hoy</strong>
+          </div>
+        </div>
+      </div>
+
+      {/* TILE - COLECCIÓN DE MASCOTAS */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+          </div>
+          <div className="tile-title">
+            <i className="fas fa-paw"></i> colección viva
+          </div>
+        </div>
+        <div className="tile-content">
+          <div><span className="badge">75+ especies</span> <span className="badge">desbloqueadas: 14</span></div>
+          <div className="stat-group">
+            <div className="stat-card-sm">🐉 mítico: fénix</div>
+            <div className="stat-card-sm">🦊 legendario: ignis</div>
+            <div className="stat-card-sm">✨ épico: grifo</div>
+          </div>
+        </div>
       </div>
     </div>
   );
