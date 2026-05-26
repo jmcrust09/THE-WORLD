@@ -7,18 +7,27 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const { login, register } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setSubmitting(true);
     try {
       if (isLogin) {
         await login(email, password);
       } else {
         await register(username, email, password);
       }
+      // Al obtener token, redirigimos al inicio
+      window.location.href = '/';
     } catch (err) {
-      setError(err.message || 'Error de autenticación');
+      // axios errors: prefer mensaje desde response
+      const msg = err?.response?.data?.msg || err?.message || 'Error de autenticación';
+      setError(msg);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -100,8 +109,8 @@ export default function Auth() {
                 </div>
 
                 <div style={{ marginTop: '20px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                  <button type="submit" className="btn-primary" style={{ flex: 1 }}>
-                    {isLogin ? 'ingresar' : 'crear cuenta'}
+                  <button type="submit" className="btn-primary" style={{ flex: 1 }} disabled={submitting}>
+                    {submitting ? (isLogin ? 'ingresando...' : 'creando...') : (isLogin ? 'ingresar' : 'crear cuenta')}
                   </button>
                 </div>
               </form>
