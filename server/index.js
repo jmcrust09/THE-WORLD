@@ -71,6 +71,10 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+app.use('/api/auth', require('./routes/auth'));
+
+app.use('/api/tasks', require('./routes/tasks'));
+
 app.listen(PORT, () => {
   console.log(`🌍 THE WORLD backend is running on port ${PORT}`);
 });
