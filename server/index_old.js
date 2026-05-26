@@ -31,6 +31,29 @@ app.get('/api/shop', async (req, res) => {
   }
 });
 
+// Endpoint to get mock user info (for now, just returns the first user or a default)
+app.get('/api/user/mock', async (req, res) => {
+  try {
+    let user = await User.findOne();
+    if (!user) {
+      // Create a mock user if none exists
+      user = await User.create({
+        username: 'Jugador1',
+        email: 'test@test.com',
+        passwordHash: 'hashed',
+        totalPoints: 1500
+      });
+    }
+    res.json({
+      username: user.username,
+      totalPoints: user.totalPoints,
+      currentStreak: user.currentStreak
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching user', error: error.message });
+  }
+});
+
 // Endpoint to get all pets from DB
 app.get('/api/pets', async (req, res) => {
   try {

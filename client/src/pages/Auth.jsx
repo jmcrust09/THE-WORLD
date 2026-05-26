@@ -1,23 +1,29 @@
-﻿import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
+  const [loginType, setLoginType] = useState('email'); // 'email', 'username', 'guest'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const { login, register } = useContext(AuthContext);
+  const { login, register, guestLogin } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSubmitting(true);
     try {
-      if (isLogin) {
-        await login(email, password);
+      if (loginType === 'guest') {
+        await guestLogin();
+      } else if (isLogin) {
+        // Login con email o username
+        const loginField = loginType === 'email' ? email : username;
+        await login(loginField, password);
       } else {
+        // Registro
         await register(username, email, password);
       }
       // Al obtener token, redirigimos al inicio
@@ -25,6 +31,20 @@ export default function Auth() {
     } catch (err) {
       // axios errors: prefer mensaje desde response
       const msg = err?.response?.data?.msg || err?.message || 'Error de autenticación';
+      setError(msg);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleGuestLogin = async () => {
+    setError('');
+    setSubmitting(true);
+    try {
+      await guestLogin();
+      window.location.href = '/';
+    } catch (err) {
+      const msg = err?.response?.data?.msg || err?.message || 'Error al entrar como invitado';
       setError(msg);
     } finally {
       setSubmitting(false);
@@ -69,51 +89,107 @@ export default function Auth() {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="grid gap-4">
-                {!isLogin && (
+              {/* Opciones de login */}
+              {isLogin && (
+                <div style={{ marginBottom: '20px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <button
+                    type="button"
+                    onClick={() => { setLoginType('email'); setError(''); }}
+                    className={loginType === 'email' ? 'btn-primary' : 'btn-secondary'}
+                    style={{ flex: 1, fontSize: '12px' }}
+                  >
+                    <i className="fas fa-envelope"></i> email
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setLoginType('username'); setError(''); }}
+                    className={loginType === 'username' ? 'btn-primary' : 'btn-secondary'}
+                    style={{ flex: 1, fontSize: '12px' }}
+                  >
+                    <i className="fas fa-user"></i> username
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleGuestLogin}
+                    className="btn-secondary"
+                    style={{ flex: 1, fontSize: '12px' }}
+                    disabled={submitting}
+                  >
+                    <i className="fas fa-user-secret"></i> invitado
+                  </button>
+                </div>
+              )}
+
+              {loginType === 'guest' ? (
+                <div style={{ textAlign: 'center', padding: '20px' }}>
+                  <i className="fas fa-info-circle" style={{ fontSize: '24px', marginBottom: '10px' }}></i>
+                  <p style={{ color: 'var(--text-light)', fontSize: '14px' }}>
+                    Como invitado, tu progreso se perderá al cerrar la página.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="grid gap-4">
+                  {!isLogin && (
+                    <div className="form-group">
+                      <label className="form-label">usuario</label>
+                      <input
+                        type="text"
+                        placeholder="tu nombre único"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="form-input"
+                        required
+                      />
+                    </div>
+                  )}
+
+                  {loginType === 'username' && isLogin && (
+                    <div className="form-group">
+                      <label className="form-label">username</label>
+                      <input
+                        type="text"
+                        placeholder="tu username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="form-input"
+                        required
+                      />
+                    </div>
+                  )}
+
+                  {loginType === 'email' && (
+                    <div className="form-group">
+                      <label className="form-label">correo electrónico</label>
+                      <input
+                        type="email"
+                        placeholder="user@ejemplo.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="form-input"
+                        required
+                      />
+                    </div>
+                  )}
+
                   <div className="form-group">
-                    <label className="form-label">usuario</label>
+                    <label className="form-label">contraseña</label>
                     <input
-                      type="text"
-                      placeholder="tu nombre único"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
+                      type="password"
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       className="form-input"
                       required
                     />
                   </div>
-                )}
 
-                <div className="form-group">
-                  <label className="form-label">correo electrónico</label>
-                  <input
-                    type="email"
-                    placeholder="user@ejemplo.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="form-input"
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">contraseña</label>
-                  <input
-                    type="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="form-input"
-                    required
-                  />
-                </div>
-
-                <div style={{ marginTop: '20px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                  <button type="submit" className="btn-primary" style={{ flex: 1 }} disabled={submitting}>
-                    {submitting ? (isLogin ? 'ingresando...' : 'creando...') : (isLogin ? 'ingresar' : 'crear cuenta')}
-                  </button>
-                </div>
-              </form>
+                  <div style={{ marginTop: '20px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                    <button type="submit" className="btn-primary" style={{ flex: 1 }} disabled={submitting}>
+                      {submitting ? (isLogin ? 'ingresando...' : 'creando...') : (isLogin ? 'ingresar' : 'crear cuenta')}
+                    </button>
+                  </div>
+                </form>
+              )}
 
               <hr />
 
@@ -122,6 +198,7 @@ export default function Auth() {
                   type="button"
                   onClick={() => {
                     setIsLogin(!isLogin);
+                    setLoginType('email');
                     setError('');
                   }}
                   className="btn-secondary"
@@ -153,7 +230,7 @@ export default function Auth() {
                 <span className="info-label"><i className="fas fa-star"></i> características</span>
                 <span>tareas · mascotas · tienda · rachas</span>
               </div>
-              <div className="badge"><i className="fas fa-shield-alt"></i> datos encriptados · MongoDB secure</div>
+              <div className="badge"><i className="fas fa-shield-alt"></i> datos encriptados · PostgreSQL secure</div>
               <div className="badge"><i className="fas fa-zap"></i> arquitectura serverless compatible</div>
               <div className="ascii-earth" style={{ fontSize: '10px', marginTop: '12px' }}>
 {`  ¡convierte tu productividad

@@ -38,8 +38,8 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async (login, password) => {
-    const res = await axios.post('/api/auth/login', { login, password });
+  const login = async (email, password) => {
+    const res = await axios.post('/api/auth/login', { email, password });
     localStorage.setItem('token', res.data.token);
     axios.defaults.headers.common['x-auth-token'] = res.data.token;
     setToken(res.data.token);
@@ -56,15 +56,6 @@ export const AuthProvider = ({ children }) => {
     return res.data;
   };
 
-  const guestLogin = async () => {
-    const res = await axios.post('/api/auth/guest');
-    localStorage.setItem('token', res.data.token);
-    axios.defaults.headers.common['x-auth-token'] = res.data.token;
-    setToken(res.data.token);
-    setUser(res.data.user);
-    return res.data;
-  };
-
   const logout = () => {
     localStorage.removeItem('token');
     delete axios.defaults.headers.common['x-auth-token'];
@@ -73,7 +64,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, guestLogin, logout, loading, token }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading, token }}>
       {children}
     </AuthContext.Provider>
   );

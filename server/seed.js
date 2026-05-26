@@ -32,6 +32,24 @@ const seedShop = async () => {
       icon: '🔮',
       cssClass: 'bg-bg border-beige opacity-50',
       probabilities: { comun: 0, poco_comun: 40, raro: 35, epico: 20, legendario: 4, mitico: 1 }
+    },
+    {
+      name: 'Huevo Legendario',
+      type: 'egg',
+      cost: 15000,
+      description: 'Garantiza Raro o mejor.',
+      icon: '👑',
+      cssClass: 'bg-bg border-[#ffa726]',
+      probabilities: { comun: 0, poco_comun: 10, raro: 50, epico: 30, legendario: 8, mitico: 2 }
+    },
+    {
+      name: 'Huevo Mítico',
+      type: 'egg',
+      cost: 50000,
+      description: 'Garantiza Épico o mejor.',
+      icon: '🌟',
+      cssClass: 'bg-bg border-[#ef5350]',
+      probabilities: { comun: 0, poco_comun: 0, raro: 15, epico: 45, legendario: 30, mitico: 10 }
     }
   ];
 
