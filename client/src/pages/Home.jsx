@@ -1,4 +1,5 @@
 import React from 'react';
+import WindowPanel from '../components/WindowPanel';
 
 const asciiEarth = `                  *+++*++==+#*##                  
              @#@+***##*@@@@%*=**#*+*#             
@@ -28,55 +29,84 @@ const asciiEarth = `                  *+++*++==+#*##
              ======*@*#*=----=+-++==-              
                   ===+==++==++=+                   `;
 
+const stats = [
+  { label: 'puntos', value: '2,450', note: 'acumulados esta semana' },
+  { label: 'racha', value: '7 días', note: 'mejor racha activa' },
+  { label: 'mascota', value: 'Aurelion', note: 'favorita seleccionada' },
+  { label: 'rareza', value: 'Épico', note: 'bonus +0.5x aplicado' }
+];
+
 export default function Home() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-7 items-start font-mono">
-
-      {/* ASCII Earth */}
-      <div className="ascii-zone">
-        <pre className="text-[11px] md:text-[13px]">{asciiEarth}</pre>
+    <div className="grid gap-6">
+      <div className="grid gap-6 xl:grid-cols-[0.92fr_1.3fr]">
+        <WindowPanel title="mundo" subtitle="pantalla principal" icon="🌍">
+          <div className="ascii-zone min-h-[340px]">
+            <pre className="text-[10px] leading-tight">{asciiEarth}</pre>
+          </div>
+        </WindowPanel>
+        <div className="grid gap-6">
+          <WindowPanel title="resumen" subtitle="sistema de progreso" icon="⚡">
+            <div className="grid gap-4 md:grid-cols-2">
+              {stats.map((item) => (
+                <div key={item.label} className="tile-card">
+                  <div className="panel-label">{item.label}</div>
+                  <div className="panel-value">{item.value}</div>
+                  <div className="panel-note">{item.note}</div>
+                </div>
+              ))}
+            </div>
+          </WindowPanel>
+          <WindowPanel title="tendencias" subtitle="sistema de rutinas" icon="📈">
+            <div className="tile-grid">
+              <div className="tile-card">
+                <div className="panel-label">actividad estrella</div>
+                <div className="panel-value">Ejercicio</div>
+                <div className="panel-note">Maximiza tus puntos y desbloquea huevos raros.</div>
+              </div>
+              <div className="tile-card">
+                <div className="panel-label">próximo objetivo</div>
+                <div className="panel-value">500 pts</div>
+                <div className="panel-note">Compra tu próximo huevo básico en la tienda.</div>
+              </div>
+              <div className="tile-card">
+                <div className="panel-label">bono total</div>
+                <div className="panel-value">+1.3x</div>
+                <div className="panel-note">Tus mascotas aumentan la eficiencia de cada actividad.</div>
+              </div>
+            </div>
+          </WindowPanel>
+        </div>
       </div>
 
-      {/* Info panel neofetch style */}
-      <div className="text-[13px] leading-relaxed pl-4 border-l-[3px] border-beige2">
-        <div className="text-[15px] font-semibold text-dark tracking-wide mb-3 pb-1 border-b border-beige lowercase">
-          the world — <span className="text-blue">gamified productivity</span>
-        </div>
-
-        {[
-          ['proyecto', 'the world · mascotas + habitos diarios'],
-          ['stack', 'react · node.js · express · mongodb'],
-          ['frontend', 'vite · tailwind · framer motion · zustand'],
-          ['backend', 'node.js + express · socket.io · jwt'],
-          ['base de datos', 'mongodb atlas · mongoose odm'],
-          ['mascotas', '75+ especies · 6 rarezas · 6 etapas'],
-          ['rarezas', 'comun → poco comun → raro → epico → legendario → mitico'],
-          ['puntos', 'actividades completadas x racha x bonus mascota'],
-          ['estado', 'fase 2 en desarrollo'],
-        ].map(([label, value]) => (
-          <div key={label} className="flex gap-2 py-[2px] items-baseline">
-            <span className="text-dark font-medium min-w-[110px] lowercase">
-              <span className="text-blue mr-1">⤷</span>{label}
-            </span>
-            <span className="text-grey lowercase">{value}</span>
+      <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <WindowPanel title="estado" subtitle="sistema de rarezas" icon="✨">
+          <div className="section-grid cols-3">
+            <div className="tile-card">
+              <div className="panel-label">mítico</div>
+              <div className="panel-value">1</div>
+              <div className="panel-note">Mascota ascendido lista para bonificar tus rutinas.</div>
+            </div>
+            <div className="tile-card">
+              <div className="panel-label">legendario</div>
+              <div className="panel-value">2</div>
+              <div className="panel-note">Más probabilidades de puntos extra en la tienda.</div>
+            </div>
+            <div className="tile-card">
+              <div className="panel-label">épico</div>
+              <div className="panel-value">4</div>
+              <div className="panel-note">Ideal para desbloquear nuevos huevos premium.</div>
+            </div>
           </div>
-        ))}
+        </WindowPanel>
 
-        <hr className="border-beige my-3 opacity-40" />
-
-        <div className="flex gap-2 text-xs text-grey mt-1">
-          <span className="text-blue">✦</span>
-          <span className="text-dark italic">
-            "convierte tu productividad en un ecosistema vivo"
-          </span>
-        </div>
-        <div className="flex gap-1.5 flex-wrap mt-3 text-[11px] text-grey">
-          {['huevos', 'mascotas', 'rarezas', 'puntos', 'rachas', 'tienda', 'cosmeticos'].map(tag => (
-            <span key={tag} className="bg-[rgba(227,221,212,0.4)] border border-beige px-2 py-0.5 rounded-full">
-              {tag}
-            </span>
-          ))}
-        </div>
+        <WindowPanel title="acciones" subtitle="acceso rápido" icon="⌘">
+          <div className="grid gap-4">
+            <button className="action-button">Abrir bitácora de tareas</button>
+            <button className="action-button">Ir a la colección</button>
+            <button className="action-button">Visitar tienda de huevos</button>
+          </div>
+        </WindowPanel>
       </div>
     </div>
   );

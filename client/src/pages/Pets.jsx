@@ -1,132 +1,145 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import PetAsciiDisplay from '../components/pets/PetAsciiDisplay';
+import WindowPanel from '../components/WindowPanel';
+
+const defaultPets = [
+  { _id: '1', species: 'Dragón de Fuego', name: 'Ignis', rarity: 'legendario', stage: 'adulto', isFavorite: false },
+  { _id: '2', species: 'Zorro', name: 'Kurama', rarity: 'poco_comun', stage: 'evolucionado', isFavorite: false },
+  { _id: '3', species: 'Dragón Celestial', name: 'Aurelion', rarity: 'mitico', stage: 'ascendido', isFavorite: true },
+  { _id: '4', species: 'Gato', name: 'Misu', rarity: 'comun', stage: 'joven', isFavorite: false },
+  { _id: '5', species: 'Unicornio', name: 'Estrella', rarity: 'epico', stage: 'adulto', isFavorite: false }
+];
+
+const rarityLabels = {
+  mitico: 'Mítico',
+  legendario: 'Legendario',
+  epico: 'Épico',
+  raro: 'Raro',
+  poco_comun: 'Poco común',
+  comun: 'Común'
+};
 
 export default function Pets() {
   const [pets, setPets] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [selectedPet, setSelectedPet] = useState(null);
   const [filter, setFilter] = useState('all');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/pets')
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setPets(data);
-        setLoading(false);
+    fetch('/api/pets')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length) {
+          setPets(data);
+        } else {
+          setPets(defaultPets);
+        }
       })
-      .catch(() => {
-        // Fallback demo pets if backend not running
-        setPets([
-          { _id: '1', species: 'Dragón de Fuego',   name: 'Ignis',    rarity: 'legendario', stage: 'adulto',       isFavorite: false },
-          { _id: '2', species: 'Zorro',              name: 'Kurama',   rarity: 'poco_comun', stage: 'evolucionado', isFavorite: false },
-          { _id: '3', species: 'Dragón Celestial',   name: 'Aurelion', rarity: 'mitico',     stage: 'ascendido',    isFavorite: true  },
-          { _id: '4', species: 'Gato',               name: 'Misu',     rarity: 'comun',      stage: 'joven',        isFavorite: false },
-          { _id: '5', species: 'Unicornio',          name: 'Estrella', rarity: 'epico',      stage: 'adulto',       isFavorite: false },
-          { _id: '6', species: 'Lobo',               name: 'Fantasma', rarity: 'raro',       stage: 'evolucionado', isFavorite: false },
-          { _id: '7', species: 'Fénix Ancestral',    name: 'Renacer',  rarity: 'mitico',     stage: 'evolucionado', isFavorite: false },
-          { _id: '8', species: 'Kitsune',            name: 'Nueve',    rarity: 'epico',      stage: 'joven',        isFavorite: false },
-          { _id: '9', species: 'Conejo',             name: 'Saltos',   rarity: 'comun',      stage: 'bebe',         isFavorite: false },
-        ]);
-        setLoading(false);
-      });
+      .catch(() => setPets(defaultPets))
+      .finally(() => setLoading(false));
   }, []);
 
   const rarityOrder = { mitico: 0, legendario: 1, epico: 2, raro: 3, poco_comun: 4, comun: 5 };
-  const filtered = filter === 'all'
-    ? [...pets].sort((a, b) => rarityOrder[a.rarity] - rarityOrder[b.rarity])
-    : pets.filter(p => p.rarity === filter);
+  const filtered = filter === 'all' ? [...pets].sort((a, b) => rarityOrder[a.rarity] - rarityOrder[b.rarity]) : pets.filter((p) => p.rarity === filter);
+
+  const totalBonus = pets.reduce((sum, pet) => {
+    const bonus = {
+      comun: 0,
+      poco_comun: 0.1,
+      raro: 0.3,
+      epico: 0.5,
+      legendario: 0.8,
+      mitico: 1.5
+    };
+    return sum + (bonus[pet.rarity] || 0);
+  }, 0);
 
   const rarityFilters = ['all', 'mitico', 'legendario', 'epico', 'raro', 'poco_comun', 'comun'];
-  const filterLabels  = { all: 'todas', mitico: 'mitico', legendario: 'legendario', epico: 'epico', raro: 'raro', poco_comun: 'poco comun', comun: 'comun' };
 
   if (loading) {
-    return (
-      <div className="p-4 text-center text-grey font-mono animate-pulse">
-        cargando coleccion...
-      </div>
-    );
+    return <div className="p-4 text-center text-grey font-mono animate-pulse">cargando colección...</div>;
   }
 
   return (
-    <div className="font-mono">
-
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-beige">
-        <div>
-          <div className="text-dark font-medium text-sm">coleccion de mascotas</div>
-          <div className="text-grey text-xs mt-0.5">
-            <span className="text-blue">⤷</span> total: {pets.length} criatura{pets.length !== 1 ? 's' : ''}
+    <div className="grid gap-6">
+      <WindowPanel title="mascotas" subtitle="colección" icon="🐾" extra={`bonus +${totalBonus.toFixed(1)}x`}>
+        <div className="section-grid cols-3">
+          <div className="tile-card">
+            <div className="panel-label">total</div>
+            <div className="panel-value">{pets.length}</div>
+            <div className="panel-note">Mascotas registradas en tu mundo.</div>
+          </div>
+          <div className="tile-card">
+            <div className="panel-label">favorita</div>
+            <div className="panel-value">{pets.find((pet) => pet.isFavorite)?.name || 'ninguna'}</div>
+            <div className="panel-note">La mascota favorita obtiene un bonus extra.</div>
+          </div>
+          <div className="tile-card">
+            <div className="panel-label">etapas</div>
+            <div className="panel-value">6</div>
+            <div className="panel-note">Desde huevo hasta ascendido con crecimiento.</div>
           </div>
         </div>
+      </WindowPanel>
 
-        {/* Rarity filter chips */}
-        <div className="flex flex-wrap gap-1.5">
-          {rarityFilters.map(r => (
+      <WindowPanel title="explorar" subtitle="filtrar rarezas" icon="🔎">
+        <div className="flex flex-wrap gap-2">
+          {rarityFilters.map((key) => (
             <button
-              key={r}
-              onClick={() => setFilter(r)}
-              className={`px-3 py-0.5 text-[11px] rounded-full border transition-all duration-150 ${
-                filter === r
-                  ? 'bg-beige2 border-dark text-dark font-medium'
-                  : 'bg-[rgba(227,221,212,0.3)] border-beige text-grey hover:bg-beige'
-              }`}
+              key={key}
+              onClick={() => setFilter(key)}
+              className={`action-button ${filter === key ? 'bg-beige2 border-dark text-dark' : ''}`}
             >
-              {filterLabels[r]}
+              {key === 'all' ? 'todas' : rarityLabels[key]}
             </button>
           ))}
         </div>
-      </div>
+      </WindowPanel>
 
-      {/* Selected pet spotlight */}
-      {selectedPet && (
-        <div className="mb-6 p-5 bg-[rgba(248,244,239,0.7)] border border-beige2 rounded-2xl flex flex-col md:flex-row gap-6 items-start">
-          <PetAsciiDisplay
-            pet={selectedPet}
-            accessory={selectedPet.isFavorite ? 'corona' : 'none'}
-          />
-          <div className="flex-1 text-sm space-y-1.5 pt-1">
-            <div className="text-base font-semibold text-dark mb-2">{selectedPet.name}</div>
-            <div className="flex gap-2"><span className="text-blue min-w-[90px]">⤷ especie</span><span className="text-grey">{selectedPet.species}</span></div>
-            <div className="flex gap-2"><span className="text-blue min-w-[90px]">⤷ rareza</span><span className="text-grey">{selectedPet.rarity.replace('_', ' ')}</span></div>
-            <div className="flex gap-2"><span className="text-blue min-w-[90px]">⤷ etapa</span><span className="text-grey">{selectedPet.stage}</span></div>
-            <div className="flex gap-2"><span className="text-blue min-w-[90px]">⤷ origen</span><span className="text-grey">{selectedPet.eggOrigin || 'desconocido'}</span></div>
-            {selectedPet.isFavorite && (
-              <div className="mt-2 text-xs text-[#F57C00]">mascota favorita · +5% en proxima actividad</div>
-            )}
-            <button
-              onClick={() => setSelectedPet(null)}
-              className="mt-3 text-xs text-grey border border-beige px-3 py-1 rounded-full hover:bg-beige transition-colors"
-            >
-              cerrar
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Pet grid */}
-      {filtered.length === 0 ? (
-        <div className="text-center text-grey text-sm py-10">no hay mascotas de esta rareza.</div>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {filtered.map(pet => (
+      <WindowPanel title="colección" subtitle="tarjetas de mascotas" icon="📚">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((pet) => (
             <button
               key={pet._id}
               onClick={() => setSelectedPet(pet)}
-              className={`p-3 bg-bg border border-beige rounded-2xl text-center shadow-sm hover:shadow-md hover:scale-[1.03] transition-all duration-150 flex flex-col items-center gap-2 ${
-                selectedPet?._id === pet._id ? 'ring-1 ring-dark' : ''
-              }`}
+              className={`p-4 rounded-3xl border border-beige bg-[rgba(248,244,239,0.85)] hover:shadow-lg transition-all text-left ${selectedPet?._id === pet._id ? 'ring-1 ring-dark' : ''}`}
             >
-              <PetAsciiDisplay
-                pet={pet}
-                accessory={pet.isFavorite ? 'corona' : 'none'}
-                compact={true}
-              />
-              <div className="text-[10px] text-grey mt-1 truncate w-full text-center">
-                {pet.name}
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <div className="text-sm text-grey uppercase tracking-[.2em]">{rarityLabels[pet.rarity]}</div>
+                  <div className="text-base font-semibold text-dark">{pet.name}</div>
+                </div>
+                <div className="text-[12px] text-grey">{pet.stage}</div>
               </div>
+              <PetAsciiDisplay pet={pet} compact={true} />
             </button>
           ))}
         </div>
+      </WindowPanel>
+
+      {selectedPet && (
+        <WindowPanel title="detalle" subtitle="mascota seleccionada" icon="✨">
+          <div className="grid gap-5 lg:grid-cols-[0.95fr_0.75fr]">
+            <div className="tile-card">
+              <PetAsciiDisplay pet={selectedPet} accessory={selectedPet.isFavorite ? 'corona' : 'none'} />
+            </div>
+            <div className="grid gap-3">
+              <div className="tile-card">
+                <div className="panel-label">especie</div>
+                <div className="panel-value">{selectedPet.species}</div>
+              </div>
+              <div className="tile-card">
+                <div className="panel-label">rareza</div>
+                <div className="panel-value">{rarityLabels[selectedPet.rarity]}</div>
+              </div>
+              <div className="tile-card">
+                <div className="panel-label">etapa</div>
+                <div className="panel-value">{selectedPet.stage}</div>
+              </div>
+              <button onClick={() => setSelectedPet(null)} className="action-button">Cerrar detalle</button>
+            </div>
+          </div>
+        </WindowPanel>
       )}
     </div>
   );
