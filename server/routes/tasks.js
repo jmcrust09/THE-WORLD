@@ -22,7 +22,7 @@ const getPointValue = (category, priority) => {
 
 router.get('/', auth, async (req, res) => {
   try {
-    const tasks = await Task.find({ user: req.user.id }).sort({ createdAt: -1 });
+    const tasks = await Task.findAll({ where: { userId: req.user.id }, order: [['createdAt', 'DESC']] });
     res.json(tasks);
   } catch (err) {
     res.status(500).send('Error');
@@ -32,8 +32,8 @@ router.get('/', auth, async (req, res) => {
 router.post('/', auth, async (req, res) => {
   try {
     const { title, category, priority, day, schedule, pointsEarned } = req.body;
-    const task = new Task({
-      user: req.user.id,
+    const task = await Task.create({
+      userId: req.user.id,
       title,
       category,
       priority,
@@ -41,7 +41,6 @@ router.post('/', auth, async (req, res) => {
       schedule,
       pointsEarned: pointsEarned ?? getPointValue(category, priority)
     });
-    await task.save();
     res.json(task);
   } catch (err) {
     res.status(500).send('Error');
@@ -50,13 +49,12 @@ router.post('/', auth, async (req, res) => {
 
 router.put('/:id', auth, async (req, res) => {
   try {
-    const task = await Task.findOneAndUpdate(
-      { _id: req.params.id, user: req.user.id },
+    const [updatedCount, updatedRows] = await Task.update(
       { completed: req.body.completed },
-      { new: true }
+      { where: { id: req.params.id, userId: req.user.id }, returning: true }
     );
-    if (!task) return res.status(404).json({ msg: 'Tarea no encontrada' });
-    res.json(task);
+    if (!updatedCount) return res.status(404).json({ msg: 'Tarea no encontrada' });
+    res.json(updatedRows[0]);
   } catch (err) {
     res.status(500).send('Error');
   }
@@ -64,8 +62,8 @@ router.put('/:id', auth, async (req, res) => {
 
 router.delete('/:id', auth, async (req, res) => {
   try {
-    const task = await Task.findOneAndDelete({ _id: req.params.id, user: req.user.id });
-    if (!task) return res.status(404).json({ msg: 'Tarea no encontrada' });
+    const deletedCount = await Task.destroy({ where: { id: req.params.id, userId: req.user.id } });
+    if (!deletedCount) return res.status(404).json({ msg: 'Tarea no encontrada' });
     res.json({ msg: 'Tarea eliminada' });
   } catch (err) {
     res.status(500).send('Error');

@@ -2,7 +2,7 @@ import { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
 // Establecer baseURL para axios: usar VITE_API_URL si existe, sino usar el backend desplegado
-const API_BASE = import.meta.env.VITE_API_URL || 'https://the-world-qq6r.onrender.com';
+const API_BASE = import.meta.env.VITE_API_URL;
 axios.defaults.baseURL = API_BASE;
 console.info('API base:', axios.defaults.baseURL);
 

@@ -1,20 +1,14 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../db');
 
-const shopItemSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  type: { type: String, required: true }, // 'egg', 'event_egg', etc.
-  cost: { type: Number, required: true },
-  description: { type: String },
-  icon: { type: String },
-  cssClass: { type: String }, // For frontend styling
-  probabilities: {
-    comun: Number,
-    poco_comun: Number,
-    raro: Number,
-    epico: Number,
-    legendario: Number,
-    mitico: Number
-  }
+const ShopItem = sequelize.define('ShopItem', {
+  name: { type: DataTypes.STRING, allowNull: false },
+  type: { type: DataTypes.STRING, allowNull: false },
+  cost: { type: DataTypes.INTEGER, allowNull: false },
+  description: { type: DataTypes.TEXT },
+  icon: { type: DataTypes.STRING },
+  cssClass: { type: DataTypes.STRING },
+  probabilities: { type: DataTypes.JSON }
 }, { timestamps: true });
 
-module.exports = mongoose.model('ShopItem', shopItemSchema);
+module.exports = ShopItem;

@@ -331,7 +331,7 @@ El ciclo principal de juego está diseñado para ser intuitivo y adictivo en el 
 
 ## Arquitectura y stack tecnológico
 
-El proyecto se divide en frontend (React) y backend (Node.js + Express), con MongoDB como base de datos y Socket.io para actualizaciones en tiempo real.
+El proyecto se divide en frontend (React) y backend (Node.js + Express), con PostgreSQL como base de datos y Socket.io para actualizaciones en tiempo real.
 
 ```json
 {
@@ -347,13 +347,13 @@ El proyecto se divide en frontend (React) y backend (Node.js + Express), con Mon
   },
   "backend": {
     "runtime": "Node.js + Express",
-    "database": "MongoDB + Mongoose ODM",
+    "database": "PostgreSQL + Sequelize",
     "auth": "JWT + OAuth2 (Google, GitHub)",
     "realtime": "Socket.io"
   },
   "deployment": {
     "platform": "Render",
-    "database": "MongoDB Atlas"
+    "database": "Managed PostgreSQL"
   }
 }
 ```
@@ -677,7 +677,7 @@ cd server && npm install && cd ..
 
 # Configurar variables de entorno (copiar .env.example a .env)
 cp server/.env.example server/.env
-# Editar server/.env con MONGO_URI, JWT_SECRET, PORT
+# Editar server/.env con DATABASE_URL, JWT_SECRET, PORT
 
 # Ejecutar en desarrollo (concurrente)
 npm run dev
@@ -692,8 +692,8 @@ El frontend estará en `http://localhost:5173` y el backend en `http://localhost
 3. Configura:
    - **Build Command**: `npm install && npm run build`
    - **Start Command**: `npm start`
-   - Variables de entorno: las mismas del `.env` (MONGO_URI, JWT_SECRET, PORT).
-4. Asegúrate de que MongoDB Atlas acepte conexiones desde la IP de Render (o habilita “Allow access from anywhere” temporalmente).
+   - Variables de entorno: las mismas del `.env` (`DATABASE_URL`, `JWT_SECRET`, `PORT`).
+4. Asegúrate de que el servicio PostgreSQL de Render esté conectado y la URL esté disponible en `DATABASE_URL`.
 5. Render generará una URL como `https://the-world.onrender.com`.
 
 > Para el enrutamiento con React Router, añade un archivo `_redirects` en la carpeta `dist` con el contenido:  

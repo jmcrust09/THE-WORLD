@@ -8,14 +8,12 @@ const router = express.Router();
 router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    // Verificar si ya existe
-    let user = await User.findOne({ email });
-    if (user) return res.status(400).json({ msg: 'Usuario ya existe' });
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) return res.status(400).json({ msg: 'Usuario ya existe' });
 
-    user = new User({ username, email, passwordHash: password }); // temporal, luego lo hasheamos
     const salt = await bcrypt.genSalt(10);
-    user.passwordHash = await bcrypt.hash(password, salt);
-    await user.save();
+    const passwordHash = await bcrypt.hash(password, salt);
+    const user = await User.create({ username, email, passwordHash });
 
     const payload = { user: { id: user.id } };
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' }, (err, token) => {
@@ -32,7 +30,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ where: { email } });
     if (!user) return res.status(400).json({ msg: 'Credenciales inválidas' });
 
     const isMatch = await bcrypt.compare(password, user.passwordHash);
@@ -52,7 +50,7 @@ router.post('/login', async (req, res) => {
 // Obtener usuario actual (protegido)
 router.get('/me', require('../middleware/auth'), async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-passwordHash');
+    const user = await User.findByPk(req.user.id, { attributes: { exclude: ['passwordHash'] } });
     res.json(user);
   } catch (err) {
     res.status(500).send('Error');

@@ -1,15 +1,16 @@
-﻿const mongoose = require('mongoose');
+﻿const { DataTypes } = require('sequelize');
+const { sequelize } = require('../db');
 
-const TaskSchema = new mongoose.Schema({
-  day: { type: String, required: true },
-  schedule: { type: String },
-  title: { type: String, required: true },
-  category: { type: String },
-  priority: { type: String },
-  completed: { type: Boolean, default: false },
-  pointsEarned: { type: Number, default: 0 },
-  timestamp: { type: Date, default: Date.now },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
-});
+const Task = sequelize.define('Task', {
+  day: { type: DataTypes.STRING, allowNull: false },
+  schedule: { type: DataTypes.STRING },
+  title: { type: DataTypes.STRING, allowNull: false },
+  category: { type: DataTypes.STRING },
+  priority: { type: DataTypes.STRING },
+  completed: { type: DataTypes.BOOLEAN, defaultValue: false },
+  pointsEarned: { type: DataTypes.INTEGER, defaultValue: 0 },
+  timestamp: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+  userId: { type: DataTypes.INTEGER, allowNull: false }
+}, { timestamps: true });
 
-module.exports = mongoose.model('Task', TaskSchema);
+module.exports = Task;

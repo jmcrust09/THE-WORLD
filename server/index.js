@@ -2,7 +2,7 @@ require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('./db');
+const { connectDB } = require('./db');
 const ShopItem = require('./models/ShopItem');
 const User = require('./models/User');
 const Pet = require('./models/Pet');
@@ -10,7 +10,7 @@ const Pet = require('./models/Pet');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to MongoDB
+// Connect to PostgreSQL + Sequelize
 connectDB();
 
 app.use(cors());
@@ -24,7 +24,7 @@ app.get('/api/status', (req, res) => {
 // Endpoint to get shop items from DB
 app.get('/api/shop', async (req, res) => {
   try {
-    const items = await ShopItem.find({});
+    const items = await ShopItem.findAll();
     res.json(items);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching shop items', error: error.message });
@@ -34,7 +34,7 @@ app.get('/api/shop', async (req, res) => {
 // Endpoint to get mock user info (for now, just returns the first user or a default)
 app.get('/api/user/mock', async (req, res) => {
   try {
-    let user = await User.findOne({});
+    let user = await User.findOne();
     if (!user) {
       // Create a mock user if none exists
       user = await User.create({
@@ -57,7 +57,7 @@ app.get('/api/user/mock', async (req, res) => {
 // Endpoint to get all pets from DB
 app.get('/api/pets', async (req, res) => {
   try {
-    const pets = await Pet.find({}).sort({ rarity: 1 });
+    const pets = await Pet.findAll({ order: [['rarity', 'ASC']] });
     res.json(pets);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching pets', error: error.message });

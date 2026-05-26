@@ -1,7 +1,6 @@
 require('dotenv').config();
-const mongoose = require('mongoose');
 const ShopItem = require('./models/ShopItem');
-const connectDB = require('./db');
+const { connectDB } = require('./db');
 
 const seedShop = async () => {
   await connectDB();
@@ -31,15 +30,15 @@ const seedShop = async () => {
       cost: 5000,
       description: 'Garantiza Poco Común o mejor.',
       icon: '🔮',
-      cssClass: 'bg-bg border-beige opacity-50', // Mocking not allowed state
+      cssClass: 'bg-bg border-beige opacity-50',
       probabilities: { comun: 0, poco_comun: 40, raro: 35, epico: 20, legendario: 4, mitico: 1 }
     }
   ];
 
   try {
-    await ShopItem.deleteMany({});
-    await ShopItem.insertMany(items);
-    console.log('Tienda (Shop Items) inicializada con éxito en MongoDB Atlas.');
+    await ShopItem.destroy({ where: {} });
+    await ShopItem.bulkCreate(items);
+    console.log('Tienda (Shop Items) inicializada con éxito en PostgreSQL.');
     process.exit();
   } catch (error) {
     console.error('Error inicializando la tienda:', error);
