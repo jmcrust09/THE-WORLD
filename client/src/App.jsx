@@ -3,6 +3,9 @@ import Home from './pages/Home';
 import Activities from './pages/Activities';
 import Pets from './pages/Pets';
 import Shop from './pages/Shop';
+import Auth from './pages/Auth';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
 
 function Layout({ children }) {
   return (
@@ -38,16 +41,56 @@ function Layout({ children }) {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Layout>
+    <AuthProvider>
+      <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/actividades" element={<Activities />} />
-          <Route path="/mascotas" element={<Pets />} />
-          <Route path="/tienda" element={<Shop />} />
+          {/* Ruta pública para login/registro */}
+          <Route path="/auth" element={<Auth />} />
+
+          {/* Rutas protegidas (envueltas en PrivateRoute + Layout) */}
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <Home />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/actividades"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <Activities />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/mascotas"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <Pets />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/tienda"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <Shop />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
         </Routes>
-      </Layout>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
