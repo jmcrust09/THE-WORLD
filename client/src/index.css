@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-bg text-brown font-mono min-h-screen antialiased;
+  }
+}
+
+@layer components {
+  .terminal {
+    @apply max-w-6xl w-full mx-auto bg-bg2 rounded-[28px] p-8 shadow-[0_12px_40px_rgba(74,62,55,0.08),inset_0_1px_0_rgba(255,255,255,0.7)] border border-beige transition-all duration-200;
+  }
+
+  .window-bar {
+    @apply flex items-center gap-2.5 pb-5 border-b border-beige mb-6;
+  }
+
+  .window-dots {
+    @apply flex gap-2;
+  }
+
+  .dot {
+    @apply w-3 h-3 rounded-full bg-beige2 border border-[rgba(74,62,55,0.15)];
+  }
+
+  .dot:nth-child(1) { background: #c6d9b5; }
+  .dot:nth-child(2) { background: #e8e0a0; }
+  .dot:nth-child(3) { background: #c9968c; }
+
+  .window-title {
+    @apply text-[13px] tracking-wide text-dark bg-[rgba(227,221,212,0.5)] px-4 py-0.5 rounded-full border border-beige ml-1.5 font-normal;
+  }
+
+  .window-title span {
+    @apply opacity-60;
+  }
+
+  .ascii-zone {
+    @apply flex flex-col items-center justify-center py-2 bg-[rgba(248,244,239,0.5)] rounded-[20px] border border-dashed border-beige2 min-h-[380px] relative;
+  }
+
+  .ascii-zone pre {
+    @apply text-[13px] leading-tight text-brown font-normal tracking-wide text-center m-0 px-1 py-3 whitespace-pre font-mono;
+  }
+  
+  .nav-btn {
+    @apply px-4 py-2 rounded-xl border border-beige bg-[rgba(227,221,212,0.3)] hover:bg-beige2 transition-all duration-200 text-sm text-dark font-medium;
+  }
+
+  .nav-btn.active {
+    @apply bg-beige2 border-dark shadow-sm;
+  }
+}
