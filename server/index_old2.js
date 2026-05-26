@@ -1,0 +1,57 @@
+require('dotenv').config();
+const path = require('path');
+const express = require('express');
+const cors = require('cors');
+const { connectDB } = require('./db');
+const ShopItem = require('./models/ShopItem');
+const User = require('./models/User');
+const Pet = require('./models/Pet');
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Connect to PostgreSQL + Sequelize
+connectDB();
+
+app.use(cors());
+app.use(express.json());
+
+// Check connection endpoint
+app.get('/api/status', (req, res) => {
+  res.json({ status: 'online', message: 'THE WORLD backend is running and connected.' });
+});
+
+// Endpoint to get shop items from DB
+app.get('/api/shop', async (req, res) => {
+  try {
+    const items = await ShopItem.findAll();
+    res.json(items);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching shop items', error: error.message });
+  }
+});
+
+// Endpoint to get all pets from DB
+app.get('/api/pets', async (req, res) => {
+  try {
+    const pets = await Pet.findAll({ order: [['rarity', 'ASC']] });
+    res.json(pets);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching pets', error: error.message });
+  }
+});
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
+  app.use((req, res) => {
+    res.sendFile(path.resolve(__dirname, '..', 'client', 'dist', 'index.html'));
+  });
+}
+
+app.use('/api/auth', require('./routes/auth'));
+
+app.use('/api/tasks', require('./routes/tasks'));
+
+app.listen(PORT, () => {
+  console.log(`🌍 THE WORLD backend is running on port ${PORT}`);
+});

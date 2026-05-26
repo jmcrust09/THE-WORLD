@@ -21,28 +21,18 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
 
-  const fetchUserData = async (token) => {
-    try {
-      const userRes = await axios.get('/api/auth/me');
-      const petsRes = await axios.get('/api/pets');
-      setUser({
-        ...userRes.data,
-        pets: petsRes.data
-      });
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-      localStorage.removeItem('token');
-      setToken(null);
-      setUser(null);
-    }
-  };
-
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
     if (savedToken) {
       setToken(savedToken);
       axios.defaults.headers.common['x-auth-token'] = savedToken;
-      fetchUserData(savedToken).finally(() => setLoading(false));
+      axios.get('/api/auth/me')
+        .then(res => setUser(res.data))
+        .catch(() => {
+          localStorage.removeItem('token');
+          setToken(null);
+        })
+        .finally(() => setLoading(false));
     } else {
       setLoading(false);
     }
@@ -54,7 +44,6 @@ export const AuthProvider = ({ children }) => {
     axios.defaults.headers.common['x-auth-token'] = res.data.token;
     setToken(res.data.token);
     setUser(res.data.user);
-    await fetchUserData(res.data.token);
     return res.data;
   };
 
@@ -64,7 +53,6 @@ export const AuthProvider = ({ children }) => {
     axios.defaults.headers.common['x-auth-token'] = res.data.token;
     setToken(res.data.token);
     setUser(res.data.user);
-    await fetchUserData(res.data.token);
     return res.data;
   };
 
@@ -74,7 +62,6 @@ export const AuthProvider = ({ children }) => {
     axios.defaults.headers.common['x-auth-token'] = res.data.token;
     setToken(res.data.token);
     setUser(res.data.user);
-    await fetchUserData(res.data.token);
     return res.data;
   };
 
@@ -85,14 +72,8 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
   };
 
-  const refreshUserData = async () => {
-    if (token) {
-      await fetchUserData(token);
-    }
-  };
-
   return (
-    <AuthContext.Provider value={{ user, login, register, guestLogin, logout, loading, token, refreshUserData }}>
+    <AuthContext.Provider value={{ user, login, register, guestLogin, logout, loading, token }}>
       {children}
     </AuthContext.Provider>
   );
