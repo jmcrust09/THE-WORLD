@@ -9,7 +9,10 @@ const Egg = sequelize.define('Egg', {
   icon: { type: DataTypes.STRING, defaultValue: 'fa-egg' },
   cssClass: { type: DataTypes.STRING },
   probabilities: { type: DataTypes.JSON },
-  isEvent: { type: DataTypes.BOOLEAN, defaultValue: false }
+  isEvent: { type: DataTypes.BOOLEAN, defaultValue: false },
+  isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
+  availableFrom: { type: DataTypes.DATE, allowNull: true },
+  availableUntil: { type: DataTypes.DATE, allowNull: true }
 }, { timestamps: true });
 
 module.exports = Egg;

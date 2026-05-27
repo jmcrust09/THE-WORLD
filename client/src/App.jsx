@@ -5,6 +5,7 @@ import Activities from './pages/Activities';
 import Pets from './pages/Pets';
 import Shop from './pages/Shop';
 import Admin from './pages/Admin';
+import AdminPanel from './pages/AdminPanel';
 import Inventory from './pages/Inventory';
 import Garden from './pages/Garden';
 import Auth from './pages/Auth';
@@ -21,6 +22,7 @@ function DesktopLayout({ children }) {
     if (path === '/shop') return 'shop';
     if (path === '/pets') return 'pets';
     if (path === '/admin') return 'admin';
+    if (path === '/admin-panel') return 'admin-panel';
     if (path === '/inventory') return 'inventory';
     if (path === '/garden') return 'garden';
     return 'home';
@@ -67,9 +69,14 @@ function DesktopLayout({ children }) {
           <i className="fas fa-seedling"></i> jardín
         </a>
         {user?.isAdmin && (
-          <a href="/admin" className={`task-button ${activeSection === 'admin' ? 'active-task' : ''}`}>
-            <i className="fas fa-cog"></i> admin
-          </a>
+          <>
+            <a href="/admin" className={`task-button ${activeSection === 'admin' ? 'active-task' : ''}`}>
+              <i className="fas fa-cog"></i> admin
+            </a>
+            <a href="/admin-panel" className={`task-button ${activeSection === 'admin-panel' ? 'active-task' : ''}`}>
+              <i className="fas fa-egg"></i> huevos
+            </a>
+          </>
         )}
         <button
           className="task-button"
@@ -100,6 +107,7 @@ function AppContent() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/pets" element={<Pets />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/admin-panel" element={<AdminPanel />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/garden" element={<Garden />} />
         <Route path="/auth" element={<Navigate to="/" replace />} />

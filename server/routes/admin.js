@@ -2,6 +2,7 @@ const express = require('express');
 const adminAuth = require('../middleware/admin');
 const ShopItem = require('../models/ShopItem');
 const User = require('../models/User');
+const Egg = require('../models/Egg');
 const router = express.Router();
 
 // Crear nuevo item en la tienda
@@ -125,6 +126,98 @@ router.get('/events', adminAuth, async (req, res) => {
     res.json(events);
   } catch (err) {
     res.status(500).json({ msg: 'Error obteniendo eventos', error: err.message });
+  }
+});
+
+// ===== RUTAS PARA GESTIÓN DE HUEVOS =====
+
+// Obtener todos los huevos (admin)
+router.get('/eggs', adminAuth, async (req, res) => {
+  try {
+    const eggs = await Egg.findAll({ order: [['cost', 'ASC']] });
+    res.json(eggs);
+  } catch (err) {
+    res.status(500).json({ msg: 'Error obteniendo huevos', error: err.message });
+  }
+});
+
+// Crear nuevo huevo
+router.post('/eggs', adminAuth, async (req, res) => {
+  try {
+    const { name, cost, description, icon, cssClass, probabilities, isEvent, isActive, availableFrom, availableUntil } = req.body;
+    
+    const egg = await Egg.create({
+      name,
+      type: 'egg',
+      cost,
+      description,
+      icon: icon || 'fa-egg',
+      cssClass: cssClass || 'bg-bg',
+      probabilities: probabilities || {},
+      isEvent: isEvent || false,
+      isActive: isActive !== undefined ? isActive : true,
+      availableFrom: availableFrom || null,
+      availableUntil: availableUntil || null
+    });
+    
+    res.json(egg);
+  } catch (err) {
+    res.status(500).json({ msg: 'Error creando huevo', error: err.message });
+  }
+});
+
+// Actualizar huevo
+router.put('/eggs/:id', adminAuth, async (req, res) => {
+  try {
+    const { name, cost, description, icon, cssClass, probabilities, isEvent, isActive, availableFrom, availableUntil } = req.body;
+    
+    const egg = await Egg.findByPk(req.params.id);
+    if (!egg) return res.status(404).json({ msg: 'Huevo no encontrado' });
+    
+    await egg.update({
+      name: name || egg.name,
+      cost: cost || egg.cost,
+      description: description || egg.description,
+      icon: icon || egg.icon,
+      cssClass: cssClass || egg.cssClass,
+      probabilities: probabilities || egg.probabilities,
+      isEvent: isEvent !== undefined ? isEvent : egg.isEvent,
+      isActive: isActive !== undefined ? isActive : egg.isActive,
+      availableFrom: availableFrom !== undefined ? availableFrom : egg.availableFrom,
+      availableUntil: availableUntil !== undefined ? availableUntil : egg.availableUntil
+    });
+    
+    res.json(egg);
+  } catch (err) {
+    res.status(500).json({ msg: 'Error actualizando huevo', error: err.message });
+  }
+});
+
+// Activar/desactivar huevo
+router.patch('/eggs/:id/toggle', adminAuth, async (req, res) => {
+  try {
+    const egg = await Egg.findByPk(req.params.id);
+    if (!egg) return res.status(404).json({ msg: 'Huevo no encontrado' });
+    
+    egg.isActive = !egg.isActive;
+    await egg.save();
+    
+    res.json(egg);
+  } catch (err) {
+    res.status(500).json({ msg: 'Error toggling huevo', error: err.message });
+  }
+});
+
+// Eliminar huevo
+router.delete('/eggs/:id', adminAuth, async (req, res) => {
+  try {
+    const egg = await Egg.findByPk(req.params.id);
+    if (!egg) return res.status(404).json({ msg: 'Huevo no encontrado' });
+    
+    await egg.destroy();
+    res.json({ msg: 'Huevo eliminado' });
+  } catch (err) {
+    res.status(500).json({ msg: 'Error eliminando huevo', error: err.message });
   }
 });
 
