@@ -83,8 +83,8 @@ export default function Activities() {
 
   const toggleComplete = async (task) => {
     try {
-      const res = await axios.put(`/api/tasks/${task._id}`, { completed: !task.completed });
-      setTasks(tasks.map((t) => (t._id === task._id ? res.data : t)));
+      const res = await axios.put(`/api/tasks/${task.id}`, { completed: !task.completed });
+      setTasks(tasks.map((t) => (t.id === task.id ? res.data : t)));
     } catch (err) {
       console.error('Error al actualizar tarea', err);
     }
@@ -93,7 +93,7 @@ export default function Activities() {
   const deleteTask = async (id) => {
     try {
       await axios.delete(`/api/tasks/${id}`);
-      setTasks(tasks.filter((t) => t._id !== id));
+      setTasks(tasks.filter((t) => t.id !== id));
     } catch (err) {
       console.error('Error al eliminar tarea', err);
     }
@@ -154,7 +154,7 @@ export default function Activities() {
           ) : (
             <div style={{ display: 'grid', gap: '8px' }}>
               {tasks.map((task) => (
-                <div key={task._id} style={{
+                <div key={task.id} style={{
                   background: task.completed ? 'rgba(80, 60, 50, 0.3)' : 'transparent',
                   border: `1px dashed var(--separator)`,
                   padding: '8px',
@@ -184,7 +184,7 @@ export default function Activities() {
                         {task.completed ? '✓' : '·'}
                       </button>
                       <button
-                        onClick={() => deleteTask(task._id)}
+                        onClick={() => deleteTask(task.id)}
                         style={{
                           background: 'var(--tile-dark)',
                           border: `1px solid var(--border-color)`,
