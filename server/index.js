@@ -6,12 +6,16 @@ const { connectDB, sequelize } = require('./db');
 const ShopItem = require('./models/ShopItem');
 const User = require('./models/User');
 const Pet = require('./models/Pet');
+const Task = require('./models/Task');
 const Inventory = require('./models/Inventory');
 const Garden = require('./models/Garden');
 
 // Configurar asociaciones
 User.hasMany(Pet, { foreignKey: 'userId' });
 Pet.belongsTo(User, { foreignKey: 'userId' });
+
+User.hasMany(Task, { foreignKey: 'userId' });
+Task.belongsTo(User, { foreignKey: 'userId' });
 
 User.hasMany(Inventory, { foreignKey: 'userId' });
 Inventory.belongsTo(User, { foreignKey: 'userId' });

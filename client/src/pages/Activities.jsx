@@ -150,7 +150,7 @@ export default function Activities() {
         <div className="tile-content">
           {tasks.length === 0 ? (
             <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '20px 0' }}>
-              ✨ No hay actividades. Añade tu primera tarea ✨
+              <i className="fas fa-sparkles"></i> No hay actividades. Añade tu primera tarea <i className="fas fa-sparkles"></i>
             </div>
           ) : (
             <div style={{ display: 'grid', gap: '8px' }}>

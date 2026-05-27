@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
       const petsRes = await axios.get('/api/pets');
       setUser({
         ...userRes.data,
-        pets: petsRes.data
+        pets: Array.isArray(petsRes.data) ? petsRes.data : []
       });
     } catch (error) {
       console.error('Error fetching user data:', error);

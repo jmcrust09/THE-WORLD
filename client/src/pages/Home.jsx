@@ -51,8 +51,8 @@ export default function Home() {
             <span className="info-label"><i className="fas fa-quote-left"></i> esencia</span>
             <span className="value">"convierte tu productividad en un ecosistema vivo"</span>
           </div>
-          <div className="badge">🌍 gamificación · 75+ especies · rarezas míticas</div>
-          <div className="badge">⚡ tareas diarias · rachas · evolución de mascotas</div>
+          <div className="badge"><i className="fas fa-globe"></i> gamificación · 75+ especies · rarezas míticas</div>
+          <div className="badge"><i className="fas fa-bolt"></i> tareas diarias · rachas · evolución de mascotas</div>
         </div>
       </div>
 
@@ -141,8 +141,8 @@ export default function Home() {
           <div className="progress-bg">
             <div className="progress-fill" style={{ width: '74%' }}></div>
           </div>
-          <div className="badge">🎯 próximo hito: 20k pts</div>
-          <div className="badge">🏆 mejor mes: 45k pts (ago)</div>
+          <div className="badge"><i className="fas fa-bullseye"></i> próximo hito: 20k pts</div>
+          <div className="badge"><i className="fas fa-trophy"></i> mejor mes: 45k pts (ago)</div>
         </div>
       </div>
 
@@ -159,9 +159,9 @@ export default function Home() {
           </div>
         </div>
         <div className="tile-content">
-          <div className="badge">📚 Aprendizaje: 3 tareas</div>
-          <div className="badge">💪 Deporte: 2 tareas</div>
-          <div className="badge">🧹 Hogar: 1 tarea</div>
+          <div className="badge"><i className="fas fa-book"></i> Aprendizaje: 3 tareas</div>
+          <div className="badge"><i className="fas fa-dumbbell"></i> Deporte: 2 tareas</div>
+          <div className="badge"><i className="fas fa-broom"></i> Hogar: 1 tarea</div>
           <div style={{ marginTop: '12px', textAlign: 'center' }}>
             <strong>6 tareas pendientes hoy</strong>
           </div>
@@ -183,9 +183,9 @@ export default function Home() {
         <div className="tile-content">
           <div><span className="badge">75+ especies</span> <span className="badge">desbloqueadas: 14</span></div>
           <div className="stat-group">
-            <div className="stat-card-sm">🐉 mítico: fénix</div>
-            <div className="stat-card-sm">🦊 legendario: ignis</div>
-            <div className="stat-card-sm">✨ épico: grifo</div>
+            <div className="stat-card-sm"><i className="fas fa-dragon"></i> mítico: fénix</div>
+            <div className="stat-card-sm"><i className="fas fa-crown"></i> legendario: ignis</div>
+            <div className="stat-card-sm"><i className="fas fa-star"></i> épico: grifo</div>
           </div>
         </div>
       </div>
