@@ -20,9 +20,10 @@ export default function Garden() {
   const fetchGarden = async () => {
     try {
       const res = await axios.get('/api/garden');
-      setGarden(res.data);
+      setGarden(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error('Error fetching garden:', err);
+      setGarden([]);
     } finally {
       setLoading(false);
     }

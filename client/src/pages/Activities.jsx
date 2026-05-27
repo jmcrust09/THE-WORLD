@@ -55,9 +55,10 @@ export default function Activities() {
   const fetchTasks = async () => {
     try {
       const res = await axios.get('/api/tasks');
-      setTasks(res.data);
+      setTasks(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error('Error al cargar tareas', err);
+      setTasks([]);
     }
   };
 

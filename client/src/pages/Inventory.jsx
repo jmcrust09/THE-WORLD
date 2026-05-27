@@ -15,9 +15,10 @@ export default function Inventory() {
   const fetchInventory = async () => {
     try {
       const res = await axios.get('/api/inventory');
-      setInventory(res.data);
+      setInventory(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error('Error fetching inventory:', err);
+      setInventory([]);
     } finally {
       setLoading(false);
     }
