@@ -1,13 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
 
-const defaultPets = [
-  { _id: '1', species: 'Dragón de Fuego', name: 'Ignis', rarity: 'legendario', stage: 'adulto', isFavorite: false },
-  { _id: '2', species: 'Zorro', name: 'Kurama', rarity: 'poco_comun', stage: 'evolucionado', isFavorite: false },
-  { _id: '3', species: 'Dragón Celestial', name: 'Aurelion', rarity: 'mitico', stage: 'ascendido', isFavorite: true },
-  { _id: '4', species: 'Gato', name: 'Misu', rarity: 'comun', stage: 'joven', isFavorite: false },
-  { _id: '5', species: 'Unicornio', name: 'Estrella', rarity: 'epico', stage: 'adulto', isFavorite: false }
-];
-
 const rarityLabels = {
   mitico: 'Mítico',
   legendario: 'Legendario',
@@ -31,18 +23,24 @@ export default function Pets() {
   const [selectedPet, setSelectedPet] = useState(null);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [hatching, setHatching] = useState(false);
+  const [petName, setPetName] = useState('');
+  const [eggs, setEggs] = useState([]);
 
   useEffect(() => {
-    fetch('/api/pets')
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data) && data.length) {
-          setPets(data);
-        } else {
-          setPets(defaultPets);
-        }
+    Promise.all([
+      fetch('/api/pets'),
+      fetch('/api/eggs')
+    ])
+      .then(([petsRes, eggsRes]) => Promise.all([petsRes.json(), eggsRes.json()]))
+      .then(([petsData, eggsData]) => {
+        setPets(Array.isArray(petsData) ? petsData : []);
+        setEggs(Array.isArray(eggsData) ? eggsData : []);
       })
-      .catch(() => setPets(defaultPets))
+      .catch(() => {
+        setPets([]);
+        setEggs([]);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -62,6 +60,22 @@ export default function Pets() {
   }, 0);
 
   const rarityFilters = ['all', 'mitico', 'legendario', 'epico', 'raro', 'poco_comun', 'comun'];
+
+  const hatchEgg = async (eggId) => {
+    try {
+      const res = await fetch('/api/pets/hatch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eggId, name: petName })
+      });
+      const data = await res.json();
+      setPets([data.pet, ...pets]);
+      setPetName('');
+      setHatching(false);
+    } catch (err) {
+      console.error('Error hatching egg:', err);
+    }
+  };
 
   if (loading) {
     return <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '40px' }}>cargando colección...</div>;
@@ -92,6 +106,63 @@ export default function Pets() {
             <div className="stat-card-sm"><i className="fas fa-crown"></i> legendario: 1</div>
             <div className="stat-card-sm"><i className="fas fa-star"></i> épico: 1</div>
           </div>
+        </div>
+      </div>
+
+      {/* TILE - ECLOSIONAR HUEVO */}
+      <div className="tile">
+        <div className="tile-header">
+          <div className="tile-dots">
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+            <span className="tile-dot"></span>
+          </div>
+          <div className="tile-title">
+            <i className="fas fa-egg"></i> eclosionar
+          </div>
+        </div>
+        <div className="tile-content">
+          {!hatching ? (
+            <button
+              onClick={() => setHatching(true)}
+              className="btn-primary"
+              style={{ width: '100%' }}
+            >
+              <i className="fas fa-plus"></i> Comprar huevo
+            </button>
+          ) : (
+            <div style={{ display: 'grid', gap: '8px' }}>
+              <input
+                type="text"
+                value={petName}
+                onChange={(e) => setPetName(e.target.value)}
+                placeholder="Nombre de la mascota (opcional)"
+                className="form-input"
+              />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
+                {eggs.map((egg) => (
+                  <button
+                    key={egg.id}
+                    onClick={() => hatchEgg(egg.id)}
+                    className="btn-secondary"
+                    style={{ fontSize: '11px' }}
+                  >
+                    {egg.name} ({egg.cost})
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => {
+                  setHatching(false);
+                  setPetName('');
+                }}
+                className="btn-secondary"
+                style={{ width: '100%', fontSize: '11px' }}
+              >
+                Cancelar
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -156,10 +227,10 @@ export default function Pets() {
       {/* TILES - CADA MASCOTA */}
       {filtered.map((pet) => (
         <div
-          key={pet.id}
+          key={pet._id}
           className="tile"
           onClick={() => setSelectedPet(pet)}
-          style={{ cursor: 'pointer', opacity: selectedPet?.id === pet.id ? 1 : 0.85 }}
+          style={{ cursor: 'pointer', opacity: selectedPet?._id === pet._id ? 1 : 0.85 }}
         >
           <div className="tile-header">
             <div className="tile-dots">
@@ -174,7 +245,7 @@ export default function Pets() {
           <div className="tile-content">
             <div className="info-row">
               <span className="info-label"><i className="fas fa-crown"></i> rareza</span>
-              <span><i className={`fas ${rarityEmoji[pet.rarity]}`}></i> {rarityLabels[pet.rarity]}</span>
+              <span>{rarityEmoji[pet.rarity]} {rarityLabels[pet.rarity]}</span>
             </div>
             <div className="info-row">
               <span className="info-label"><i className="fas fa-egg"></i> especie</span>
@@ -186,7 +257,7 @@ export default function Pets() {
             </div>
             {pet.isFavorite && (
               <div className="badge" style={{ background: 'rgba(212, 163, 115, 0.2)', borderColor: 'var(--accent)' }}>
-                <i className="fas fa-heart"></i> mascota favorita
+                ❤️ mascota favorita
               </div>
             )}
           </div>
@@ -217,7 +288,7 @@ export default function Pets() {
             </div>
             <div className="info-row">
               <span className="info-label"><i className="fas fa-crown"></i> rareza</span>
-              <span><i className={`fas ${rarityEmoji[selectedPet.rarity]}`}></i> {rarityLabels[selectedPet.rarity]}</span>
+              <span>{rarityEmoji[selectedPet.rarity]} {rarityLabels[selectedPet.rarity]}</span>
             </div>
             <div className="info-row">
               <span className="info-label"><i className="fas fa-chart-line"></i> etapa</span>

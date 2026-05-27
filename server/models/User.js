@@ -11,7 +11,8 @@ const User = sequelize.define('User', {
   currentStreak: { type: DataTypes.INTEGER, defaultValue: 0 },
   bestStreak: { type: DataTypes.INTEGER, defaultValue: 0 },
   bonusMultiplier: { type: DataTypes.FLOAT, defaultValue: 1.0 },
-  favoritePetId: { type: DataTypes.INTEGER }
+  favoritePetId: { type: DataTypes.INTEGER },
+  lastTaskDate: { type: DataTypes.DATE }
 }, { timestamps: true });
 
 module.exports = User;

@@ -3,12 +3,13 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
 const categoryOptions = [
-  { value: 'Deporte', label: 'Deporte' },
-  { value: 'Aprendizaje', label: 'Aprendizaje' },
-  { value: 'Trabajo', label: 'Trabajo' },
-  { value: 'Bienestar', label: 'Bienestar' },
-  { value: 'Creatividad', label: 'Creatividad' },
-  { value: 'Hogar', label: 'Hogar' }
+  { value: 'Deporte', label: 'Deporte', icon: 'fa-dumbbell' },
+  { value: 'Aprendizaje', label: 'Aprendizaje', icon: 'fa-book' },
+  { value: 'Trabajo', label: 'Trabajo', icon: 'fa-briefcase' },
+  { value: 'Bienestar', label: 'Bienestar', icon: 'fa-heart' },
+  { value: 'Creatividad', label: 'Creatividad', icon: 'fa-palette' },
+  { value: 'Hogar', label: 'Hogar', icon: 'fa-home' },
+  { value: 'Ocio', label: 'Ocio', icon: 'fa-gamepad' }
 ];
 
 const priorityOptions = [
@@ -27,7 +28,8 @@ function calculatePoints(category, priority) {
     Trabajo: 240,
     Bienestar: 130,
     Creatividad: 170,
-    Hogar: 140
+    Hogar: 140,
+    Ocio: 100
   };
 
   const priorityFactor = {
@@ -39,8 +41,13 @@ function calculatePoints(category, priority) {
   return Math.round((categoryBase[category] || 130) * (priorityFactor[priority] || 1));
 }
 
+function getCategoryIcon(category) {
+  const cat = categoryOptions.find(c => c.value === category);
+  return cat ? cat.icon : 'fa-tasks';
+}
+
 export default function Activities() {
-  const { user } = useContext(AuthContext);
+  const { user, refreshUserData } = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newCategory, setNewCategory] = useState('Aprendizaje');
@@ -85,7 +92,11 @@ export default function Activities() {
   const toggleComplete = async (task) => {
     try {
       const res = await axios.put(`/api/tasks/${task.id}`, { completed: !task.completed });
-      setTasks(tasks.map((t) => (t.id === task.id ? res.data : t)));
+      setTasks(tasks.map((t) => (t.id === task.id ? res.data.task : t)));
+      // Actualizar usuario si se devolvió
+      if (res.data.user && refreshUserData) {
+        refreshUserData();
+      }
     } catch (err) {
       console.error('Error al actualizar tarea', err);
     }
@@ -102,6 +113,15 @@ export default function Activities() {
 
   const completedTasks = tasks.filter((task) => task.completed).length;
   const totalPoints = tasks.reduce((sum, task) => sum + (task.pointsEarned || 0), 0);
+  const earnedPoints = tasks.filter((task) => task.completed).reduce((sum, task) => sum + (task.pointsEarned || 0), 0);
+  
+  // Agrupar por categoría
+  const tasksByCategory = tasks.reduce((acc, task) => {
+    if (!acc[task.category]) acc[task.category] = { count: 0, points: 0 };
+    acc[task.category].count++;
+    acc[task.category].points += task.pointsEarned || 0;
+    return acc;
+  }, {});
 
   return (
     <div className="tiles-grid">
@@ -128,9 +148,28 @@ export default function Activities() {
               <strong>{completedTasks}</strong>
             </div>
             <div className="stat-card-sm">
-              <i className="fas fa-coins"></i> puntos potenciales<br />
-              <strong>{totalPoints}</strong>
+              <i className="fas fa-coins"></i> puntos ganados<br />
+              <strong>{earnedPoints}</strong>
             </div>
+          </div>
+          <div className="stat-group" style={{ marginTop: '12px' }}>
+            <div className="stat-card-sm">
+              <i className="fas fa-fire"></i> racha actual<br />
+              <strong>{user?.currentStreak || 0} días</strong>
+            </div>
+            <div className="stat-card-sm">
+              <i className="fas fa-trophy"></i> mejor racha<br />
+              <strong>{user?.bestStreak || 0} días</strong>
+            </div>
+          </div>
+          <div style={{ marginTop: '12px' }}>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '6px' }}>por categoría:</div>
+            {Object.entries(tasksByCategory).map(([category, data]) => (
+              <div key={category} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '4px' }}>
+                <span><i className={`fas ${getCategoryIcon(category)}`}></i> {category}</span>
+                <span>{data.count} tareas · {data.points} pts</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -164,10 +203,10 @@ export default function Activities() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontWeight: 600, textDecoration: task.completed ? 'line-through' : 'none' }}>
-                        {task.title}
+                        <i className={`fas ${getCategoryIcon(task.category)}`}></i> {task.title}
                       </div>
                       <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
-                        {task.day} · {task.schedule} · {task.category} · {task.priority} · +{task.pointsEarned || 0} pts
+                        {task.day} · {task.schedule} · {task.category} · {task.priority} · <strong>+{task.pointsEarned || 0} pts</strong>
                       </div>
                     </div>
                     <div style={{ display: 'flex', gap: '6px' }}>
@@ -182,7 +221,7 @@ export default function Activities() {
                           cursor: 'pointer'
                         }}
                       >
-                        {task.completed ? '✓' : '·'}
+                        <i className={`fas ${task.completed ? 'fa-check' : 'fa-circle'}`}></i>
                       </button>
                       <button
                         onClick={() => deleteTask(task.id)}
@@ -195,7 +234,7 @@ export default function Activities() {
                           cursor: 'pointer'
                         }}
                       >
-                        ✕
+                        <i className="fas fa-times"></i>
                       </button>
                     </div>
                   </div>
@@ -235,6 +274,9 @@ export default function Activities() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
               <div>
                 <label className="form-label">categoría</label>
+                <div style={{ marginBottom: '6px', fontSize: '12px', color: 'var(--text-muted)' }}>
+                  <i className={`fas ${getCategoryIcon(newCategory)}`}></i> {newCategory}
+                </div>
                 <select value={newCategory} onChange={(e) => setNewCategory(e.target.value)} className="form-select">
                   {categoryOptions.map((item) => (
                     <option key={item.value} value={item.value}>{item.label}</option>

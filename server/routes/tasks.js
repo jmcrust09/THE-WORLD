@@ -10,7 +10,8 @@ const getPointValue = (category, priority) => {
     Trabajo: 240,
     Bienestar: 130,
     Creatividad: 170,
-    Hogar: 140
+    Hogar: 140,
+    Ocio: 100
   };
   const priorityFactor = {
     Indispensable: 1.4,
@@ -54,6 +55,39 @@ router.put('/:id', auth, async (req, res) => {
       { where: { id: req.params.id, userId: req.user.id }, returning: true }
     );
     if (!updatedCount) return res.status(404).json({ msg: 'Tarea no encontrada' });
+    
+    // Si se completó la tarea, actualizar racha y puntos del usuario
+    if (req.body.completed) {
+      const User = require('../models/User');
+      const user = await User.findByPk(req.user.id);
+      const task = updatedRows[0];
+      
+      // Sumar puntos
+      user.totalPoints += task.pointsEarned || 0;
+      
+      // Actualizar racha
+      const today = new Date().toDateString();
+      const lastTaskDate = user.lastTaskDate ? new Date(user.lastTaskDate).toDateString() : null;
+      
+      if (lastTaskDate === today) {
+        // Ya completó tarea hoy, no cambia racha
+      } else if (lastTaskDate === new Date(Date.now() - 86400000).toDateString()) {
+        // Completó tarea ayer, incrementar racha
+        user.currentStreak += 1;
+        if (user.currentStreak > user.bestStreak) {
+          user.bestStreak = user.currentStreak;
+        }
+      } else {
+        // No completó tarea ayer, reiniciar racha
+        user.currentStreak = 1;
+      }
+      
+      user.lastTaskDate = new Date();
+      await user.save();
+      
+      return res.json({ task, user: { totalPoints: user.totalPoints, currentStreak: user.currentStreak, bestStreak: user.bestStreak } });
+    }
+    
     res.json(updatedRows[0]);
   } catch (err) {
     res.status(500).send('Error');

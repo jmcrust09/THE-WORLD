@@ -2,6 +2,7 @@ const express = require('express');
 const auth = require('../middleware/auth');
 const Pet = require('../models/Pet');
 const User = require('../models/User');
+const Egg = require('../models/Egg');
 const router = express.Router();
 
 const RARITY_MULTIPLIERS = {
@@ -60,36 +61,52 @@ router.get('/', auth, async (req, res) => {
 // Comprar huevo y eclosionar mascota
 router.post('/hatch', auth, async (req, res) => {
   try {
-    const { eggType } = req.body;
+    const { eggId, name } = req.body;
+    
+    // Obtener el huevo de la base de datos
+    const egg = await Egg.findByPk(eggId);
+    if (!egg) return res.status(404).json({ msg: 'Huevo no encontrado' });
     
     // Verificar que el usuario tenga suficientes puntos
     const user = await User.findByPk(req.user.id);
     if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
     
-    const costs = { basico: 500, premium: 1500, epico: 5000, legendario: 15000, mitico: 50000 };
-    const cost = costs[eggType] || 500;
-    
-    if (user.totalPoints < cost) {
-      return res.status(400).json({ msg: `Necesitas ${cost} puntos para comprar este huevo` });
+    if (user.totalPoints < egg.cost) {
+      return res.status(400).json({ msg: `Necesitas ${egg.cost} puntos para comprar este huevo` });
     }
     
     // Restar puntos
-    user.totalPoints -= cost;
+    user.totalPoints -= egg.cost;
     await user.save();
     
-    // Determinar rareza y especie
-    const rarity = rollRarity(eggType);
+    // Determinar rareza usando las probabilidades del huevo
+    const probabilities = egg.probabilities || { comun: 55, poco_comun: 28, raro: 12, epico: 4, legendario: 1, mitico: 0 };
+    const roll = Math.random() * 100;
+    let cumulative = 0;
+    let rarity = 'comun';
+    
+    for (const [r, chance] of Object.entries(probabilities)) {
+      cumulative += chance;
+      if (roll <= cumulative) {
+        rarity = r;
+        break;
+      }
+    }
+    
     const species = selectSpecies(rarity);
+    
+    // Usar nombre personalizado o la especie por defecto
+    const petName = name && name.trim() ? name.trim() : species;
     
     // Crear mascota
     const pet = await Pet.create({
       userId: req.user.id,
       species,
-      name: species,
+      name: petName,
       rarity,
       stage: 'huevo',
       pointsAccumulated: 0,
-      eggOrigin: eggType,
+      eggOrigin: egg.name,
       isFavorite: false,
       hatchedAt: new Date()
     });

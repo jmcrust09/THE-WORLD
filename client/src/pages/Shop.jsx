@@ -4,16 +4,24 @@ import { AuthContext } from '../context/AuthContext';
 
 export default function Shop() {
   const { user } = useContext(AuthContext);
-  const [items, setItems] = useState([]);
+  const [eggs, setEggs] = useState([]);
+  const [shopItems, setShopItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [balance, setBalance] = useState(user?.totalPoints || 0);
 
   useEffect(() => {
-    axios.get('/api/shop')
-      .then((res) => setItems(Array.isArray(res.data) ? res.data : []))
+    Promise.all([
+      axios.get('/api/shop'),
+      axios.get('/api/eggs')
+    ])
+      .then(([shopRes, eggsRes]) => {
+        setShopItems(Array.isArray(shopRes.data) ? shopRes.data : []);
+        setEggs(Array.isArray(eggsRes.data) ? eggsRes.data : []);
+      })
       .catch((err) => {
         console.error('Error fetching shop data', err);
-        setItems([]);
+        setShopItems([]);
+        setEggs([]);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -113,8 +121,52 @@ export default function Shop() {
         </div>
       </div>
 
-      {/* TILES - ITEMS DE TIENDA */}
-      {items.map((item) => (
+      {/* TILES - HUEVOS */}
+      {eggs.map((egg) => (
+        <div key={egg.id} className="tile">
+          <div className="tile-header">
+            <div className="tile-dots">
+              <span className="tile-dot"></span>
+              <span className="tile-dot"></span>
+              <span className="tile-dot"></span>
+            </div>
+            <div className="tile-title">
+              <i className={`fas ${egg.icon || 'fa-egg'}`}></i> {egg.name}
+              {egg.isEvent && <span className="badge" style={{ marginLeft: '8px', background: 'var(--accent)', color: 'var(--tile-bg)' }}>EVENTO</span>}
+            </div>
+          </div>
+          <div className="tile-content">
+            <div style={{ marginBottom: '12px' }}>
+              {egg.description}
+            </div>
+            <div className="info-row">
+              <span className="info-label"><i className="fas fa-coins"></i> costo</span>
+              <span><strong>{egg.cost} pts</strong></span>
+            </div>
+            <button
+              onClick={() => handlePurchase(egg)}
+              disabled={egg.purchased || egg.cost > balance}
+              style={{
+                width: '100%',
+                background: egg.purchased || egg.cost > balance ? 'var(--tile-header)' : 'var(--accent)',
+                color: egg.purchased || egg.cost > balance ? 'var(--text-muted)' : 'var(--tile-bg)',
+                border: `1px solid ${egg.purchased || egg.cost > balance ? 'var(--border-color)' : 'var(--accent)'}`,
+                padding: '8px',
+                marginTop: '10px',
+                cursor: egg.purchased || egg.cost > balance ? 'not-allowed' : 'pointer',
+                fontWeight: 600,
+                fontSize: '13px'
+              }}
+              className="btn-primary"
+            >
+              {egg.purchased ? '✓ Comprado' : egg.cost > balance ? 'Falta saldo' : 'Comprar'}
+            </button>
+          </div>
+        </div>
+      ))}
+
+      {/* TILES - COMIDAS Y POCIONES */}
+      {shopItems.map((item) => (
         <div key={item.id} className="tile">
           <div className="tile-header">
             <div className="tile-dots">
@@ -123,13 +175,28 @@ export default function Shop() {
               <span className="tile-dot"></span>
             </div>
             <div className="tile-title">
-              <i className={`fas ${item.icon || 'fa-egg'}`}></i> {item.name}
+              <i className={`fas ${item.icon || 'fa-utensils'}`}></i> {item.name}
+              <span className="badge" style={{ marginLeft: '8px', background: item.type === 'potion' ? 'var(--accent)' : item.type === 'theme' ? '#9C27B0' : '#4CAF50', color: 'var(--tile-bg)' }}>
+                {item.type === 'potion' ? 'POCIÓN' : item.type === 'theme' ? 'TEMA' : 'COMIDA'}
+              </span>
             </div>
           </div>
           <div className="tile-content">
             <div style={{ marginBottom: '12px' }}>
               {item.description}
             </div>
+            {item.expValue && (
+              <div className="info-row">
+                <span className="info-label"><i className="fas fa-star"></i> EXP</span>
+                <span><strong>+{item.expValue}</strong></span>
+              </div>
+            )}
+            {item.effect && (
+              <div className="info-row">
+                <span className="info-label"><i className="fas fa-magic"></i> efecto</span>
+                <span><strong>{item.effect}</strong></span>
+              </div>
+            )}
             <div className="info-row">
               <span className="info-label"><i className="fas fa-coins"></i> costo</span>
               <span><strong>{item.cost} pts</strong></span>
