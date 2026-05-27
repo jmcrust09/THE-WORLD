@@ -6,6 +6,8 @@ const { connectDB, sequelize } = require('./db');
 const ShopItem = require('./models/ShopItem');
 const User = require('./models/User');
 const Pet = require('./models/Pet');
+const Inventory = require('./models/Inventory');
+const Garden = require('./models/Garden');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -156,6 +158,10 @@ app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/pets', require('./routes/pets'));
 
 app.use('/api/admin', require('./routes/admin'));
+
+app.use('/api/inventory', require('./routes/inventory'));
+
+app.use('/api/garden', require('./routes/garden'));
 
 app.listen(PORT, () => {
   console.log(`🌍 THE WORLD backend is running on port ${PORT}`);

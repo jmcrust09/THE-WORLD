@@ -5,6 +5,8 @@ import Activities from './pages/Activities';
 import Pets from './pages/Pets';
 import Shop from './pages/Shop';
 import Admin from './pages/Admin';
+import Inventory from './pages/Inventory';
+import Garden from './pages/Garden';
 import Auth from './pages/Auth';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -58,6 +60,12 @@ function DesktopLayout({ children }) {
         <a href="/pets" className={`task-button ${activeSection === 'pets' ? 'active-task' : ''}`}>
           <i className="fas fa-paw"></i> mascotas
         </a>
+        <a href="/inventory" className={`task-button ${activeSection === 'inventory' ? 'active-task' : ''}`}>
+          <i className="fas fa-box"></i> inventario
+        </a>
+        <a href="/garden" className={`task-button ${activeSection === 'garden' ? 'active-task' : ''}`}>
+          <i className="fas fa-seedling"></i> jardín
+        </a>
         {user?.isAdmin && (
           <a href="/admin" className={`task-button ${activeSection === 'admin' ? 'active-task' : ''}`}>
             <i className="fas fa-cog"></i> admin
@@ -92,6 +100,8 @@ function AppContent() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/pets" element={<Pets />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/inventory" element={<Inventory />} />
+        <Route path="/garden" element={<Garden />} />
         <Route path="/auth" element={<Navigate to="/" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
