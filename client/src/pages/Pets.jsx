@@ -18,12 +18,12 @@ const rarityLabels = {
 };
 
 const rarityEmoji = {
-  mitico: '🐉',
-  legendario: '👑',
-  epico: '✨',
-  raro: '🌟',
-  poco_comun: '💫',
-  comun: '⭐'
+  mitico: 'fa-dragon',
+  legendario: 'fa-crown',
+  epico: 'fa-star',
+  raro: 'fa-gem',
+  poco_comun: 'fa-sparkles',
+  comun: 'fa-star-half-stroke'
 };
 
 export default function Pets() {
@@ -88,9 +88,9 @@ export default function Pets() {
             <span>común(+0%) · poco común(+10%) · raro(+30%) · épico(+50%) · legendario(+80%) · mítico(+150%)</span>
           </div>
           <div className="stat-group">
-            <div className="stat-card-sm">🐉 mítico: 1</div>
-            <div className="stat-card-sm">👑 legendario: 1</div>
-            <div className="stat-card-sm">✨ épico: 1</div>
+            <div className="stat-card-sm"><i className="fas fa-dragon"></i> mítico: 1</div>
+            <div className="stat-card-sm"><i className="fas fa-crown"></i> legendario: 1</div>
+            <div className="stat-card-sm"><i className="fas fa-star"></i> épico: 1</div>
           </div>
         </div>
       </div>
@@ -112,12 +112,12 @@ export default function Pets() {
           <div className="progress-bg">
             <div className="progress-fill" style={{ width: '68%' }}></div>
           </div>
-          <div className="badge">🥚0-200</div>
-          <div className="badge">🐣200-800</div>
-          <div className="badge">🐥800-2500</div>
-          <div className="badge">🦊2500-8000</div>
-          <div className="badge">✨8k-25k</div>
-          <div className="badge">🌟25k+</div>
+          <div className="badge"><i className="fas fa-egg"></i> 0-200</div>
+          <div className="badge"><i className="fas fa-baby"></i> 200-800</div>
+          <div className="badge"><i className="fas fa-child"></i> 800-2500</div>
+          <div className="badge"><i className="fas fa-user"></i> 2500-8000</div>
+          <div className="badge"><i className="fas fa-star"></i> 8k-25k</div>
+          <div className="badge"><i className="fas fa-sun"></i> 25k+</div>
         </div>
       </div>
 
@@ -156,10 +156,10 @@ export default function Pets() {
       {/* TILES - CADA MASCOTA */}
       {filtered.map((pet) => (
         <div
-          key={pet._id}
+          key={pet.id}
           className="tile"
           onClick={() => setSelectedPet(pet)}
-          style={{ cursor: 'pointer', opacity: selectedPet?._id === pet._id ? 1 : 0.85 }}
+          style={{ cursor: 'pointer', opacity: selectedPet?.id === pet.id ? 1 : 0.85 }}
         >
           <div className="tile-header">
             <div className="tile-dots">
@@ -174,7 +174,7 @@ export default function Pets() {
           <div className="tile-content">
             <div className="info-row">
               <span className="info-label"><i className="fas fa-crown"></i> rareza</span>
-              <span>{rarityEmoji[pet.rarity]} {rarityLabels[pet.rarity]}</span>
+              <span><i className={`fas ${rarityEmoji[pet.rarity]}`}></i> {rarityLabels[pet.rarity]}</span>
             </div>
             <div className="info-row">
               <span className="info-label"><i className="fas fa-egg"></i> especie</span>
@@ -186,7 +186,7 @@ export default function Pets() {
             </div>
             {pet.isFavorite && (
               <div className="badge" style={{ background: 'rgba(212, 163, 115, 0.2)', borderColor: 'var(--accent)' }}>
-                ❤️ mascota favorita
+                <i className="fas fa-heart"></i> mascota favorita
               </div>
             )}
           </div>
@@ -217,7 +217,7 @@ export default function Pets() {
             </div>
             <div className="info-row">
               <span className="info-label"><i className="fas fa-crown"></i> rareza</span>
-              <span>{rarityEmoji[selectedPet.rarity]} {rarityLabels[selectedPet.rarity]}</span>
+              <span><i className={`fas ${rarityEmoji[selectedPet.rarity]}`}></i> {rarityLabels[selectedPet.rarity]}</span>
             </div>
             <div className="info-row">
               <span className="info-label"><i className="fas fa-chart-line"></i> etapa</span>

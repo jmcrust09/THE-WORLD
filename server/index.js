@@ -22,7 +22,7 @@ const initializeShop = async () => {
           type: 'egg',
           cost: 500,
           description: 'Alta probabilidad de Común, baja de Raro.',
-          icon: '🥚',
+          icon: 'fa-egg',
           cssClass: 'bg-bg border-beige',
           probabilities: { comun: 55, poco_comun: 28, raro: 12, epico: 4, legendario: 1, mitico: 0 }
         },
@@ -31,7 +31,7 @@ const initializeShop = async () => {
           type: 'egg',
           cost: 1500,
           description: 'Balanceado, mayor chance de Épico.',
-          icon: '✨🥚✨',
+          icon: 'fa-star',
           cssClass: 'bg-[rgba(248,244,239,1)] border-[#e8a87c]',
           probabilities: { comun: 35, poco_comun: 30, raro: 22, epico: 10, legendario: 2.5, mitico: 0.5 }
         },
@@ -40,7 +40,7 @@ const initializeShop = async () => {
           type: 'egg',
           cost: 5000,
           description: 'Garantiza Poco Común o mejor.',
-          icon: '🔮',
+          icon: 'fa-gem',
           cssClass: 'bg-bg border-beige opacity-50',
           probabilities: { comun: 0, poco_comun: 40, raro: 35, epico: 20, legendario: 4, mitico: 1 }
         },
@@ -49,7 +49,7 @@ const initializeShop = async () => {
           type: 'egg',
           cost: 15000,
           description: 'Garantiza Raro o mejor.',
-          icon: '👑',
+          icon: 'fa-crown',
           cssClass: 'bg-bg border-[#ffa726]',
           probabilities: { comun: 0, poco_comun: 10, raro: 50, epico: 30, legendario: 8, mitico: 2 }
         },
@@ -58,7 +58,7 @@ const initializeShop = async () => {
           type: 'egg',
           cost: 50000,
           description: 'Garantiza Épico o mejor.',
-          icon: '🌟',
+          icon: 'fa-sun',
           cssClass: 'bg-bg border-[#ef5350]',
           probabilities: { comun: 0, poco_comun: 0, raro: 15, epico: 45, legendario: 30, mitico: 10 }
         }
@@ -73,11 +73,42 @@ const initializeShop = async () => {
   }
 };
 
+// Función para crear admin predeterminado
+const initializeAdmin = async () => {
+  try {
+    const admin = await User.findOne({ where: { email: 'admin@theworld.com' } });
+    if (!admin) {
+      console.log('👤 Creando admin predeterminado...');
+      const bcrypt = require('bcryptjs');
+      const salt = await bcrypt.genSalt(10);
+      const passwordHash = await bcrypt.hash('THEWORLDWM@adminpwd', salt);
+      
+      await User.create({
+        username: 'Admin',
+        email: 'admin@theworld.com',
+        passwordHash: passwordHash,
+        isGuest: false,
+        isAdmin: true,
+        totalPoints: 999999,
+        currentStreak: 0,
+        bestStreak: 0,
+        bonusMultiplier: 2.0
+      });
+      console.log('✅ Admin creado: admin@theworld.com / THEWORLDWM@adminpwd');
+    } else {
+      console.log('✅ Admin ya existe');
+    }
+  } catch (error) {
+    console.error('❌ Error creando admin:', error.message);
+  }
+};
+
 // Connect to PostgreSQL + Sequelize
 connectDB().then(async () => {
   // Sincronizar modelos y inicializar tienda
   await sequelize.sync();
   await initializeShop();
+  await initializeAdmin();
 }).catch(err => {
   console.error('❌ Error conectando a la base de datos:', err.message);
   process.exit(1);
@@ -123,6 +154,8 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/tasks', require('./routes/tasks'));
 
 app.use('/api/pets', require('./routes/pets'));
+
+app.use('/api/admin', require('./routes/admin'));
 
 app.listen(PORT, () => {
   console.log(`🌍 THE WORLD backend is running on port ${PORT}`);

@@ -6,6 +6,7 @@ const User = sequelize.define('User', {
   email: { type: DataTypes.STRING, allowNull: true, unique: true },
   passwordHash: { type: DataTypes.STRING, allowNull: true },
   isGuest: { type: DataTypes.BOOLEAN, defaultValue: false },
+  isAdmin: { type: DataTypes.BOOLEAN, defaultValue: false },
   totalPoints: { type: DataTypes.INTEGER, defaultValue: 0 },
   currentStreak: { type: DataTypes.INTEGER, defaultValue: 0 },
   bestStreak: { type: DataTypes.INTEGER, defaultValue: 0 },

@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Activities from './pages/Activities';
 import Pets from './pages/Pets';
 import Shop from './pages/Shop';
+import Admin from './pages/Admin';
 import Auth from './pages/Auth';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -17,6 +18,9 @@ function DesktopLayout({ children }) {
     if (path === '/activities') return 'activities';
     if (path === '/shop') return 'shop';
     if (path === '/pets') return 'pets';
+    if (path === '/admin') return 'admin';
+    if (path === '/inventory') return 'inventory';
+    if (path === '/garden') return 'garden';
     return 'home';
   };
 
@@ -54,6 +58,11 @@ function DesktopLayout({ children }) {
         <a href="/pets" className={`task-button ${activeSection === 'pets' ? 'active-task' : ''}`}>
           <i className="fas fa-paw"></i> mascotas
         </a>
+        {user?.isAdmin && (
+          <a href="/admin" className={`task-button ${activeSection === 'admin' ? 'active-task' : ''}`}>
+            <i className="fas fa-cog"></i> admin
+          </a>
+        )}
         <button
           className="task-button"
           onClick={() => {
@@ -82,6 +91,7 @@ function AppContent() {
         <Route path="/activities" element={<Activities />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/pets" element={<Pets />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="/auth" element={<Navigate to="/" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
