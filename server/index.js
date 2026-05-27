@@ -9,6 +9,19 @@ const Pet = require('./models/Pet');
 const Inventory = require('./models/Inventory');
 const Garden = require('./models/Garden');
 
+// Configurar asociaciones
+User.hasMany(Pet, { foreignKey: 'userId' });
+Pet.belongsTo(User, { foreignKey: 'userId' });
+
+User.hasMany(Inventory, { foreignKey: 'userId' });
+Inventory.belongsTo(User, { foreignKey: 'userId' });
+
+ShopItem.hasMany(Inventory, { foreignKey: 'shopItemId', as: 'inventory' });
+Inventory.belongsTo(ShopItem, { foreignKey: 'shopItemId', as: 'item' });
+
+User.hasMany(Garden, { foreignKey: 'userId' });
+Garden.belongsTo(User, { foreignKey: 'userId' });
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -75,6 +88,33 @@ const initializeShop = async () => {
   }
 };
 
+// Función para migrar columnas faltantes
+const migrateDatabase = async () => {
+  try {
+    const tableDescription = await sequelize.getQueryInterface().describeTable('Users');
+    
+    if (!tableDescription.isGuest) {
+      await sequelize.getQueryInterface().addColumn('Users', 'isGuest', {
+        type: sequelize.Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: true
+      });
+      console.log('✅ Columna isGuest agregada');
+    }
+    
+    if (!tableDescription.isAdmin) {
+      await sequelize.getQueryInterface().addColumn('Users', 'isAdmin', {
+        type: sequelize.Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: true
+      });
+      console.log('✅ Columna isAdmin agregada');
+    }
+  } catch (error) {
+    console.error('❌ Error en migración:', error.message);
+  }
+};
+
 // Función para crear admin predeterminado
 const initializeAdmin = async () => {
   try {
@@ -109,6 +149,7 @@ const initializeAdmin = async () => {
 connectDB().then(async () => {
   // Sincronizar modelos y inicializar tienda
   await sequelize.sync();
+  await migrateDatabase();
   await initializeShop();
   await initializeAdmin();
 }).catch(err => {

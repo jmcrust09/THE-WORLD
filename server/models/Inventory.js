@@ -9,9 +9,4 @@ const Inventory = sequelize.define('Inventory', {
   obtainedAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
 }, { timestamps: true });
 
-Inventory.associate = (models) => {
-  Inventory.belongsTo(models.User, { foreignKey: 'userId' });
-  Inventory.belongsTo(models.ShopItem, { foreignKey: 'shopItemId', as: 'item' });
-};
-
 module.exports = Inventory;
