@@ -1,0 +1,389 @@
+{
+"item1": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e52"
+  },
+  "name": "Huevo de Barro",
+  "type": "egg",
+  "cost": 100,
+  "description": "Lo más bajo. Solo comunes.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item2": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e53"
+  },
+  "name": "Huevo Básico",
+  "type": "egg",
+  "cost": 500,
+  "description": "Alta probabilidad de Común.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item3": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e54"
+  },
+  "name": "Huevo de Cobre",
+  "type": "egg",
+  "cost": 800,
+  "description": "Ligeramente mejor que el básico.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item4": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e55"
+  },
+  "name": "Huevo Premium",
+  "type": "egg",
+  "cost": 1500,
+  "description": "Balanceado.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item5": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e56"
+  },
+  "name": "Huevo de Plata",
+  "type": "egg",
+  "cost": 2500,
+  "description": "Más oportunidades de raros.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item6": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e57"
+  },
+  "name": "Huevo Épico",
+  "type": "egg",
+  "cost": 5000,
+  "description": "Garantiza Poco Común.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item7": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e58"
+  },
+  "name": "Huevo de Oro",
+  "type": "egg",
+  "cost": 8000,
+  "description": "Garantiza Raro.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item8": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e59"
+  },
+  "name": "Huevo Legendario",
+  "type": "egg",
+  "cost": 15000,
+  "description": "Garantiza Raro alto.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item9": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e5a"
+  },
+  "name": "Huevo de Platino",
+  "type": "egg",
+  "cost": 25000,
+  "description": "Alto chance de Épico.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item10": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e5b"
+  },
+  "name": "Huevo Mítico",
+  "type": "egg",
+  "cost": 40000,
+  "description": "Poder absoluto.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item11": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e5c"
+  },
+  "name": "Huevo Estelar",
+  "type": "egg",
+  "cost": 100000,
+  "description": "Solo leyendas y mitos.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item12": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e5d"
+  },
+  "name": "Huevo Cyberpunk",
+  "type": "egg",
+  "cost": 8000,
+  "description": "Evento especial.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item13": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e5e"
+  },
+  "name": "Huevo Fantasma",
+  "type": "egg",
+  "cost": 12000,
+  "description": "Evento de Halloween.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item14": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e5f"
+  },
+  "name": "Huevo de Cristal",
+  "type": "egg",
+  "cost": 30000,
+  "description": "Evento cristalino.",
+  "icon": "🥚",
+  "cssClass": "bg-bg",
+  "probabilities": {
+    "comun": 20,
+    "poco_comun": 20,
+    "raro": 20,
+    "epico": 20,
+    "legendario": 10,
+    "mitico": 10
+  }
+},
+"item15": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e60"
+  },
+  "name": "Semilla Pequeña",
+  "type": "food",
+  "cost": 50,
+  "description": "Da +10 EXP.",
+  "icon": "🌱",
+  "cssClass": "bg-green-100 border-green-500"
+},
+"item16": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e61"
+  },
+  "name": "Manzana Brillante",
+  "type": "food",
+  "cost": 150,
+  "description": "Da +50 EXP.",
+  "icon": "🍎",
+  "cssClass": "bg-green-100 border-green-500"
+},
+"item17": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e62"
+  },
+  "name": "Zanahoria Mágica",
+  "type": "food",
+  "cost": 300,
+  "description": "Da +120 EXP.",
+  "icon": "🥕",
+  "cssClass": "bg-green-100 border-green-500"
+},
+"item18": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e63"
+  },
+  "name": "Pescado Dorado",
+  "type": "food",
+  "cost": 600,
+  "description": "Da +250 EXP.",
+  "icon": "🐟",
+  "cssClass": "bg-green-100 border-green-500"
+},
+"item19": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e64"
+  },
+  "name": "Carne Premium",
+  "type": "food",
+  "cost": 1000,
+  "description": "Da +500 EXP.",
+  "icon": "🥩",
+  "cssClass": "bg-green-100 border-green-500"
+},
+"item20": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e65"
+  },
+  "name": "Galleta Cósmica",
+  "type": "food",
+  "cost": 2500,
+  "description": "Da +1500 EXP.",
+  "icon": "🍪",
+  "cssClass": "bg-green-100 border-green-500"
+},
+"item21": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e66"
+  },
+  "name": "Fruta del Edén",
+  "type": "food",
+  "cost": 5000,
+  "description": "Da +3500 EXP.",
+  "icon": "🍑",
+  "cssClass": "bg-green-100 border-green-500"
+},
+"item22": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e67"
+  },
+  "name": "Néctar Divino",
+  "type": "food",
+  "cost": 12000,
+  "description": "Da +10000 EXP.",
+  "icon": "🍯",
+  "cssClass": "bg-green-100 border-green-500"
+},
+"item23": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e68"
+  },
+  "name": "Estrella Fugaz",
+  "type": "food",
+  "cost": 25000,
+  "description": "Da +25000 EXP.",
+  "icon": "⭐",
+  "cssClass": "bg-green-100 border-green-500"
+},
+"item24": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e69"
+  },
+  "name": "Esencia de Agujero Negro",
+  "type": "food",
+  "cost": 100000,
+  "description": "Da +150000 EXP.",
+  "icon": "🌌",
+  "cssClass": "bg-green-100 border-green-500"
+},
+"item25": {
+  "_id": {
+    "$oid": "6a153cc1cba9322116731e6a"
+  },
+  "name": "Poción Menor de Suerte",
+  "type": "potion",
+  "cost": 500,
+  "description": "+5% Suerte",
+  "icon": "🧪",
+  "cssClass": "bg-blue-100 border-blue-500"
+}
+}

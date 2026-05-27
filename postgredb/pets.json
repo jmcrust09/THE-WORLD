@@ -1,0 +1,210 @@
+{
+    "pet1":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e83"
+      },
+      "species": "Gato",
+      "name": "Gato 1",
+      "rarity": "comun",
+      "stage": "joven",
+      "pointsAccumulated": 29074,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.569Z"
+    },
+    "pet2":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e84"
+      },
+      "species": "Gato",
+      "name": "Gato 2",
+      "rarity": "comun",
+      "stage": "ascendido",
+      "pointsAccumulated": 10327,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet3":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e85"
+      },
+      "species": "Gato",
+      "name": "Gato 3",
+      "rarity": "comun",
+      "stage": "evolucionado",
+      "pointsAccumulated": 37671,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet4":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e86"
+      },
+      "species": "Perro",
+      "name": "Perro 4",
+      "rarity": "comun",
+      "stage": "ascendido",
+      "pointsAccumulated": 14512,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet5":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e87"
+      },
+      "species": "Perro",
+      "name": "Perro 5",
+      "rarity": "comun",
+      "stage": "ascendido",
+      "pointsAccumulated": 9006,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet6":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e88"
+      },
+      "species": "Perro",
+      "name": "Perro 6",
+      "rarity": "comun",
+      "stage": "bebe",
+      "pointsAccumulated": 49838,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet7":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e89"
+      },
+      "species": "Conejo",
+      "name": "Conejo 7",
+      "rarity": "comun",
+      "stage": "adulto",
+      "pointsAccumulated": 19902,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet8":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e8a"
+      },
+      "species": "Conejo",
+      "name": "Conejo 8",
+      "rarity": "comun",
+      "stage": "huevo",
+      "pointsAccumulated": 17864,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet9":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e8b"
+      },
+      "species": "Conejo",
+      "name": "Conejo 9",
+      "rarity": "comun",
+      "stage": "adulto",
+      "pointsAccumulated": 19350,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet10":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e8c"
+      },
+      "species": "Hámster",
+      "name": "Hámster 10",
+      "rarity": "comun",
+      "stage": "bebe",
+      "pointsAccumulated": 18531,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet11":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e8d"
+      },
+      "species": "Hámster",
+      "name": "Hámster 11",
+      "rarity": "comun",
+      "stage": "joven",
+      "pointsAccumulated": 10584,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet12":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e8e"
+      },
+      "species": "Hámster",
+      "name": "Hámster 12",
+      "rarity": "comun",
+      "stage": "adulto",
+      "pointsAccumulated": 29913,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet13":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e8f"
+      },
+      "species": "Pez",
+      "name": "Pez 13",
+      "rarity": "comun",
+      "stage": "huevo",
+      "pointsAccumulated": 21920,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet14":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e90"
+      },
+      "species": "Pez",
+      "name": "Pez 14",
+      "rarity": "comun",
+      "stage": "ascendido",
+      "pointsAccumulated": 40872,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet15":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e91"
+      },
+      "species": "Pez",
+      "name": "Pez 15",
+      "rarity": "comun",
+      "stage": "joven",
+      "pointsAccumulated": 26798,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    },
+    "pet16":{
+      "_id": {
+        "$oid": "6a153d0ccba9322116731e92"
+      },
+      "species": "Paloma",
+      "name": "Paloma 16",
+      "rarity": "comun",
+      "stage": "ascendido",
+      "pointsAccumulated": 22259,
+      "eggOrigin": "random",
+      "isFavorite": false,
+      "createdAt": "2026-05-26T06:24:09.570Z"
+    }
+}
