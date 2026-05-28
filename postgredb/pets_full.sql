@@ -1,11 +1,13 @@
 -- INSERT completo para Pets (del pets.json)
--- NOTA: Necesitas reemplazar USER_ID_PLACEHOLDER con el ID real del usuario
--- Puedes obtener el ID ejecutando: SELECT id FROM "Users" WHERE username = 'Jugador_Maestro';
+-- NOTA: Las mascotas se asignan al usuario con ID 1 (admin)
+
+-- Borrar contenido existente de la tabla
+TRUNCATE TABLE "Pets" RESTART IDENTITY CASCADE;
 
 -- Pet 1 - Gato 1
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Gato',
   'Gato 1',
   'comun',
@@ -21,7 +23,7 @@ VALUES (
 -- Pet 2 - Gato 2
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Gato',
   'Gato 2',
   'comun',
@@ -37,7 +39,7 @@ VALUES (
 -- Pet 3 - Gato 3
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Gato',
   'Gato 3',
   'comun',
@@ -53,7 +55,7 @@ VALUES (
 -- Pet 4 - Perro 4
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Perro',
   'Perro 4',
   'comun',
@@ -69,7 +71,7 @@ VALUES (
 -- Pet 5 - Perro 5
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Perro',
   'Perro 5',
   'comun',
@@ -85,7 +87,7 @@ VALUES (
 -- Pet 6 - Perro 6
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Perro',
   'Perro 6',
   'comun',
@@ -101,7 +103,7 @@ VALUES (
 -- Pet 7 - Conejo 7
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Conejo',
   'Conejo 7',
   'comun',
@@ -117,7 +119,7 @@ VALUES (
 -- Pet 8 - Conejo 8
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Conejo',
   'Conejo 8',
   'comun',
@@ -133,7 +135,7 @@ VALUES (
 -- Pet 9 - Conejo 9
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Conejo',
   'Conejo 9',
   'comun',
@@ -149,7 +151,7 @@ VALUES (
 -- Pet 10 - Hámster 10
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Hámster',
   'Hámster 10',
   'comun',
@@ -165,7 +167,7 @@ VALUES (
 -- Pet 11 - Hámster 11
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Hámster',
   'Hámster 11',
   'comun',
@@ -181,7 +183,7 @@ VALUES (
 -- Pet 12 - Hámster 12
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Hámster',
   'Hámster 12',
   'comun',
@@ -197,7 +199,7 @@ VALUES (
 -- Pet 13 - Pez 13
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Pez',
   'Pez 13',
   'comun',
@@ -213,7 +215,7 @@ VALUES (
 -- Pet 14 - Pez 14
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Pez',
   'Pez 14',
   'comun',
@@ -229,7 +231,7 @@ VALUES (
 -- Pet 15 - Pez 15
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Pez',
   'Pez 15',
   'comun',
@@ -245,7 +247,7 @@ VALUES (
 -- Pet 16 - Paloma 16
 INSERT INTO "Pets" ("userId", "species", "name", "rarity", "stage", "pointsAccumulated", "eggOrigin", "isFavorite", "hatchedAt", "createdAt", "updatedAt")
 VALUES (
-  USER_ID_PLACEHOLDER,
+  1,
   'Paloma',
   'Paloma 16',
   'comun',

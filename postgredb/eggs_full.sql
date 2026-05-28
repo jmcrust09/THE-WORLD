@@ -1,6 +1,9 @@
 -- INSERT completo para Eggs (del shopitems.json)
 -- Los huevos de evento tienen isEvent = true
 
+-- Borrar contenido existente de la tabla
+TRUNCATE TABLE "Eggs" RESTART IDENTITY CASCADE;
+
 -- Huevo de Barro
 INSERT INTO "Eggs" ("name", "type", "cost", "description", "icon", "cssClass", "probabilities", "isEvent", "isActive", "availableFrom", "availableUntil", "createdAt", "updatedAt")
 VALUES (

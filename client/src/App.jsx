@@ -6,9 +6,12 @@ import Pets from './pages/Pets';
 import Shop from './pages/Shop';
 import Admin from './pages/Admin';
 import AdminPanel from './pages/AdminPanel';
+import AdminShop from './pages/AdminShop';
+import AdminUsers from './pages/AdminUsers';
 import Inventory from './pages/Inventory';
 import Garden from './pages/Garden';
 import Auth from './pages/Auth';
+import Friends from './pages/Friends';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 function DesktopLayout({ children }) {
@@ -23,8 +26,11 @@ function DesktopLayout({ children }) {
     if (path === '/pets') return 'pets';
     if (path === '/admin') return 'admin';
     if (path === '/admin-panel') return 'admin-panel';
+    if (path === '/admin-shop') return 'admin-shop';
+    if (path === '/admin-users') return 'admin-users';
     if (path === '/inventory') return 'inventory';
     if (path === '/garden') return 'garden';
+    if (path === '/friends') return 'friends';
     return 'home';
   };
 
@@ -40,6 +46,7 @@ function DesktopLayout({ children }) {
           <span><i className="fas fa-dragon"></i> mascotas: {user?.pets?.length || 0}</span>
           <span><i className="fas fa-coins"></i> pts: {user?.totalPoints || 0}</span>
           <span><i className="fas fa-fire"></i> racha: {user?.currentStreak || 0}d</span>
+          {user?.isAdmin && <span><i className="fas fa-crown"></i> admin</span>}
         </div>
       </div>
 
@@ -51,33 +58,52 @@ function DesktopLayout({ children }) {
       {/* BARRA INFERIOR - Taskbar */}
       <div className="bottom-bar">
         <a href="/" className={`task-button ${activeSection === 'home' ? 'active-task' : ''}`}>
-          <i className="fas fa-home"></i> inicio
+          [inicio]
         </a>
         <a href="/activities" className={`task-button ${activeSection === 'activities' ? 'active-task' : ''}`}>
-          <i className="fas fa-tasks"></i> actividades
+          [actividades]
         </a>
         <a href="/shop" className={`task-button ${activeSection === 'shop' ? 'active-task' : ''}`}>
-          <i className="fas fa-store"></i> tienda
+          [tienda]
         </a>
         <a href="/pets" className={`task-button ${activeSection === 'pets' ? 'active-task' : ''}`}>
-          <i className="fas fa-paw"></i> mascotas
+          [mascotas]
         </a>
         <a href="/inventory" className={`task-button ${activeSection === 'inventory' ? 'active-task' : ''}`}>
-          <i className="fas fa-box"></i> inventario
+          [inventario]
         </a>
         <a href="/garden" className={`task-button ${activeSection === 'garden' ? 'active-task' : ''}`}>
-          <i className="fas fa-seedling"></i> jardín
+          [jardín]
         </a>
         {user?.isAdmin && (
           <>
             <a href="/admin" className={`task-button ${activeSection === 'admin' ? 'active-task' : ''}`}>
-              <i className="fas fa-cog"></i> admin
+              [admin]
             </a>
             <a href="/admin-panel" className={`task-button ${activeSection === 'admin-panel' ? 'active-task' : ''}`}>
-              <i className="fas fa-egg"></i> huevos
+              [huevos]
+            </a>
+            <a href="/admin-shop" className={`task-button ${activeSection === 'admin-shop' ? 'active-task' : ''}`}>
+              [tienda]
+            </a>
+            <a href="/admin-users" className={`task-button ${activeSection === 'admin-users' ? 'active-task' : ''}`}>
+              [usuarios]
             </a>
           </>
         )}
+        <a href="/friends" className={`task-button ${activeSection === 'friends' ? 'active-task' : ''}`}>
+          [amigos]
+        </a>
+        <div className="task-button user-section">
+          <div className="user-avatar">
+            {user?.profilePictureUrl ? (
+              <img src={user.profilePictureUrl} alt="Profile" />
+            ) : (
+              <span>{user?.username?.[0]?.toUpperCase() || 'G'}</span>
+            )}
+          </div>
+          <span className="user-name">{user?.username || 'guest'}</span>
+        </div>
         <button
           className="task-button"
           onClick={() => {
@@ -85,7 +111,7 @@ function DesktopLayout({ children }) {
             window.location.href = '/auth';
           }}
         >
-          <i className="fas fa-sign-out-alt"></i> salir
+          [salir]
         </button>
       </div>
     </div>
@@ -108,8 +134,11 @@ function AppContent() {
         <Route path="/pets" element={<Pets />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin-panel" element={<AdminPanel />} />
+        <Route path="/admin-shop" element={<AdminShop />} />
+        <Route path="/admin-users" element={<AdminUsers />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/garden" element={<Garden />} />
+        <Route path="/friends" element={<Friends />} />
         <Route path="/auth" element={<Navigate to="/" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

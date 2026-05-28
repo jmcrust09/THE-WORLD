@@ -165,8 +165,8 @@ app.get('/api/status', (req, res) => {
   res.json({ status: 'online', message: 'THE WORLD backend is running and connected.' });
 });
 
-// Endpoint to get shop items from DB
-app.get('/api/shop', async (req, res) => {
+// Endpoint to get shop items from DB (protegido)
+app.get('/api/shop', require('./middleware/auth'), async (req, res) => {
   try {
     const items = await ShopItem.findAll();
     res.json(items);
@@ -175,10 +175,10 @@ app.get('/api/shop', async (req, res) => {
   }
 });
 
-// Endpoint to get all pets from DB
-app.get('/api/pets', async (req, res) => {
+// Endpoint to get all pets from DB (protegido)
+app.get('/api/pets', require('./middleware/auth'), async (req, res) => {
   try {
-    const pets = await Pet.findAll({ order: [['rarity', 'ASC']] });
+    const pets = await Pet.findAll({ where: { userId: req.user.id }, order: [['rarity', 'ASC']] });
     res.json(pets);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching pets', error: error.message });
@@ -205,6 +205,8 @@ app.use('/api/inventory', require('./routes/inventory'));
 app.use('/api/garden', require('./routes/garden'));
 
 app.use('/api/eggs', require('./routes/eggs'));
+
+app.use('/api/friends', require('./routes/friends'));
 
 app.listen(PORT, () => {
   console.log(`🌍 THE WORLD backend is running on port ${PORT}`);

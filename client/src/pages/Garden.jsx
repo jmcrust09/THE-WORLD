@@ -122,17 +122,17 @@ export default function Garden() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            <i className="fas fa-seedling"></i> jardín
+            🌱 jardín
           </div>
         </div>
         <div className="tile-content">
           <div className="stat-group">
             <div className="stat-card-sm">
-              <i className="fas fa-leaf"></i> plantas<br />
+              🌿 plantas<br />
               <strong>{garden.length}</strong>
             </div>
             <div className="stat-card-sm">
-              <i className="fas fa-check-circle"></i> maduras<br />
+              ✅ maduras<br />
               <strong>{garden.filter(p => p.stage === 'mature').length}</strong>
             </div>
           </div>
@@ -142,7 +142,7 @@ export default function Garden() {
               className="btn-primary"
               style={{ width: '100%' }}
             >
-              <i className="fas fa-plus"></i> {showPlanting ? 'Cancelar' : 'Plantar'}
+              ➕ {showPlanting ? 'Cancelar' : 'Plantar'}
             </button>
           </div>
           <div style={{ marginTop: '10px' }}>
@@ -151,8 +151,7 @@ export default function Garden() {
               className="btn-secondary"
               style={{ width: '100%' }}
             >
-              <i className={`fas ${viewMode === 'grid' ? 'fa-list' : 'fa-th'}`}></i>
-              {viewMode === 'grid' ? ' vista lista' : ' vista grid'}
+              🔄 {viewMode === 'grid' ? ' vista lista' : ' vista grid'}
             </button>
           </div>
         </div>
@@ -168,7 +167,7 @@ export default function Garden() {
               <span className="tile-dot"></span>
             </div>
             <div className="tile-title">
-              <i className="fas fa-seedling"></i> plantar
+              🌱 plantar
             </div>
           </div>
           <div className="tile-content">
@@ -184,7 +183,7 @@ export default function Garden() {
                   className="btn-secondary"
                   style={{ textAlign: 'left', padding: '8px' }}
                 >
-                  <i className={`fas ${info.icon}`}></i> {info.name}
+                  🌿 {info.name}
                 </button>
               ))}
             </div>
@@ -249,7 +248,7 @@ export default function Garden() {
         </div>
       )}
 
-      {/* TILE - PLANTAS */}
+      {/* TILE - PLANTAS - GRID DE POTS */}
       <div className="tile full-width">
         <div className="tile-header">
           <div className="tile-dots">
@@ -258,134 +257,72 @@ export default function Garden() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            <i className="fas fa-tree"></i> tus plantas
+            🌳 jardín (9 pots)
           </div>
         </div>
         <div className="tile-content">
-          {garden.length === 0 ? (
-            <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '20px' }}>
-              <i className="fas fa-seedling" style={{ fontSize: '48px', marginBottom: '20px' }}></i>
-              <br />
-              No tienes plantas. ¡Planta una!
-            </div>
-          ) : viewMode === 'grid' ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 150px)', gap: '12px' }}>
-              {garden.map((plant) => {
-                const plantInfo = plantTypes[plant.plantType] || { icon: 'fa-leaf', name: 'Planta' };
-                const stageColors = {
-                  seed: '#8B4513',
-                  sprout: '#90EE90',
-                  growing: '#32CD32',
-                  mature: '#FFD700',
-                  harvested: '#808080'
-                };
-                
-                return (
-                  <div
-                    key={plant.id}
-                    onClick={() => setSelectedPlant(plant)}
-                    style={{
-                      background: 'var(--tile-dark)',
-                      border: `2px solid ${stageColors[plant.stage] || 'var(--border-color)'}`,
-                      padding: '12px',
-                      textAlign: 'center',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <div style={{ fontSize: '32px', marginBottom: '8px' }}>
-                      <i className={`fas ${plantInfo.icon}`}></i>
-                    </div>
-                    <div style={{ fontSize: '11px', fontWeight: 600, marginBottom: '4px' }}>
-                      {plantInfo.name}
-                    </div>
-                    <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '8px' }}>
-                      {plant.stage}
-                    </div>
-                    <div style={{ fontSize: '10px', marginBottom: '8px' }}>
-                      Progreso: {plant.growthProgress}%
-                    </div>
-                    <div className="progress-bg">
-                      <div className="progress-fill" style={{ width: `${plant.growthProgress}%` }}></div>
-                    </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', padding: '10px' }}>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((potNum) => {
+              const plant = garden.find(p => p.position === potNum);
+              const stageIcons = {
+                seed: 'fa-seedling',
+                sprout: 'fa-spa',
+                growing: 'fa-leaf',
+                mature: 'fa-apple-whole',
+                harvested: 'fa-check-circle'
+              };
+              const stageColors = {
+                seed: '#8B4513',
+                sprout: '#90EE90',
+                growing: '#32CD32',
+                mature: '#FFD700',
+                harvested: '#808080'
+              };
+              
+              return (
+                <div
+                  key={potNum}
+                  onClick={() => plant && setSelectedPlant(plant)}
+                  style={{
+                    background: 'var(--tile-dark)',
+                    border: `2px solid ${plant ? stageColors[plant.stage] || 'var(--border-color)' : 'var(--border-color)'}`,
+                    padding: '16px',
+                    textAlign: 'center',
+                    cursor: plant ? 'pointer' : 'default',
+                    minHeight: '120px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+                    Pot {potNum}
                   </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                    <th style={{ padding: '8px', textAlign: 'left' }}>Planta</th>
-                    <th style={{ padding: '8px', textAlign: 'left' }}>Etapa</th>
-                    <th style={{ padding: '8px', textAlign: 'left' }}>Progreso</th>
-                    <th style={{ padding: '8px', textAlign: 'left' }}>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {garden.map((plant) => {
-                    const plantInfo = plantTypes[plant.plantType] || { icon: 'fa-leaf', name: 'Planta' };
-                    
-                    return (
-                      <tr key={plant.id} style={{ borderBottom: '1px solid var(--separator)' }}>
-                        <td style={{ padding: '8px' }}>
-                          <i className={`fas ${plantInfo.icon}`}></i> {plantInfo.name}
-                        </td>
-                        <td style={{ padding: '8px' }}>{plant.stage}</td>
-                        <td style={{ padding: '8px' }}>{plant.growthProgress}%</td>
-                        <td style={{ padding: '8px' }}>
-                          {plant.stage === 'mature' ? (
-                            <button
-                              onClick={() => harvestPlant(plant.id)}
-                              style={{
-                                background: 'var(--accent)',
-                                border: 'none',
-                                color: 'var(--tile-bg)',
-                                padding: '4px 8px',
-                                fontSize: '11px',
-                                cursor: 'pointer',
-                                marginRight: '4px'
-                              }}
-                            >
-                              Cosechar
-                            </button>
-                          ) : plant.stage !== 'harvested' ? (
-                            <button
-                              onClick={() => waterPlant(plant.id)}
-                              style={{
-                                background: '#2196F3',
-                                border: 'none',
-                                color: 'white',
-                                padding: '4px 8px',
-                                fontSize: '11px',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              Regar
-                            </button>
-                          ) : (
-                            <button
-                              onClick={() => removePlant(plant.id)}
-                              style={{
-                                background: '#F44336',
-                                border: 'none',
-                                color: 'white',
-                                padding: '4px 8px',
-                                fontSize: '11px',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              Eliminar
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  {plant ? (
+                    <>
+                      <div style={{ fontSize: '36px', marginBottom: '8px' }}>
+                        <i className={`fas ${stageIcons[plant.stage] || 'fa-leaf'}`}></i>
+                      </div>
+                      <div style={{ fontSize: '11px', fontWeight: 600, marginBottom: '4px' }}>
+                        {plant.plantType}
+                      </div>
+                      <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>
+                        {plant.stage}
+                      </div>
+                      <div style={{ fontSize: '10px', marginTop: '4px' }}>
+                        {plant.growthProgress}%
+                      </div>
+                    </>
+                  ) : (
+                    <div style={{ fontSize: '36px', color: 'var(--text-muted)' }}>
+                      ➕
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 

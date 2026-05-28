@@ -67,7 +67,7 @@ router.delete('/shop-items/:id', adminAuth, async (req, res) => {
 router.get('/users', adminAuth, async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: ['id', 'username', 'email', 'isAdmin', 'totalPoints', 'currentStreak', 'bestStreak', 'bonusMultiplier', 'createdAt']
+      attributes: ['id', 'username', 'email', 'isAdmin', 'isBanned', 'banReason', 'bannedAt', 'totalPoints', 'currentStreak', 'bestStreak', 'bonusMultiplier', 'createdAt']
     });
     res.json(users);
   } catch (err) {
@@ -88,6 +88,40 @@ router.put('/users/:id/points', adminAuth, async (req, res) => {
     res.json(user);
   } catch (err) {
     res.status(500).json({ msg: 'Error modificando puntos', error: err.message });
+  }
+});
+
+// Cambiar admin status de usuario
+router.put('/users/:id/admin', adminAuth, async (req, res) => {
+  try {
+    const { isAdmin } = req.body;
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
+    
+    user.isAdmin = isAdmin;
+    await user.save();
+    
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ msg: 'Error cambiando admin status', error: err.message });
+  }
+});
+
+// Banear/desbanear usuario
+router.put('/users/:id/ban', adminAuth, async (req, res) => {
+  try {
+    const { isBanned, banReason } = req.body;
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
+    
+    user.isBanned = isBanned;
+    user.banReason = isBanned ? banReason : null;
+    user.bannedAt = isBanned ? new Date() : null;
+    await user.save();
+    
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ msg: 'Error cambiando ban status', error: err.message });
   }
 });
 

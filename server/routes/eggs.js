@@ -1,10 +1,14 @@
 const express = require('express');
+const auth = require('../middleware/auth');
 const Egg = require('../models/Egg');
 const router = express.Router();
 
-// Obtener todos los huevos (admin)
-router.get('/all', async (req, res) => {
+// Obtener todos los huevos (admin - protegido)
+router.get('/all', auth, async (req, res) => {
   try {
+    if (!req.user.isAdmin) {
+      return res.status(403).json({ msg: 'No autorizado' });
+    }
     const eggs = await Egg.findAll({ order: [['cost', 'ASC']] });
     res.json(eggs);
   } catch (err) {
@@ -12,8 +16,8 @@ router.get('/all', async (req, res) => {
   }
 });
 
-// Obtener huevos disponibles para usuarios
-router.get('/', async (req, res) => {
+// Obtener huevos disponibles para usuarios (protegido)
+router.get('/', auth, async (req, res) => {
   try {
     const now = new Date();
     const eggs = await Egg.findAll({
@@ -36,8 +40,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Obtener un huevo por ID
-router.get('/:id', async (req, res) => {
+// Obtener un huevo por ID (protegido)
+router.get('/:id', auth, async (req, res) => {
   try {
     const egg = await Egg.findByPk(req.params.id);
     if (!egg) return res.status(404).json({ msg: 'Huevo no encontrado' });

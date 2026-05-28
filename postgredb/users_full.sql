@@ -3,7 +3,10 @@
 -- o generar un hash real con bcrypt. Si ejecutas esto directamente, los usuarios no podrán
 -- hacer login con contraseña. Recomiendo usar la interfaz de registro para crear usuarios.
 
--- Jugador_Maestro
+-- Borrar contenido existente de la tabla
+TRUNCATE TABLE "Users" RESTART IDENTITY CASCADE;
+
+-- Jugador_Maestro (ADMIN)
 INSERT INTO "Users" ("username", "email", "passwordHash", "totalPoints", "currentStreak", "bestStreak", "bonusMultiplier", "isAdmin", "isGuest", "lastTaskDate", "createdAt", "updatedAt")
 VALUES (
   'Jugador_Maestro',
@@ -13,14 +16,14 @@ VALUES (
   14,
   30,
   2.3,
-  false,
+  true,
   false,
   NULL,
   '2026-05-25 00:00:00',
   '2026-05-25 00:00:00'
 );
 
--- Novato_Productivo
+-- Novato_Productivo (USER)
 INSERT INTO "Users" ("username", "email", "passwordHash", "totalPoints", "currentStreak", "bestStreak", "bonusMultiplier", "isAdmin", "isGuest", "lastTaskDate", "createdAt", "updatedAt")
 VALUES (
   'Novato_Productivo',

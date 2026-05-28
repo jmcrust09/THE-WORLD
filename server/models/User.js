@@ -7,11 +7,15 @@ const User = sequelize.define('User', {
   passwordHash: { type: DataTypes.STRING, allowNull: true },
   isGuest: { type: DataTypes.BOOLEAN, defaultValue: false },
   isAdmin: { type: DataTypes.BOOLEAN, defaultValue: false },
+  isBanned: { type: DataTypes.BOOLEAN, defaultValue: false },
+  banReason: { type: DataTypes.STRING, allowNull: true },
+  bannedAt: { type: DataTypes.DATE, allowNull: true },
   totalPoints: { type: DataTypes.INTEGER, defaultValue: 0 },
   currentStreak: { type: DataTypes.INTEGER, defaultValue: 0 },
   bestStreak: { type: DataTypes.INTEGER, defaultValue: 0 },
   bonusMultiplier: { type: DataTypes.FLOAT, defaultValue: 1.0 },
   favoritePetId: { type: DataTypes.INTEGER },
+  profilePictureUrl: { type: DataTypes.STRING, allowNull: true },
   lastTaskDate: { type: DataTypes.DATE }
 }, { timestamps: true });
 

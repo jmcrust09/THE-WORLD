@@ -1,5 +1,8 @@
 -- INSERT completo para ShopItems (comidas y pociones del shopitems.json)
 
+-- Borrar contenido existente de la tabla
+TRUNCATE TABLE "ShopItems" RESTART IDENTITY CASCADE;
+
 -- Semilla Pequeña
 INSERT INTO "ShopItems" ("name", "type", "cost", "description", "icon", "cssClass", "expValue", "effect", "createdAt", "updatedAt")
 VALUES (
@@ -82,7 +85,7 @@ VALUES (
   'food',
   2500,
   'Da +1500 EXP.',
-  'fa-cookie',
+  'fa-cookie-bite',
   'bg-green-100 border-green-500',
   1500,
   NULL,

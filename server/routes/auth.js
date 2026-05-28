@@ -19,7 +19,20 @@ router.post('/register', async (req, res) => {
     const payload = { user: { id: user.id } };
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' }, (err, token) => {
       if (err) throw err;
-      res.json({ token, user: { id: user.id, username: user.username, email: user.email, totalPoints: user.totalPoints, isGuest: false } });
+      res.json({ 
+        token, 
+        user: { 
+          id: user.id, 
+          username: user.username, 
+          email: user.email, 
+          totalPoints: user.totalPoints,
+          currentStreak: user.currentStreak,
+          bestStreak: user.bestStreak,
+          bonusMultiplier: user.bonusMultiplier,
+          isAdmin: user.isAdmin,
+          isGuest: false 
+        } 
+      });
     });
   } catch (err) {
     console.error(err);
@@ -45,7 +58,20 @@ router.post('/login', async (req, res) => {
     const payload = { user: { id: user.id } };
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' }, (err, token) => {
       if (err) throw err;
-      res.json({ token, user: { id: user.id, username: user.username, email: user.email, totalPoints: user.totalPoints, isGuest: false } });
+      res.json({ 
+        token, 
+        user: { 
+          id: user.id, 
+          username: user.username, 
+          email: user.email, 
+          totalPoints: user.totalPoints,
+          currentStreak: user.currentStreak,
+          bestStreak: user.bestStreak,
+          bonusMultiplier: user.bonusMultiplier,
+          isAdmin: user.isAdmin,
+          isGuest: false 
+        } 
+      });
     });
   } catch (err) {
     console.error(err);
@@ -71,7 +97,20 @@ router.post('/guest', async (req, res) => {
     const payload = { user: { id: user.id } };
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
       if (err) throw err;
-      res.json({ token, user: { id: user.id, username: user.username, email: null, totalPoints: 0, isGuest: true } });
+      res.json({ 
+        token, 
+        user: { 
+          id: user.id, 
+          username: user.username, 
+          email: null, 
+          totalPoints: user.totalPoints,
+          currentStreak: user.currentStreak,
+          bestStreak: user.bestStreak,
+          bonusMultiplier: user.bonusMultiplier,
+          isAdmin: user.isAdmin,
+          isGuest: true 
+        } 
+      });
     });
   } catch (err) {
     console.error(err);
@@ -83,6 +122,8 @@ router.post('/guest', async (req, res) => {
 router.get('/me', require('../middleware/auth'), async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id, { attributes: { exclude: ['passwordHash'] } });
+    if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
+    if (user.isBanned) return res.status(403).json({ msg: 'Usuario baneado', banReason: user.banReason });
     res.json(user);
   } catch (err) {
     res.status(500).send('Error');
