@@ -158,6 +158,15 @@ export default function Garden() {
           setShowSuccess(true);
           setSkillCheck(null);
           
+          // Actualizar crecimiento localmente inmediatamente
+          if (skillCheck.action === 'water') {
+            setGarden(prev => prev.map(plant => 
+              plant.id === skillCheck.plantId 
+                ? { ...plant, growthProgress: Math.min(100, (plant.growthProgress || 0) + 10) }
+                : plant
+            ));
+          }
+          
           setTimeout(() => {
             setShowSuccess(false);
             if (skillCheck.action === 'water') {
