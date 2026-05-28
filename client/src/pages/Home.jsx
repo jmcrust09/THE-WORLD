@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <div className="tiles-grid">
       {/* TILE PRINCIPAL - ASCII TIERRA */}
-      <div className="tile">
+      <div className="tile wide">
         <div className="tile-header">
           <div className="tile-dots">
             <span className="tile-dot"></span>
@@ -47,15 +47,19 @@ export default function Home() {
           </div>
         </div>
         <div className="tile-content">
-          <div className="ascii-earth">
-            {asciiEarth}
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+            <div className="ascii-earth" style={{ flex: 1, fontSize: '10px' }}>
+              {asciiEarth}
+            </div>
+            <div style={{ flex: 1 }}>
+              <div className="info-row">
+                <span className="info-label"><i className="fas fa-lightbulb"></i> esencia</span>
+                <span className="value">"convierte tu productividad en un ecosistema vivo"</span>
+              </div>
+              <div className="badge"><i className="fas fa-gamepad"></i> gamificación · 75+ especies · rarezas míticas</div>
+              <div className="badge"><i className="fas fa-bolt"></i> tareas diarias · rachas · evolución de mascotas</div>
+            </div>
           </div>
-          <div className="info-row" style={{ marginTop: '14px' }}>
-            <span className="info-label"><i className="fas fa-lightbulb"></i> esencia</span>
-            <span className="value">"convierte tu productividad en un ecosistema vivo"</span>
-          </div>
-          <div className="badge"><i className="fas fa-gamepad"></i> gamificación · 75+ especies · rarezas míticas</div>
-          <div className="badge"><i className="fas fa-bolt"></i> tareas diarias · rachas · evolución de mascotas</div>
         </div>
       </div>
 

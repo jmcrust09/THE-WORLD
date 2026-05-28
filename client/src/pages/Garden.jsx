@@ -52,8 +52,8 @@ export default function Garden() {
     try {
       // Cerrar detalles para mostrar el skill check
       setSelectedPlant(null);
-      // Iniciar skill check circular
-      setSkillCheck({ plantId: id, targetRadius: 30, currentRadius: 100, speed: 1.5 });
+      // Iniciar skill check circular con barra
+      setSkillCheck({ plantId: id, targetStart: 45, targetEnd: 135, currentAngle: 0, speed: 2, direction: 1 });
       console.log('Skill check iniciado para planta:', id);
     } catch (err) {
       console.error('Error watering:', err);
@@ -80,7 +80,7 @@ export default function Garden() {
     }
   };
 
-  // Skill check circular minigame logic
+  // Skill check circular con barra minigame logic
   useEffect(() => {
     if (!skillCheck) return;
 
@@ -88,22 +88,23 @@ export default function Garden() {
       setSkillCheck(prev => {
         if (!prev) return null;
 
-        let newRadius = prev.currentRadius - prev.speed;
+        let newAngle = prev.currentAngle + (prev.speed * prev.direction);
 
-        // Reset if radius gets too small
-        if (newRadius <= 0) {
-          // Failed - reset
-          return { ...prev, currentRadius: 100 };
+        // Bounce at 0 and 360
+        if (newAngle >= 360) {
+          newAngle = 0;
+        } else if (newAngle < 0) {
+          newAngle = 360;
         }
 
-        return { ...prev, currentRadius: newRadius };
+        return { ...prev, currentAngle: newAngle };
       });
     }, 16);
 
     return () => clearInterval(interval);
   }, [skillCheck]);
 
-  // Handle spacebar for circular skill check
+  // Handle spacebar for circular skill check con barra
   useEffect(() => {
     if (!skillCheck) return;
 
@@ -111,10 +112,21 @@ export default function Garden() {
       if (e.code === 'Space' && skillCheck) {
         e.preventDefault();
 
-        // Check if current radius is within target zone
-        const tolerance = 10;
-        if (skillCheck.currentRadius >= skillCheck.targetRadius - tolerance &&
-            skillCheck.currentRadius <= skillCheck.targetRadius + tolerance) {
+        // Check if current angle is within target zone
+        const tolerance = 15;
+        let inTarget = false;
+
+        // Check if angle is in target range (handle wrap-around)
+        if (skillCheck.targetStart < skillCheck.targetEnd) {
+          inTarget = skillCheck.currentAngle >= skillCheck.targetStart - tolerance &&
+                     skillCheck.currentAngle <= skillCheck.targetEnd + tolerance;
+        } else {
+          // Handle wrap-around case (e.g., 350 to 10)
+          inTarget = skillCheck.currentAngle >= skillCheck.targetStart - tolerance ||
+                     skillCheck.currentAngle <= skillCheck.targetEnd + tolerance;
+        }
+
+        if (inTarget) {
           // Success - water the plant
           axios.post(`/api/garden/${skillCheck.plantId}/water`).then(() => {
             fetchGarden();
@@ -122,7 +134,7 @@ export default function Garden() {
           });
         } else {
           // Failed - reset skill check
-          setSkillCheck(prev => prev ? { ...prev, currentRadius: 100 } : null);
+          setSkillCheck(prev => prev ? { ...prev, currentAngle: 0 } : null);
         }
       }
     };
@@ -215,7 +227,7 @@ export default function Garden() {
         </div>
       )}
 
-      {/* TILE - SKILL CHECK MINIGAME CIRCULAR */}
+      {/* TILE - SKILL CHECK MINIGAME CIRCULAR CON BARRA */}
       {skillCheck && (
         <div className="tile wide">
           <div className="tile-header">
@@ -225,7 +237,7 @@ export default function Garden() {
               <span className="tile-dot"></span>
             </div>
             <div className="tile-title">
-              <i className="fas fa-bullseye"></i> skill check circular
+              <i className="fas fa-bullseye"></i> skill check
             </div>
           </div>
           <div className="tile-content">
@@ -236,7 +248,7 @@ export default function Garden() {
                 height: '200px',
                 margin: '0 auto 20px'
               }}>
-                {/* Outer circle (target zone) */}
+                {/* Outer circle */}
                 <div style={{
                   position: 'absolute',
                   width: '200px',
@@ -246,32 +258,47 @@ export default function Garden() {
                   background: 'var(--tile-dark)'
                 }}></div>
 
-                {/* Target zone ring */}
-                <div style={{
+                {/* Target zone (green arc) */}
+                <svg style={{
                   position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: `${skillCheck.targetRadius * 2}%`,
-                  height: `${skillCheck.targetRadius * 2}%`,
-                  borderRadius: '50%',
-                  border: '3px solid #4CAF50',
-                  background: 'rgba(76, 175, 80, 0.2)'
-                }}></div>
+                  width: '200px',
+                  height: '200px',
+                  transform: 'rotate(-90deg)'
+                }}>
+                  <circle
+                    cx="100"
+                    cy="100"
+                    r="90"
+                    fill="none"
+                    stroke="#4CAF50"
+                    strokeWidth="12"
+                    strokeDasharray={`${(skillCheck.targetEnd - skillCheck.targetStart) / 360 * 2 * Math.PI * 90} ${2 * Math.PI * 90}`}
+                    strokeDashoffset={`-${skillCheck.targetStart / 360 * 2 * Math.PI * 90}`}
+                    opacity="0.6"
+                  />
+                </svg>
 
-                {/* Inner contracting circle */}
-                <div style={{
+                {/* Moving indicator (bar around circle) */}
+                <svg style={{
                   position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: `${skillCheck.currentRadius * 2}%`,
-                  height: `${skillCheck.currentRadius * 2}%`,
-                  borderRadius: '50%',
-                  border: '3px solid var(--accent)',
-                  background: 'rgba(212, 163, 115, 0.3)',
-                  boxShadow: '0 0 15px var(--accent)'
-                }}></div>
+                  width: '200px',
+                  height: '200px',
+                  transform: 'rotate(-90deg)'
+                }}>
+                  <circle
+                    cx="100"
+                    cy="100"
+                    r="90"
+                    fill="none"
+                    stroke="var(--accent)"
+                    strokeWidth="8"
+                    strokeDasharray="20 530"
+                    strokeDashoffset={`-${skillCheck.currentAngle / 360 * 2 * Math.PI * 90}`}
+                    style={{
+                      filter: 'drop-shadow(0 0 8px var(--accent))'
+                    }}
+                  />
+                </svg>
 
                 {/* Center dot */}
                 <div style={{
@@ -279,15 +306,16 @@ export default function Garden() {
                   top: '50%',
                   left: '50%',
                   transform: 'translate(-50%, -50%)',
-                  width: '10px',
-                  height: '10px',
+                  width: '20px',
+                  height: '20px',
                   borderRadius: '50%',
-                  background: 'var(--accent)'
+                  background: 'var(--accent)',
+                  boxShadow: '0 0 15px var(--accent)'
                 }}></div>
               </div>
 
               <div style={{ fontSize: '14px', marginBottom: '15px' }}>
-                <i className="fas fa-info-circle"></i> Presiona ESPACIO cuando el círculo esté en la zona verde
+                <i className="fas fa-info-circle"></i> Presiona ESPACIO cuando la barra pase por la zona verde
               </div>
 
               <button

@@ -242,17 +242,15 @@
 
   .ascii-earth {
     background: #1e1915;
-    padding: 14px;
+    padding: 10px;
     font-family: monospace;
-    font-size: 11px;
-    line-height: 1.2;
-    white-space: pre-wrap;
-    word-break: break-all;
+    font-size: 8px;
+    line-height: 1.1;
+    white-space: pre;
     color: var(--text-muted);
     border: 1px solid var(--border-color);
     text-align: center;
-    margin-top: 12px;
-    overflow-x: hidden;
+    overflow: hidden;
   }
 
   hr {
