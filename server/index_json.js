@@ -155,10 +155,15 @@ authRouter.post('/guest', async (req, res) => {
       isGuest: true,
       isAdmin: false,
       isBanned: false,
+      banReason: null,
+      bannedAt: null,
       totalPoints: 0,
       currentStreak: 0,
       bestStreak: 0,
-      bonusMultiplier: 1.0
+      bonusMultiplier: 1.0,
+      favoritePetId: null,
+      profilePictureUrl: null,
+      lastTaskDate: null
     });
     
     // Generar token
@@ -174,11 +179,12 @@ authRouter.post('/guest', async (req, res) => {
         totalPoints: newUser.totalPoints,
         currentStreak: newUser.currentStreak,
         bestStreak: newUser.bestStreak,
-        bonusMultiplier: newUser.bonusMultiplier
+        bonusMultiplier: newUser.bonusMultiplier,
+        profilePictureUrl: newUser.profilePictureUrl
       }
     });
   } catch (error) {
-    console.error(error);
+    console.error('Error en guest login:', error);
     res.status(500).json({ msg: 'Error en servidor' });
   }
 });
@@ -504,6 +510,20 @@ friendsRouter.delete('/:id', auth, (req, res) => {
 
 app.use('/api/friends', friendsRouter);
 
+// ===== EGG ROUTES =====
+const eggRouter = express.Router();
+
+eggRouter.get('/', (req, res) => {
+  try {
+    const items = dataManager.getShopItems().filter(item => item.type === 'egg');
+    res.json(items);
+  } catch (error) {
+    res.status(500).json({ msg: 'Error obteniendo huevos' });
+  }
+});
+
+app.use('/api/eggs', eggRouter);
+
 // ===== ADMIN ROUTES =====
 const adminRouter = express.Router();
 
@@ -552,6 +572,42 @@ adminRouter.get('/events', adminAuth, (req, res) => {
     res.json([]);
   } catch (error) {
     res.status(500).json({ msg: 'Error obteniendo eventos' });
+  }
+});
+
+adminRouter.get('/eggs', adminAuth, (req, res) => {
+  try {
+    const items = dataManager.getShopItems().filter(item => item.type === 'egg');
+    res.json(items);
+  } catch (error) {
+    res.status(500).json({ msg: 'Error obteniendo huevos' });
+  }
+});
+
+adminRouter.post('/eggs', adminAuth, (req, res) => {
+  try {
+    const item = dataManager.createShopItem(req.body);
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ msg: 'Error creando huevo' });
+  }
+});
+
+adminRouter.put('/eggs/:id', adminAuth, (req, res) => {
+  try {
+    const item = dataManager.updateShopItem(req.params.id, req.body);
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ msg: 'Error actualizando huevo' });
+  }
+});
+
+adminRouter.delete('/eggs/:id', adminAuth, (req, res) => {
+  try {
+    dataManager.deleteShopItem(req.params.id);
+    res.json({ msg: 'Huevo eliminado' });
+  } catch (error) {
+    res.status(500).json({ msg: 'Error eliminando huevo' });
   }
 });
 

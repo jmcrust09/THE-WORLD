@@ -78,7 +78,7 @@ function DesktopLayout({ children }) {
         {user?.isAdmin && (
           <>
             <a href="/admin" className={`task-button ${activeSection === 'admin' ? 'active-task' : ''}`}>
-              [[admin]]
+              [admin]
             </a>
             <a href="/admin-panel" className={`task-button ${activeSection === 'admin-panel' ? 'active-task' : ''}`}>
               [huevos]

@@ -95,14 +95,14 @@ export default function AdminUsers() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            📊 estadísticas
+            <i className="fas fa-chart-line"></i> estadísticas
           </div>
         </div>
         <div className="tile-content">
-          <div className="badge">👥 Total usuarios: {users.length}</div>
-          <div className="badge">👑 Admins: {users.filter(u => u.isAdmin).length}</div>
-          <div className="badge">🚫 Baneados: {users.filter(u => u.isBanned).length}</div>
-          <div className="badge">🎮 Activos: {users.filter(u => !u.isBanned).length}</div>
+          <div className="badge"><i className="fas fa-users"></i> Total usuarios: {users.length}</div>
+          <div className="badge"><i className="fas fa-crown"></i> Admins: {users.filter(u => u.isAdmin).length}</div>
+          <div className="badge"><i className="fas fa-ban"></i> Baneados: {users.filter(u => u.isBanned).length}</div>
+          <div className="badge"><i className="fas fa-gamepad"></i> Activos: {users.filter(u => !u.isBanned).length}</div>
         </div>
       </div>
 
@@ -152,8 +152,8 @@ export default function AdminUsers() {
                       <div>
                         <div style={{ fontWeight: 600 }}>
                           {user.username}
-                          {user.isAdmin && <span style={{ marginLeft: '5px' }}>👑</span>}
-                          {user.isBanned && <span style={{ marginLeft: '5px' }}>🚫</span>}
+                          {user.isAdmin && <span style={{ marginLeft: '5px' }}><i className="fas fa-crown"></i></span>}
+                          {user.isBanned && <span style={{ marginLeft: '5px' }}><i className="fas fa-ban"></i></span>}
                         </div>
                         <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                           {user.email || 'Sin email'}

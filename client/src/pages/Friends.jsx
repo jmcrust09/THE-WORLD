@@ -303,10 +303,10 @@ export default function Friends() {
                   </div>
                   <div style={{ marginBottom: '10px' }}>
                     <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                      🔥 Racha de amistad: {friend.friendshipStreak || 0} días
+                      <i className="fas fa-fire"></i> Racha de amistad: {friend.friendshipStreak || 0} días
                     </div>
                     <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                      ✨ Bonus: +{((friend.friendshipStreak || 0) * 0.05).toFixed(2)}x
+                      <i className="fas fa-sparkles"></i> Bonus: +{((friend.friendshipStreak || 0) * 0.05).toFixed(2)}x
                     </div>
                   </div>
                   <button

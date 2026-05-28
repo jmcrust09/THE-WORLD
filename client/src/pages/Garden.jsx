@@ -122,17 +122,17 @@ export default function Garden() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            🌱 jardín
+            <i className="fas fa-seedling"></i> jardín
           </div>
         </div>
         <div className="tile-content">
           <div className="stat-group">
             <div className="stat-card-sm">
-              🌿 plantas<br />
+              <i className="fas fa-leaf"></i> plantas<br />
               <strong>{garden.length}</strong>
             </div>
             <div className="stat-card-sm">
-              ✅ maduras<br />
+              <i className="fas fa-check"></i> maduras<br />
               <strong>{garden.filter(p => p.stage === 'mature').length}</strong>
             </div>
           </div>
@@ -167,7 +167,7 @@ export default function Garden() {
               <span className="tile-dot"></span>
             </div>
             <div className="tile-title">
-              🌱 plantar
+              <i className="fas fa-seedling"></i> plantar
             </div>
           </div>
           <div className="tile-content">

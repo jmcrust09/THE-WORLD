@@ -68,32 +68,32 @@ export default function Home() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            📊 estado del mundo
+            <i className="fas fa-chart-line"></i> estado del mundo
           </div>
         </div>
         <div className="tile-content">
           <div className="stat-group">
             <div className="stat-card-sm">
-              🥚 huevos totales<br />
+              <i className="fas fa-egg"></i> huevos totales<br />
               <strong>{user?.pets?.length || 0}</strong>
             </div>
             <div className="stat-card-sm">
-              👑 bonus activo<br />
+              <i className="fas fa-crown"></i> bonus activo<br />
               <strong>+{user?.bonusMultiplier?.toFixed(2) || '1.00'}x</strong>
             </div>
             <div className="stat-card-sm">
-              🏆 mejor racha<br />
+              <i className="fas fa-trophy"></i> mejor racha<br />
               <strong>{user?.bestStreak || 0}d</strong>
             </div>
           </div>
           <div className="info-row">
-            <span className="info-label">⭐ rareza legendaria</span>
+            <span className="info-label"><i className="fas fa-star"></i> rareza legendaria</span>
             <span>multiplicador +80% · ejemplar: fénix ancestral</span>
           </div>
           <div className="progress-bg">
             <div className="progress-fill" style={{ width: `${Math.min((user?.totalPoints || 0) / 20000 * 100, 100)}%` }}></div>
           </div>
-          <div>❤️ tu mascota favorita: {user?.pets?.[0]?.name || 'Ninguna'} ({user?.pets?.[0]?.rarity || 'N/A'})</div>
+          <div><i className="fas fa-heart"></i> tu mascota favorita: {user?.pets?.[0]?.name || 'Ninguna'} ({user?.pets?.[0]?.rarity || 'N/A'})</div>
         </div>
       </div>
 
@@ -179,15 +179,15 @@ export default function Home() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            🐾 colección viva
+            <i className="fas fa-paw"></i> colección viva
           </div>
         </div>
         <div className="tile-content">
           <div><span className="badge">75+ especies</span> <span className="badge">desbloqueadas: {user?.pets?.length || 0}</span></div>
           <div className="stat-group">
-            <div className="stat-card-sm">🐉 mítico: {user?.pets?.find(p => p.rarity === 'mítico')?.name || 'Ninguno'}</div>
-            <div className="stat-card-sm">👑 legendario: {user?.pets?.find(p => p.rarity === 'legendario')?.name || 'Ninguno'}</div>
-            <div className="stat-card-sm">⭐ épico: {user?.pets?.find(p => p.rarity === 'épico')?.name || 'Ninguno'}</div>
+            <div className="stat-card-sm"><i className="fas fa-dragon"></i> mítico: {user?.pets?.find(p => p.rarity === 'mítico')?.name || 'Ninguno'}</div>
+            <div className="stat-card-sm"><i className="fas fa-crown"></i> legendario: {user?.pets?.find(p => p.rarity === 'legendario')?.name || 'Ninguno'}</div>
+            <div className="stat-card-sm"><i className="fas fa-star"></i> épico: {user?.pets?.find(p => p.rarity === 'épico')?.name || 'Ninguno'}</div>
           </div>
         </div>
       </div>

@@ -110,61 +110,63 @@ export default function Pets() {
       </div>
 
       {/* TILE - ECLOSIONAR HUEVO */}
-      <div className="tile">
-        <div className="tile-header">
-          <div className="tile-dots">
-            <span className="tile-dot"></span>
-            <span className="tile-dot"></span>
-            <span className="tile-dot"></span>
-          </div>
-          <div className="tile-title">
-            <i className="fas fa-egg"></i> eclosionar
-          </div>
-        </div>
-        <div className="tile-content">
-          {!hatching ? (
-            <button
-              onClick={() => setHatching(true)}
-              className="btn-primary"
-              style={{ width: '100%' }}
-            >
-              <i className="fas fa-plus"></i> Comprar huevo
-            </button>
-          ) : (
-            <div style={{ display: 'grid', gap: '8px' }}>
-              <input
-                type="text"
-                value={petName}
-                onChange={(e) => setPetName(e.target.value)}
-                placeholder="Nombre de la mascota (opcional)"
-                className="form-input"
-              />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
-                {eggs.map((egg) => (
-                  <button
-                    key={egg.id}
-                    onClick={() => hatchEgg(egg.id)}
-                    className="btn-secondary"
-                    style={{ fontSize: '11px' }}
-                  >
-                    {egg.name} ({egg.cost})
-                  </button>
-                ))}
-              </div>
-              <button
-                onClick={() => {
-                  setHatching(false);
-                  setPetName('');
-                }}
-                className="btn-secondary"
-                style={{ width: '100%', fontSize: '11px' }}
-              >
-                Cancelar
-              </button>
+      {eggs.length > 0 && (
+        <div className="tile">
+          <div className="tile-header">
+            <div className="tile-dots">
+              <span className="tile-dot"></span>
+              <span className="tile-dot"></span>
+              <span className="tile-dot"></span>
             </div>
-          )}
+            <div className="tile-title">
+              <i className="fas fa-egg"></i> eclosionar
+            </div>
+          </div>
+          <div className="tile-content">
+            {!hatching ? (
+              <button
+                onClick={() => setHatching(true)}
+                className="btn-primary"
+                style={{ width: '100%' }}
+              >
+                <i className="fas fa-plus"></i> Comprar huevo
+              </button>
+            ) : (
+              <div style={{ display: 'grid', gap: '8px' }}>
+                <input
+                  type="text"
+                  value={petName}
+                  onChange={(e) => setPetName(e.target.value)}
+                  placeholder="Nombre de la mascota (opcional)"
+                  className="form-input"
+                />
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
+                  {eggs.map((egg) => (
+                    <button
+                      key={egg.id}
+                      onClick={() => hatchEgg(egg.id)}
+                      className="btn-secondary"
+                      style={{ fontSize: '11px' }}
+                    >
+                      {egg.name} ({egg.cost})
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={() => {
+                    setHatching(false);
+                    setPetName('');
+                  }}
+                  className="btn-secondary"
+                  style={{ width: '100%', fontSize: '11px' }}
+                >
+                  Cancelar
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* TILE - ETAPAS DE CRECIMIENTO */}
       <div className="tile">
@@ -257,7 +259,7 @@ export default function Pets() {
             </div>
             {pet.isFavorite && (
               <div className="badge" style={{ background: 'rgba(212, 163, 115, 0.2)', borderColor: 'var(--accent)' }}>
-                ❤️ mascota favorita
+                <i className="fas fa-heart"></i> mascota favorita
               </div>
             )}
           </div>
