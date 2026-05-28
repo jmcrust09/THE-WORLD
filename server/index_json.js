@@ -577,8 +577,12 @@ adminRouter.delete('/shop-items/:id', adminAuth, (req, res) => {
 app.use('/api/admin', adminRouter);
 
 // Serve React app for all non-API routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
+app.use((req, res, next) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
+  } else {
+    next();
+  }
 });
 
 // Iniciar servidor
