@@ -593,7 +593,6 @@ adminRouter.delete('/shop-items/:id', adminAuth, (req, res) => {
 
 // ===== ADMIN JSON EDIT ENDPOINTS =====
 const fs = require('fs');
-const path = require('path');
 
 adminRouter.get('/json/:filename', adminAuth, (req, res) => {
   try {
