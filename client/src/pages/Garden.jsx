@@ -11,6 +11,7 @@ export default function Garden() {
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [showPlanting, setShowPlanting] = useState(false);
   const [skillCheck, setSkillCheck] = useState(null); // skill check minigame state
+  const [showSuccess, setShowSuccess] = useState(false); // success animation state
 
   useEffect(() => {
     fetchGarden();
@@ -52,8 +53,22 @@ export default function Garden() {
     try {
       // Cerrar detalles para mostrar el skill check
       setSelectedPlant(null);
-      // Iniciar skill check circular con barra
-      setSkillCheck({ plantId: id, targetStart: 45, targetEnd: 135, currentAngle: 0, speed: 2, direction: 1 });
+      // Obtener la planta para calcular dificultad
+      const plant = garden.find(p => p.id === id);
+      const growthStage = plant?.growthProgress || 0;
+      
+      // Dificultad dinámica: más crecimiento = más difícil
+      // Zona verde más pequeña y barra más rápida
+      const baseZoneSize = 90; // tamaño base de la zona verde
+      const zoneSize = Math.max(30, baseZoneSize - (growthStage / 100) * 60); // se reduce de 90 a 30
+      const baseSpeed = 2;
+      const speed = baseSpeed + (growthStage / 100) * 3; // aumenta de 2 a 5
+      
+      // Posición aleatoria de la zona verde
+      const randomStart = Math.floor(Math.random() * (360 - zoneSize));
+      const randomEnd = randomStart + zoneSize;
+      
+      setSkillCheck({ plantId: id, targetStart: randomStart, targetEnd: randomEnd, currentAngle: 0, speed, direction: 1, action: 'water' });
       console.log('Skill check iniciado para planta:', id);
     } catch (err) {
       console.error('Error watering:', err);
@@ -62,10 +77,22 @@ export default function Garden() {
 
   const harvestPlant = async (id) => {
     try {
-      console.log('Cosechando planta:', id);
-      await axios.post(`/api/garden/${id}/harvest`);
-      fetchGarden();
+      // Cerrar detalles para mostrar el skill check
       setSelectedPlant(null);
+      // Obtener la planta para calcular dificultad
+      const plant = garden.find(p => p.id === id);
+      const growthStage = plant?.growthProgress || 100;
+      
+      // Dificultad máxima para cosecha
+      const zoneSize = 30; // zona verde pequeña
+      const speed = 5; // barra rápida
+      
+      // Posición aleatoria de la zona verde
+      const randomStart = Math.floor(Math.random() * (360 - zoneSize));
+      const randomEnd = randomStart + zoneSize;
+      
+      setSkillCheck({ plantId: id, targetStart: randomStart, targetEnd: randomEnd, currentAngle: 0, speed, direction: 1, action: 'harvest' });
+      console.log('Skill check de cosecha iniciado para planta:', id);
     } catch (err) {
       console.error('Error harvesting:', err);
     }
@@ -127,11 +154,22 @@ export default function Garden() {
         }
 
         if (inTarget) {
-          // Success - water the plant
-          axios.post(`/api/garden/${skillCheck.plantId}/water`).then(() => {
-            fetchGarden();
-            setSkillCheck(null);
-          });
+          // Success - show animation and perform action
+          setShowSuccess(true);
+          setSkillCheck(null);
+          
+          setTimeout(() => {
+            setShowSuccess(false);
+            if (skillCheck.action === 'water') {
+              axios.post(`/api/garden/${skillCheck.plantId}/water`).then(() => {
+                fetchGarden();
+              });
+            } else if (skillCheck.action === 'harvest') {
+              axios.post(`/api/garden/${skillCheck.plantId}/harvest`).then(() => {
+                fetchGarden();
+              });
+            }
+          }, 1000);
         } else {
           // Failed - reset skill check
           setSkillCheck(prev => prev ? { ...prev, currentAngle: 0 } : null);
@@ -237,7 +275,7 @@ export default function Garden() {
               <span className="tile-dot"></span>
             </div>
             <div className="tile-title">
-              <i className="fas fa-bullseye"></i> skill check
+              <i className="fas fa-bullseye"></i> skill check {skillCheck.action === 'harvest' ? 'de cosecha' : ''}
             </div>
           </div>
           <div className="tile-content">
@@ -326,6 +364,35 @@ export default function Garden() {
                 <i className="fas fa-times"></i> Cancelar
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* SUCCESS ANIMATION */}
+      {showSuccess && (
+        <div style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 2000,
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '80px',
+            color: '#4CAF50',
+            animation: 'successPulse 0.5s ease-in-out',
+            textShadow: '0 0 20px #4CAF50'
+          }}>
+            <i className="fas fa-check-circle"></i>
+          </div>
+          <div style={{
+            fontSize: '24px',
+            color: '#4CAF50',
+            fontWeight: 'bold',
+            marginTop: '10px'
+          }}>
+            ¡Conseguido!
           </div>
         </div>
       )}
