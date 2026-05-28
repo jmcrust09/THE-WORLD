@@ -21,7 +21,7 @@ export default function Auth() {
       } else if (isLogin) {
         // Login con email o username
         const loginField = loginType === 'email' ? email : username;
-        await login(loginField, password);
+        await login({ login: loginField, password });
       } else {
         // Registro
         await register(username, email, password);
@@ -80,7 +80,7 @@ export default function Auth() {
             </div>
             <div className="tile-content">
               <div className="info-row" style={{ borderBottom: 'none', marginBottom: '20px' }}>
-                <span style={{ color: 'var(--text-light)' }}>🌍 bienvenido a <strong>the world</strong></span>
+                <span style={{ color: 'var(--text-light)' }}><i className="fas fa-globe"></i> bienvenido a <strong>the world</strong></span>
               </div>
 
               {error && (

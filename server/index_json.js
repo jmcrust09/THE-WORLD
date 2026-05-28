@@ -100,11 +100,11 @@ authRouter.post('/register', async (req, res) => {
 // Login
 authRouter.post('/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { login, password } = req.body;
     
     // Buscar usuario por username o email
     const users = dataManager.getUsers();
-    const user = users.find(u => u.username === username || u.email === username);
+    const user = users.find(u => u.username === login || u.email === login);
     
     if (!user) {
       return res.status(400).json({ msg: 'Credenciales inválidas' });
@@ -147,7 +147,7 @@ authRouter.post('/login', async (req, res) => {
 // Login como invitado
 authRouter.post('/guest', async (req, res) => {
   try {
-    const { username } = req.body;
+    const { username } = req.body || {};
     
     // Crear usuario invitado
     const newUser = dataManager.createUser({
