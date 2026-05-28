@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js",
+    "start": "node index_json.js",
+    "dev": "node index_json.js",
     "start:json": "node index_json.js",
     "dev:json": "node index_json.js",
+    "start:postgres": "node index.js",
+    "dev:postgres": "node index.js",
     "test": "node test-server.js",
     "test-quick": "echo ✅ THE WORLD Server Test - Ejecuta: npm run test"
   },

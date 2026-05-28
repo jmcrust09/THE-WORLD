@@ -2,13 +2,23 @@
   "friends": [
     {
       "id": 1,
-      "userId": 1,
+      "userId": 2,
+      "friendId": 3,
+      "friendshipStreak": 0,
+      "streakStartDate": "2026-05-28T00:00:00Z",
+      "lastInteractionDate": "2026-05-28T00:00:00Z",
+      "createdAt": "2026-05-28T00:00:00Z",
+      "updatedAt": "2026-05-28T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "userId": 3,
       "friendId": 2,
-      "friendshipStreak": 5,
-      "streakStartDate": "2026-05-20T00:00:00Z",
-      "lastInteractionDate": "2026-05-27T23:59:59Z",
-      "createdAt": "2026-05-20T00:00:00Z",
-      "updatedAt": "2026-05-27T23:59:59Z"
+      "friendshipStreak": 0,
+      "streakStartDate": "2026-05-28T00:00:00Z",
+      "lastInteractionDate": "2026-05-28T00:00:00Z",
+      "createdAt": "2026-05-28T00:00:00Z",
+      "updatedAt": "2026-05-28T00:00:00Z"
     }
   ]
 }

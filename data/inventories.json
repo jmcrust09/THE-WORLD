@@ -4,34 +4,89 @@
       "id": 1,
       "userId": 1,
       "shopItemId": 1,
-      "quantity": 5,
+      "quantity": 10,
       "isEquipped": false,
-      "obtainedAt": "2026-05-26T10:00:00Z",
+      "obtainedAt": "2026-05-28T00:00:00Z",
       "equippedAt": null,
-      "createdAt": "2026-05-26T10:00:00Z",
-      "updatedAt": "2026-05-26T10:00:00Z"
+      "createdAt": "2026-05-28T00:00:00Z",
+      "updatedAt": "2026-05-28T00:00:00Z"
     },
     {
       "id": 2,
       "userId": 1,
       "shopItemId": 2,
-      "quantity": 3,
+      "quantity": 5,
       "isEquipped": false,
-      "obtainedAt": "2026-05-26T10:00:00Z",
+      "obtainedAt": "2026-05-28T00:00:00Z",
       "equippedAt": null,
-      "createdAt": "2026-05-26T10:00:00Z",
-      "updatedAt": "2026-05-26T10:00:00Z"
+      "createdAt": "2026-05-28T00:00:00Z",
+      "updatedAt": "2026-05-28T00:00:00Z"
     },
     {
       "id": 3,
       "userId": 1,
-      "shopItemId": 4,
-      "quantity": 2,
+      "shopItemId": 3,
+      "quantity": 5,
       "isEquipped": false,
-      "obtainedAt": "2026-05-26T10:00:00Z",
+      "obtainedAt": "2026-05-28T00:00:00Z",
       "equippedAt": null,
-      "createdAt": "2026-05-26T10:00:00Z",
-      "updatedAt": "2026-05-26T10:00:00Z"
+      "createdAt": "2026-05-28T00:00:00Z",
+      "updatedAt": "2026-05-28T00:00:00Z"
+    },
+    {
+      "id": 4,
+      "userId": 1,
+      "shopItemId": 4,
+      "quantity": 3,
+      "isEquipped": false,
+      "obtainedAt": "2026-05-28T00:00:00Z",
+      "equippedAt": null,
+      "createdAt": "2026-05-28T00:00:00Z",
+      "updatedAt": "2026-05-28T00:00:00Z"
+    },
+    {
+      "id": 5,
+      "userId": 2,
+      "shopItemId": 1,
+      "quantity": 5,
+      "isEquipped": false,
+      "obtainedAt": "2026-05-28T00:00:00Z",
+      "equippedAt": null,
+      "createdAt": "2026-05-28T00:00:00Z",
+      "updatedAt": "2026-05-28T00:00:00Z"
+    },
+    {
+      "id": 6,
+      "userId": 2,
+      "shopItemId": 2,
+      "quantity": 3,
+      "isEquipped": false,
+      "obtainedAt": "2026-05-28T00:00:00Z",
+      "equippedAt": null,
+      "createdAt": "2026-05-28T00:00:00Z",
+      "updatedAt": "2026-05-28T00:00:00Z"
+    },
+    {
+      "id": 7,
+      "userId": 3,
+      "shopItemId": 1,
+      "quantity": 5,
+      "isEquipped": false,
+      "obtainedAt": "2026-05-28T00:00:00Z",
+      "equippedAt": null,
+      "createdAt": "2026-05-28T00:00:00Z",
+      "updatedAt": "2026-05-28T00:00:00Z"
+    },
+    {
+      "id": 8,
+      "userId": 3,
+      "shopItemId": 3,
+      "quantity": 3,
+      "isEquipped": false,
+      "obtainedAt": "2026-05-28T00:00:00Z",
+      "equippedAt": null,
+      "createdAt": "2026-05-28T00:00:00Z",
+      "updatedAt": "2026-05-28T00:00:00Z"
     }
   ]
 }
