@@ -12,18 +12,13 @@ import Inventory from './pages/Inventory';
 import Garden from './pages/Garden';
 import Auth from './pages/Auth';
 import Friends from './pages/Friends';
+import User from './pages/User';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 function DesktopLayout({ children }) {
   const { user } = useAuth();
   const location = useLocation();
   const [showProfile, setShowProfile] = React.useState(false);
-  const [editingProfile, setEditingProfile] = React.useState(false);
-  const [profileData, setProfileData] = React.useState({
-    username: '',
-    email: '',
-    profilePictureUrl: ''
-  });
   
   // Determinar sección activa basado en la ruta
   const getActiveSection = () => {
@@ -38,6 +33,7 @@ function DesktopLayout({ children }) {
     if (path === '/inventory') return 'inventory';
     if (path === '/garden') return 'garden';
     if (path === '/friends') return 'friends';
+    if (path === '/user') return 'user';
     return 'home';
   };
 
@@ -134,40 +130,9 @@ function DesktopLayout({ children }) {
               </div>
             </div>
             <div className="profile-actions">
-              <button className="profile-btn" onClick={() => setEditingProfile(true)}>
-                <i className="fas fa-edit"></i> editar perfil
+              <button className="profile-btn" onClick={() => window.location.href = '/user'}>
+                <i className="fas fa-user"></i> ver perfil
               </button>
-            </div>
-          </div>
-        )}
-        {editingProfile && (
-          <div className="profile-modal">
-            <div className="profile-modal-content">
-              <div className="profile-modal-header">
-                <h3>editar perfil</h3>
-                <button onClick={() => setEditingProfile(false)} className="close-btn">
-                  <i className="fas fa-times"></i>
-                </button>
-              </div>
-              <form onSubmit={async (e) => {
-                e.preventDefault();
-                // Aquí agregar la lógica para actualizar el perfil
-                setEditingProfile(false);
-              }}>
-                <div className="form-group">
-                  <label>nombre de usuario</label>
-                  <input type="text" defaultValue={user?.username} />
-                </div>
-                <div className="form-group">
-                  <label>correo electrónico</label>
-                  <input type="email" defaultValue={user?.email} />
-                </div>
-                <div className="form-group">
-                  <label>url de foto de perfil</label>
-                  <input type="url" defaultValue={user?.profilePictureUrl} />
-                </div>
-                <button type="submit" className="btn-primary">guardar cambios</button>
-              </form>
             </div>
           </div>
         )}
@@ -206,6 +171,7 @@ function AppContent() {
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/garden" element={<Garden />} />
         <Route path="/friends" element={<Friends />} />
+        <Route path="/user" element={<User />} />
         <Route path="/auth" element={<Navigate to="/" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

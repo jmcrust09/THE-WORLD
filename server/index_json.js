@@ -205,6 +205,25 @@ authRouter.get('/me', auth, (req, res) => {
   }
 });
 
+authRouter.put('/me', auth, (req, res) => {
+  try {
+    const { username, email, profilePictureUrl } = req.body;
+    const user = dataManager.getUserById(req.user.id);
+    if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
+    
+    const updatedUser = dataManager.updateUser(user.id, {
+      username: username || user.username,
+      email: email || user.email,
+      profilePictureUrl: profilePictureUrl || user.profilePictureUrl
+    });
+    
+    const { passwordHash, ...userWithoutPassword } = updatedUser;
+    res.json(userWithoutPassword);
+  } catch (error) {
+    res.status(500).json({ msg: 'Error al actualizar usuario' });
+  }
+});
+
 app.use('/api/auth', authRouter);
 
 // ===== TASKS ROUTES =====

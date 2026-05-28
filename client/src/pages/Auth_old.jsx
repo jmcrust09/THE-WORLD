@@ -60,7 +60,7 @@ export default function Auth() {
             </div>
             <div className="tile-content">
               <div className="info-row" style={{ borderBottom: 'none', marginBottom: '20px' }}>
-                <span style={{ color: 'var(--text-light)' }}>🌍 bienvenido a <strong>the world</strong></span>
+                <span style={{ color: 'var(--text-light)' }}><i className="fas fa-globe"></i> bienvenido a <strong>the world</strong></span>
               </div>
 
               {error && (
