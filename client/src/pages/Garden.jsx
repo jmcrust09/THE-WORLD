@@ -217,7 +217,7 @@ export default function Garden() {
 
       {/* TILE - SKILL CHECK MINIGAME CIRCULAR */}
       {skillCheck && (
-        <div className="tile" style={{ gridColumn: '1 / -1' }}>
+        <div className="tile wide">
           <div className="tile-header">
             <div className="tile-dots">
               <span className="tile-dot"></span>
@@ -303,7 +303,7 @@ export default function Garden() {
       )}
 
       {/* TILE - PLANTAS - GRID DE POTS */}
-      <div className="tile full-width">
+      <div className="tile wide">
         <div className="tile-header">
           <div className="tile-dots">
             <span className="tile-dot"></span>
