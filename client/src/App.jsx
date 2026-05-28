@@ -17,6 +17,13 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 function DesktopLayout({ children }) {
   const { user } = useAuth();
   const location = useLocation();
+  const [showProfile, setShowProfile] = React.useState(false);
+  const [editingProfile, setEditingProfile] = React.useState(false);
+  const [profileData, setProfileData] = React.useState({
+    username: '',
+    email: '',
+    profilePictureUrl: ''
+  });
   
   // Determinar sección activa basado en la ruta
   const getActiveSection = () => {
@@ -94,16 +101,76 @@ function DesktopLayout({ children }) {
         <a href="/friends" className={`task-button ${activeSection === 'friends' ? 'active-task' : ''}`}>
           [amigos]
         </a>
-        <div className="task-button user-section">
-          <div className="user-avatar">
-            {user?.profilePictureUrl ? (
-              <img src={user.profilePictureUrl} alt="Profile" />
-            ) : (
-              <span>{user?.username?.[0]?.toUpperCase() || 'G'}</span>
-            )}
+        <button className="task-button" onClick={() => setShowProfile(!showProfile)}>
+          [user]
+        </button>
+        {showProfile && (
+          <div className="profile-menu">
+            <div className="profile-header">
+              <div className="profile-avatar">
+                {user?.profilePictureUrl ? (
+                  <img src={user.profilePictureUrl} alt="Profile" />
+                ) : (
+                  <span>{user?.username?.[0]?.toUpperCase() || 'G'}</span>
+                )}
+              </div>
+              <div className="profile-info">
+                <div className="profile-username">{user?.username || 'guest'}</div>
+                <div className="profile-email">{user?.email || 'Sin email'}</div>
+              </div>
+            </div>
+            <div className="profile-stats">
+              <div className="stat">
+                <div className="stat-value">{user?.totalPoints || 0}</div>
+                <div className="stat-label">puntos</div>
+              </div>
+              <div className="stat">
+                <div className="stat-value">{user?.pets?.length || 0}</div>
+                <div className="stat-label">mascotas</div>
+              </div>
+              <div className="stat">
+                <div className="stat-value">{user?.currentStreak || 0}</div>
+                <div className="stat-label">racha</div>
+              </div>
+            </div>
+            <div className="profile-actions">
+              <button className="profile-btn" onClick={() => setEditingProfile(true)}>
+                <i className="fas fa-edit"></i> editar perfil
+              </button>
+            </div>
           </div>
-          <span className="user-name">{user?.username || 'guest'}</span>
-        </div>
+        )}
+        {editingProfile && (
+          <div className="profile-modal">
+            <div className="profile-modal-content">
+              <div className="profile-modal-header">
+                <h3>editar perfil</h3>
+                <button onClick={() => setEditingProfile(false)} className="close-btn">
+                  <i className="fas fa-times"></i>
+                </button>
+              </div>
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                // Aquí agregar la lógica para actualizar el perfil
+                setEditingProfile(false);
+              }}>
+                <div className="form-group">
+                  <label>nombre de usuario</label>
+                  <input type="text" defaultValue={user?.username} />
+                </div>
+                <div className="form-group">
+                  <label>correo electrónico</label>
+                  <input type="email" defaultValue={user?.email} />
+                </div>
+                <div className="form-group">
+                  <label>url de foto de perfil</label>
+                  <input type="url" defaultValue={user?.profilePictureUrl} />
+                </div>
+                <button type="submit" className="btn-primary">guardar cambios</button>
+              </form>
+            </div>
+          </div>
+        )}
         <button
           className="task-button"
           onClick={() => {
