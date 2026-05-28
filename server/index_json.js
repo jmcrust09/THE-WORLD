@@ -3,6 +3,7 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dataManager = require('./dataManager');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -10,6 +11,9 @@ const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_jwt_key_123andWMcame4
 
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from React app
+app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 
 // Middleware de autenticación
 const auth = (req, res, next) => {
@@ -571,6 +575,11 @@ adminRouter.delete('/shop-items/:id', adminAuth, (req, res) => {
 });
 
 app.use('/api/admin', adminRouter);
+
+// Serve React app for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
+});
 
 // Iniciar servidor
 app.listen(PORT, () => {
