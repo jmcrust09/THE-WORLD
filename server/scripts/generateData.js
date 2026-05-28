@@ -21,22 +21,22 @@ const eggTypes = [
 
 eggTypes.forEach(e => {
   shopItems.push({
-    name: e.name, type: "egg", cost: e.cost, description: e.desc, icon: "🥚", cssClass: "bg-bg",
+    name: e.name, type: "egg", cost: e.cost, description: e.desc, icon: "fa-egg", cssClass: "bg-bg",
     probabilities: { comun: 20, poco_comun: 20, raro: 20, epico: 20, legendario: 10, mitico: 10 }
   });
 });
 
 const foods = [
-  { name: "Semilla Pequeña", cost: 50, exp: 10, icon: "🌱" },
-  { name: "Manzana Brillante", cost: 150, exp: 50, icon: "🍎" },
-  { name: "Zanahoria Mágica", cost: 300, exp: 120, icon: "🥕" },
-  { name: "Pescado Dorado", cost: 600, exp: 250, icon: "🐟" },
-  { name: "Carne Premium", cost: 1000, exp: 500, icon: "🥩" },
-  { name: "Galleta Cósmica", cost: 2500, exp: 1500, icon: "🍪" },
-  { name: "Fruta del Edén", cost: 5000, exp: 3500, icon: "🍑" },
-  { name: "Néctar Divino", cost: 12000, exp: 10000, icon: "🍯" },
-  { name: "Estrella Fugaz", cost: 25000, exp: 25000, icon: "⭐" },
-  { name: "Esencia de Agujero Negro", cost: 100000, exp: 150000, icon: "🌌" }
+  { name: "Semilla Pequeña", cost: 50, exp: 10, icon: "fa-seedling" },
+  { name: "Manzana Brillante", cost: 150, exp: 50, icon: "fa-apple-whole" },
+  { name: "Zanahoria Mágica", cost: 300, exp: 120, icon: "fa-carrot" },
+  { name: "Pescado Dorado", cost: 600, exp: 250, icon: "fa-fish" },
+  { name: "Carne Premium", cost: 1000, exp: 500, icon: "fa-drumstick-bite" },
+  { name: "Galleta Cósmica", cost: 2500, exp: 1500, icon: "fa-cookie" },
+  { name: "Fruta del Edén", cost: 5000, exp: 3500, icon: "fa-lemon" },
+  { name: "Néctar Divino", cost: 12000, exp: 10000, icon: "fa-jar" },
+  { name: "Estrella Fugaz", cost: 25000, exp: 25000, icon: "fa-star" },
+  { name: "Esencia de Agujero Negro", cost: 100000, exp: 150000, icon: "fa-circle" }
 ];
 
 foods.forEach(f => shopItems.push({
@@ -56,7 +56,7 @@ const potions = [
 ];
 
 potions.forEach(p => shopItems.push({
-  name: p.name, type: "potion", cost: p.cost, description: p.desc, icon: "🧪", cssClass: "bg-blue-100 border-blue-500"
+  name: p.name, type: "potion", cost: p.cost, description: p.desc, icon: "fa-flask", cssClass: "bg-blue-100 border-blue-500"
 }));
 
 const cosmetics = [
@@ -73,7 +73,7 @@ const cosmetics = [
 ];
 
 cosmetics.forEach(c => shopItems.push({
-  name: c.name, type: "cosmetic", cost: c.cost, description: "Objeto cosmético para personalizar.", icon: "✨", cssClass: "bg-purple-100 border-purple-500"
+  name: c.name, type: "cosmetic", cost: c.cost, description: "Objeto cosmético para personalizar.", icon: "fa-sparkles", cssClass: "bg-purple-100 border-purple-500"
 }));
 
 // --- GENERATE PETS ---

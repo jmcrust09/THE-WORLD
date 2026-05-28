@@ -2,7 +2,7 @@
   "users": [
     {
       "id": 1,
-      "username": "Admin",
+      "username": "admin",
       "email": "admin@theworld.com",
       "passwordHash": "$2b$10$8ErKCLCTBNU9vCkU0BikfOMGIrpWrfvIHL/i638Pi4eVRPYyYImn.",
       "isGuest": false,

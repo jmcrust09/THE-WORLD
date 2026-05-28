@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const dataManager = require('./dataManager');
 const path = require('path');
@@ -538,6 +538,23 @@ adminRouter.put('/users/:id/ban', adminAuth, (req, res) => {
   }
 });
 
+adminRouter.put('/users/:id/points', adminAuth, (req, res) => {
+  try {
+    const user = dataManager.updateUser(req.params.id, { totalPoints: req.body.points });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ msg: 'Error actualizando puntos' });
+  }
+});
+
+adminRouter.get('/events', adminAuth, (req, res) => {
+  try {
+    res.json([]);
+  } catch (error) {
+    res.status(500).json({ msg: 'Error obteniendo eventos' });
+  }
+});
+
 adminRouter.get('/shop-items', adminAuth, (req, res) => {
   try {
     const items = dataManager.getShopItems();
@@ -571,6 +588,60 @@ adminRouter.delete('/shop-items/:id', adminAuth, (req, res) => {
     res.json({ msg: 'Item eliminado' });
   } catch (error) {
     res.status(500).json({ msg: 'Error eliminando item' });
+  }
+});
+
+// ===== ADMIN JSON EDIT ENDPOINTS =====
+const fs = require('fs');
+const path = require('path');
+
+adminRouter.get('/json/:filename', adminAuth, (req, res) => {
+  try {
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, '../data', filename);
+    
+    if (!filename.endsWith('.json')) {
+      return res.status(400).json({ msg: 'Solo archivos JSON son permitidos' });
+    }
+    
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ msg: 'Archivo no encontrado' });
+    }
+    
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ msg: 'Error leyendo archivo', error: error.message });
+  }
+});
+
+adminRouter.put('/json/:filename', adminAuth, (req, res) => {
+  try {
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, '../data', filename);
+    
+    if (!filename.endsWith('.json')) {
+      return res.status(400).json({ msg: 'Solo archivos JSON son permitidos' });
+    }
+    
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ msg: 'Archivo no encontrado' });
+    }
+    
+    fs.writeFileSync(filePath, JSON.stringify(req.body, null, 2), 'utf8');
+    res.json({ msg: 'Archivo actualizado exitosamente' });
+  } catch (error) {
+    res.status(500).json({ msg: 'Error escribiendo archivo', error: error.message });
+  }
+});
+
+adminRouter.get('/json-files', adminAuth, (req, res) => {
+  try {
+    const dataDir = path.join(__dirname, '../data');
+    const files = fs.readdirSync(dataDir).filter(file => file.endsWith('.json'));
+    res.json(files);
+  } catch (error) {
+    res.status(500).json({ msg: 'Error leyendo directorio', error: error.message });
   }
 });
 
