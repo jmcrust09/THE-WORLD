@@ -52,8 +52,8 @@ export default function Garden() {
     try {
       // Cerrar detalles para mostrar el skill check
       setSelectedPlant(null);
-      // Iniciar skill check
-      setSkillCheck({ plantId: id, target: 70, current: 0, direction: 1, speed: 2 });
+      // Iniciar skill check circular
+      setSkillCheck({ plantId: id, targetRadius: 30, currentRadius: 100, speed: 1.5 });
       console.log('Skill check iniciado para planta:', id);
     } catch (err) {
       console.error('Error watering:', err);
@@ -80,46 +80,49 @@ export default function Garden() {
     }
   };
 
-  // Skill check minigame logic
+  // Skill check circular minigame logic
   useEffect(() => {
     if (!skillCheck) return;
 
     const interval = setInterval(() => {
       setSkillCheck(prev => {
         if (!prev) return null;
-        
-        let newCurrent = prev.current + (prev.speed * prev.direction);
-        
-        if (newCurrent >= 100 || newCurrent <= 0) {
-          prev.direction *= -1;
-          newCurrent = prev.current + (prev.speed * prev.direction);
+
+        let newRadius = prev.currentRadius - prev.speed;
+
+        // Reset if radius gets too small
+        if (newRadius <= 0) {
+          // Failed - reset
+          return { ...prev, currentRadius: 100 };
         }
-        
-        return { ...prev, current: newCurrent };
+
+        return { ...prev, currentRadius: newRadius };
       });
     }, 16);
 
     return () => clearInterval(interval);
   }, [skillCheck]);
 
-  // Handle spacebar for skill check
+  // Handle spacebar for circular skill check
   useEffect(() => {
     if (!skillCheck) return;
 
     const handleKeyPress = (e) => {
       if (e.code === 'Space' && skillCheck) {
         e.preventDefault();
-        
-        // Check if in target zone
-        if (skillCheck.current >= skillCheck.target - 5 && skillCheck.current <= skillCheck.target + 5) {
+
+        // Check if current radius is within target zone
+        const tolerance = 10;
+        if (skillCheck.currentRadius >= skillCheck.targetRadius - tolerance &&
+            skillCheck.currentRadius <= skillCheck.targetRadius + tolerance) {
           // Success - water the plant
           axios.post(`/api/garden/${skillCheck.plantId}/water`).then(() => {
             fetchGarden();
             setSkillCheck(null);
           });
         } else {
-          // Failed - close skill check
-          setSkillCheck(null);
+          // Failed - reset skill check
+          setSkillCheck(prev => prev ? { ...prev, currentRadius: 100 } : null);
         }
       }
     };
@@ -212,7 +215,7 @@ export default function Garden() {
         </div>
       )}
 
-      {/* TILE - SKILL CHECK MINIGAME */}
+      {/* TILE - SKILL CHECK MINIGAME CIRCULAR */}
       {skillCheck && (
         <div className="tile" style={{ gridColumn: '1 / -1' }}>
           <div className="tile-header">
@@ -222,44 +225,71 @@ export default function Garden() {
               <span className="tile-dot"></span>
             </div>
             <div className="tile-title">
-              <i className="fas fa-crosshairs"></i> skill check - ¡Presiona ESPACIO en la zona verde!
+              <i className="fas fa-bullseye"></i> skill check circular
             </div>
           </div>
           <div className="tile-content">
             <div style={{ textAlign: 'center', padding: '20px' }}>
               <div style={{
                 position: 'relative',
-                width: '100%',
-                height: '50px',
-                background: 'var(--tile-dark)',
-                border: '2px solid var(--border-color)',
-                marginBottom: '20px',
-                borderRadius: '4px'
+                width: '200px',
+                height: '200px',
+                margin: '0 auto 20px'
               }}>
-                {/* Target zone */}
+                {/* Outer circle (target zone) */}
                 <div style={{
                   position: 'absolute',
-                  left: `${skillCheck.target - 5}%`,
-                  width: '10%',
-                  height: '100%',
-                  background: 'rgba(76, 175, 80, 0.5)',
-                  border: '2px solid #4CAF50',
-                  borderRadius: '4px'
+                  width: '200px',
+                  height: '200px',
+                  borderRadius: '50%',
+                  border: '4px solid var(--border-color)',
+                  background: 'var(--tile-dark)'
                 }}></div>
-                {/* Moving indicator */}
+
+                {/* Target zone ring */}
                 <div style={{
                   position: 'absolute',
-                  left: `${skillCheck.current}%`,
-                  width: '6px',
-                  height: '100%',
-                  background: 'var(--accent)',
-                  transform: 'translateX(-50%)',
-                  boxShadow: '0 0 10px var(--accent)'
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: `${skillCheck.targetRadius * 2}%`,
+                  height: `${skillCheck.targetRadius * 2}%`,
+                  borderRadius: '50%',
+                  border: '3px solid #4CAF50',
+                  background: 'rgba(76, 175, 80, 0.2)'
+                }}></div>
+
+                {/* Inner contracting circle */}
+                <div style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: `${skillCheck.currentRadius * 2}%`,
+                  height: `${skillCheck.currentRadius * 2}%`,
+                  borderRadius: '50%',
+                  border: '3px solid var(--accent)',
+                  background: 'rgba(212, 163, 115, 0.3)',
+                  boxShadow: '0 0 15px var(--accent)'
+                }}></div>
+
+                {/* Center dot */}
+                <div style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '10px',
+                  height: '10px',
+                  borderRadius: '50%',
+                  background: 'var(--accent)'
                 }}></div>
               </div>
+
               <div style={{ fontSize: '14px', marginBottom: '15px' }}>
-                <i className="fas fa-info-circle"></i> El indicador se mueve automáticamente. Presiona ESPACIO cuando esté en la zona verde.
+                <i className="fas fa-info-circle"></i> Presiona ESPACIO cuando el círculo esté en la zona verde
               </div>
+
               <button
                 onClick={() => setSkillCheck(null)}
                 className="btn-secondary"
