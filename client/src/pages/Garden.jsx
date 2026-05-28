@@ -183,7 +183,7 @@ export default function Garden() {
                   className="btn-secondary"
                   style={{ textAlign: 'left', padding: '8px' }}
                 >
-                  🌿 {info.name}
+                  <i className="fas fa-leaf"></i> {info.name}
                 </button>
               ))}
             </div>

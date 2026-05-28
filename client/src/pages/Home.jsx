@@ -43,7 +43,7 @@ export default function Home() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            🌍 planeta the world
+            <i className="fas fa-globe"></i> planeta the world
           </div>
         </div>
         <div className="tile-content">
@@ -51,11 +51,11 @@ export default function Home() {
             {asciiEarth}
           </div>
           <div className="info-row" style={{ marginTop: '14px' }}>
-            <span className="info-label">💭 esencia</span>
+            <span className="info-label"><i className="fas fa-lightbulb"></i> esencia</span>
             <span className="value">"convierte tu productividad en un ecosistema vivo"</span>
           </div>
-          <div className="badge">🎮 gamificación · 75+ especies · rarezas míticas</div>
-          <div className="badge">⚡ tareas diarias · rachas · evolución de mascotas</div>
+          <div className="badge"><i className="fas fa-gamepad"></i> gamificación · 75+ especies · rarezas míticas</div>
+          <div className="badge"><i className="fas fa-bolt"></i> tareas diarias · rachas · evolución de mascotas</div>
         </div>
       </div>
 
@@ -129,22 +129,22 @@ export default function Home() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            🔥 progreso y racha
+            <i className="fas fa-fire"></i> progreso y racha
           </div>
         </div>
         <div className="tile-content">
           <div className="info-row">
-            <span className="info-label">💰 puntos</span>
+            <span className="info-label"><i className="fas fa-coins"></i> puntos</span>
             <span><strong>{(user?.totalPoints || 0).toLocaleString()} pts</strong></span>
           </div>
           <div className="info-row">
-            <span className="info-label">🔥 racha actual</span>
+            <span className="info-label"><i className="fas fa-fire"></i> racha actual</span>
             <span><strong>{user?.currentStreak || 0} días</strong> · mejor racha: {user?.bestStreak || 0}d</span>
           </div>
           <div className="progress-bg">
             <div className="progress-fill" style={{ width: `${Math.min((user?.currentStreak || 0) / 30 * 100, 100)}%` }}></div>
           </div>
-          <div className="badge">🎯 próximo hito: {Math.ceil(((user?.totalPoints || 0) / 5000) + 1) * 5000} pts</div>
+          <div className="badge"><i className="fas fa-bullseye"></i> próximo hito: {Math.ceil(((user?.totalPoints || 0) / 5000) + 1) * 5000} pts</div>
         </div>
       </div>
 
@@ -157,13 +157,13 @@ export default function Home() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            📋 actividades pendientes
+            <i className="fas fa-clipboard-list"></i> actividades pendientes
           </div>
         </div>
         <div className="tile-content">
-          <div className="badge">📚 Aprendizaje: pendiente</div>
-          <div className="badge">🏋️ Deporte: pendiente</div>
-          <div className="badge">🧹 Hogar: pendiente</div>
+          <div className="badge"><i className="fas fa-book"></i> Aprendizaje: pendiente</div>
+          <div className="badge"><i className="fas fa-dumbbell"></i> Deporte: pendiente</div>
+          <div className="badge"><i className="fas fa-broom"></i> Hogar: pendiente</div>
           <div style={{ marginTop: '12px', textAlign: 'center' }}>
             <strong>Ve a la sección de actividades</strong>
           </div>

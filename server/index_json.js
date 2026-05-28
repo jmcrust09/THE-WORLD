@@ -102,8 +102,10 @@ authRouter.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     
-    // Buscar usuario
-    const user = dataManager.getUserByUsername(username);
+    // Buscar usuario por username o email
+    const users = dataManager.getUsers();
+    const user = users.find(u => u.username === username || u.email === username);
+    
     if (!user) {
       return res.status(400).json({ msg: 'Credenciales inválidas' });
     }

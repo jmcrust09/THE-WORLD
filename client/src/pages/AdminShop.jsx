@@ -154,7 +154,7 @@ export default function AdminShop() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            🛍️ items de tienda ({items.length})
+            <i className="fas fa-shopping-bag"></i> items de tienda ({items.length})
           </div>
         </div>
         <div className="tile-content">

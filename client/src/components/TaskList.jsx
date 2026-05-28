@@ -43,7 +43,7 @@ export default function TaskList() {
           <li key={task._id} style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
             <input type="checkbox" checked={task.completed} onChange={() => toggleComplete(task)} />
             {task.title}
-            <button onClick={() => deleteTask(task._id)}>🗑️</button>
+            <button onClick={() => deleteTask(task._id)}><i className="fas fa-trash\"></i></button>
           </li>
         ))}
       </ul>

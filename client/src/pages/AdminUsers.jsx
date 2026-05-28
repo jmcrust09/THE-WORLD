@@ -115,7 +115,7 @@ export default function AdminUsers() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            👥 gestión de usuarios
+            <i className="fas fa-users-cog"></i> gestión de usuarios
           </div>
         </div>
         <div className="tile-content">

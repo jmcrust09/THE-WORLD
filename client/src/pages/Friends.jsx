@@ -257,7 +257,7 @@ export default function Friends() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            👥 mis amigos ({friends.length})
+            <i className="fas fa-users"></i> mis amigos ({friends.length})
           </div>
         </div>
         <div className="tile-content">
