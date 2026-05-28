@@ -106,13 +106,13 @@ export default function Home() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            🔧 filosofía neofetch
+            <i className="fas fa-tools"></i> filosofía neofetch
           </div>
         </div>
         <div className="tile-content">
-          <div>✦ stack: react · node.js · postgresql</div>
-          <div>✦ frontend: tailwind · axios · context</div>
-          <div>✦ backend: express, sequelize, jwt</div>
+          <div><i className="fas fa-code"></i> stack: react · node.js · postgresql</div>
+          <div><i className="fas fa-laptop-code"></i> frontend: tailwind · axios · context</div>
+          <div><i className="fas fa-server"></i> backend: express, sequelize, jwt</div>
           <div className="ascii-earth" style={{ fontSize: '9px', marginTop: '12px' }}>
 {`    "cada tarea fortalece tu ecosistema"
     — the world, v2.0`}

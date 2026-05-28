@@ -50,8 +50,11 @@ export default function Garden() {
 
   const waterPlant = async (id) => {
     try {
+      // Cerrar detalles para mostrar el skill check
+      setSelectedPlant(null);
       // Iniciar skill check
       setSkillCheck({ plantId: id, target: 70, current: 0, direction: 1, speed: 2 });
+      console.log('Skill check iniciado para planta:', id);
     } catch (err) {
       console.error('Error watering:', err);
     }
@@ -59,8 +62,10 @@ export default function Garden() {
 
   const harvestPlant = async (id) => {
     try {
+      console.log('Cosechando planta:', id);
       await axios.post(`/api/garden/${id}/harvest`);
       fetchGarden();
+      setSelectedPlant(null);
     } catch (err) {
       console.error('Error harvesting:', err);
     }
@@ -90,21 +95,37 @@ export default function Garden() {
           newCurrent = prev.current + (prev.speed * prev.direction);
         }
         
-        // Check if in target zone
-        if (newCurrent >= prev.target - 5 && newCurrent <= prev.target + 5) {
-          clearInterval(interval);
-          // Success - water the plant
-          axios.post(`/api/garden/${prev.plantId}/water`).then(() => {
-            fetchGarden();
-          });
-          return null;
-        }
-        
         return { ...prev, current: newCurrent };
       });
     }, 16);
 
     return () => clearInterval(interval);
+  }, [skillCheck]);
+
+  // Handle spacebar for skill check
+  useEffect(() => {
+    if (!skillCheck) return;
+
+    const handleKeyPress = (e) => {
+      if (e.code === 'Space' && skillCheck) {
+        e.preventDefault();
+        
+        // Check if in target zone
+        if (skillCheck.current >= skillCheck.target - 5 && skillCheck.current <= skillCheck.target + 5) {
+          // Success - water the plant
+          axios.post(`/api/garden/${skillCheck.plantId}/water`).then(() => {
+            fetchGarden();
+            setSkillCheck(null);
+          });
+        } else {
+          // Failed - close skill check
+          setSkillCheck(null);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
   }, [skillCheck]);
 
   if (loading) {
@@ -142,7 +163,7 @@ export default function Garden() {
               className="btn-primary"
               style={{ width: '100%' }}
             >
-              ➕ {showPlanting ? 'Cancelar' : 'Plantar'}
+              <i className="fa fa-plus"></i> {showPlanting ? 'Cancelar' : 'Plantar'}
             </button>
           </div>
           <div style={{ marginTop: '10px' }}>
@@ -151,7 +172,7 @@ export default function Garden() {
               className="btn-secondary"
               style={{ width: '100%' }}
             >
-              🔄 {viewMode === 'grid' ? ' vista lista' : ' vista grid'}
+              <i className="fa fa-th"></i>{viewMode === 'grid' ? ' vista lista' : ' vista grid'}
             </button>
           </div>
         </div>
@@ -193,7 +214,7 @@ export default function Garden() {
 
       {/* TILE - SKILL CHECK MINIGAME */}
       {skillCheck && (
-        <div className="tile">
+        <div className="tile" style={{ gridColumn: '1 / -1' }}>
           <div className="tile-header">
             <div className="tile-dots">
               <span className="tile-dot"></span>
@@ -201,21 +222,19 @@ export default function Garden() {
               <span className="tile-dot"></span>
             </div>
             <div className="tile-title">
-              <i className="fas fa-crosshairs"></i> skill check
+              <i className="fas fa-crosshairs"></i> skill check - ¡Presiona ESPACIO en la zona verde!
             </div>
           </div>
           <div className="tile-content">
             <div style={{ textAlign: 'center', padding: '20px' }}>
-              <div style={{ marginBottom: '20px' }}>
-                ¡Presiona ESPACIO en la zona verde!
-              </div>
               <div style={{
                 position: 'relative',
                 width: '100%',
-                height: '30px',
+                height: '50px',
                 background: 'var(--tile-dark)',
                 border: '2px solid var(--border-color)',
-                marginBottom: '10px'
+                marginBottom: '20px',
+                borderRadius: '4px'
               }}>
                 {/* Target zone */}
                 <div style={{
@@ -224,24 +243,29 @@ export default function Garden() {
                   width: '10%',
                   height: '100%',
                   background: 'rgba(76, 175, 80, 0.5)',
-                  border: '2px solid #4CAF50'
+                  border: '2px solid #4CAF50',
+                  borderRadius: '4px'
                 }}></div>
                 {/* Moving indicator */}
                 <div style={{
                   position: 'absolute',
                   left: `${skillCheck.current}%`,
-                  width: '4px',
+                  width: '6px',
                   height: '100%',
                   background: 'var(--accent)',
-                  transform: 'translateX(-50%)'
+                  transform: 'translateX(-50%)',
+                  boxShadow: '0 0 10px var(--accent)'
                 }}></div>
+              </div>
+              <div style={{ fontSize: '14px', marginBottom: '15px' }}>
+                <i className="fas fa-info-circle"></i> El indicador se mueve automáticamente. Presiona ESPACIO cuando esté en la zona verde.
               </div>
               <button
                 onClick={() => setSkillCheck(null)}
                 className="btn-secondary"
                 style={{ width: '100%' }}
               >
-                Cancelar
+                <i className="fas fa-times"></i> Cancelar
               </button>
             </div>
           </div>
@@ -257,7 +281,7 @@ export default function Garden() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            🌳 jardín (9 pots)
+            <i className="fas fa-tree"></i> jardín (9 pots)
           </div>
         </div>
         <div className="tile-content">
@@ -316,7 +340,7 @@ export default function Garden() {
                     </>
                   ) : (
                     <div style={{ fontSize: '36px', color: 'var(--text-muted)' }}>
-                      ➕
+                      <i className="fas fa-plus"></i>
                     </div>
                   )}
                 </div>
@@ -358,10 +382,7 @@ export default function Garden() {
             </div>
             {selectedPlant.stage === 'mature' && (
               <button
-                onClick={() => {
-                  harvestPlant(selectedPlant.id);
-                  setSelectedPlant(null);
-                }}
+                onClick={() => harvestPlant(selectedPlant.id)}
                 className="btn-primary"
                 style={{ width: '100%', marginTop: '12px' }}
               >
@@ -370,9 +391,7 @@ export default function Garden() {
             )}
             {selectedPlant.stage !== 'harvested' && selectedPlant.stage !== 'mature' && (
               <button
-                onClick={() => {
-                  waterPlant(selectedPlant.id);
-                }}
+                onClick={() => waterPlant(selectedPlant.id)}
                 className="btn-primary"
                 style={{ width: '100%', marginTop: '12px', background: '#2196F3', borderColor: '#2196F3' }}
               >

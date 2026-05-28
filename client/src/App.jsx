@@ -97,11 +97,12 @@ function DesktopLayout({ children }) {
         <a href="/friends" className={`task-button ${activeSection === 'friends' ? 'active-task' : ''}`}>
           [amigos]
         </a>
-        <button className="task-button" onClick={() => setShowProfile(!showProfile)}>
-          [user]
-        </button>
-        {showProfile && (
-          <div className="profile-menu">
+        <div style={{ position: 'relative' }}>
+          <button className="task-button" onClick={() => setShowProfile(!showProfile)}>
+            [user]
+          </button>
+          {showProfile && (
+            <div className="profile-menu">
             <div className="profile-header">
               <div className="profile-avatar">
                 {user?.profilePictureUrl ? (
@@ -135,7 +136,8 @@ function DesktopLayout({ children }) {
               </button>
             </div>
           </div>
-        )}
+          )}
+        </div>
         <button
           className="task-button"
           onClick={() => {

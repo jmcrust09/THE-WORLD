@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 export default function User() {
   const { user, refreshUserData } = useContext(AuthContext);
   const [editing, setEditing] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
     username: user?.username || '',
     email: user?.email || '',
@@ -29,6 +30,38 @@ export default function User() {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setMessage('El archivo es demasiado grande (máximo 5MB)');
+      return;
+    }
+
+    setUploading(true);
+    setMessage('');
+
+    try {
+      const formData = new FormData();
+      formData.append('profilePicture', file);
+
+      const res = await axios.post('/api/users/upload-profile', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      setFormData(prev => ({ ...prev, profilePictureUrl: res.data.profilePictureUrl }));
+      setMessage('Foto subida correctamente');
+    } catch (error) {
+      console.error('Error uploading profile picture:', error);
+      setMessage('Error al subir la foto');
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -136,13 +169,25 @@ export default function User() {
                 />
               </div>
               <div className="form-group">
-                <label className="form-label">url de foto de perfil</label>
+                <label className="form-label">subir foto de perfil</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="form-input"
+                  disabled={uploading}
+                />
+                {uploading && <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>Subiendo...</div>}
+              </div>
+              <div className="form-group">
+                <label className="form-label">o url de foto de perfil</label>
                 <input
                   type="url"
                   name="profilePictureUrl"
                   value={formData.profilePictureUrl}
                   onChange={handleChange}
                   className="form-input"
+                  placeholder="https://ejemplo.com/foto.jpg"
                 />
               </div>
               <button type="submit" className="btn-primary" style={{ width: '100%' }}>

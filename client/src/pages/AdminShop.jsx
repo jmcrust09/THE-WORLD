@@ -124,7 +124,7 @@ export default function AdminShop() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            ➕ crear nuevo item
+            <i className="fas fa-plus"></i> crear nuevo item
           </div>
         </div>
         <div className="tile-content">

@@ -181,7 +181,7 @@ export default function Pets() {
           </div>
         </div>
         <div className="tile-content">
-          <div>huevo → bebé → joven → adulto → evolucionado → ascendido</div>
+          <div>huevo <i className="fas fa-arrow-right"></i> bebé <i className="fas fa-arrow-right"></i> joven <i className="fas fa-arrow-right"></i> adulto <i className="fas fa-arrow-right"></i> evolucionado <i className="fas fa-arrow-right"></i> ascendido</div>
           <div className="progress-bg">
             <div className="progress-fill" style={{ width: '68%' }}></div>
           </div>
@@ -247,7 +247,7 @@ export default function Pets() {
           <div className="tile-content">
             <div className="info-row">
               <span className="info-label"><i className="fas fa-crown"></i> rareza</span>
-              <span>{rarityEmoji[pet.rarity]} {rarityLabels[pet.rarity]}</span>
+              <span><i className={`fas ${rarityEmoji[pet.rarity]}`}></i> {rarityLabels[pet.rarity]}</span>
             </div>
             <div className="info-row">
               <span className="info-label"><i className="fas fa-egg"></i> especie</span>
@@ -290,7 +290,7 @@ export default function Pets() {
             </div>
             <div className="info-row">
               <span className="info-label"><i className="fas fa-crown"></i> rareza</span>
-              <span>{rarityEmoji[selectedPet.rarity]} {rarityLabels[selectedPet.rarity]}</span>
+              <span><i className={`fas ${rarityEmoji[selectedPet.rarity]}`}></i> {rarityLabels[selectedPet.rarity]}</span>
             </div>
             <div className="info-row">
               <span className="info-label"><i className="fas fa-chart-line"></i> etapa</span>

@@ -124,7 +124,7 @@ export default function Friends() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            🔍 buscar usuarios
+            <i className="fas fa-search"></i> buscar usuarios
           </div>
         </div>
         <div className="tile-content">
@@ -136,44 +136,60 @@ export default function Friends() {
               setSearchQuery(e.target.value);
               searchUsers(e.target.value);
             }}
-            style={{
-              width: '100%',
-              padding: '10px',
-              background: 'var(--tile-dark)',
-              border: '1px solid var(--border-color)',
-              color: 'var(--text-color)',
-              borderRadius: '4px',
-              marginBottom: '10px'
-            }}
+            className="form-input"
           />
-          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
-            {searchResults.map(user => (
-              <div
-                key={user.id}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '8px',
-                  borderBottom: '1px solid var(--border-color)'
-                }}
-              >
-                <span>{user.username}</span>
-                <button
-                  onClick={() => sendFriendRequest(user.id)}
+          <div style={{ maxHeight: '200px', overflowY: 'auto', marginTop: '12px' }}>
+            {searchResults.length === 0 && searchQuery ? (
+              <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '20px' }}>
+                No se encontraron usuarios
+              </div>
+            ) : (
+              searchResults.map(user => (
+                <div
+                  key={user.id}
                   style={{
-                    padding: '5px 10px',
-                    background: 'var(--accent-color)',
-                    border: 'none',
-                    color: 'white',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '10px',
+                    borderBottom: '1px solid var(--border-color)',
+                    background: 'var(--tile-dark)',
+                    marginBottom: '8px',
+                    borderRadius: '4px'
                   }}
                 >
-                  Añadir
-                </button>
-              </div>
-            ))}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      background: 'var(--accent)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      color: 'var(--tile-bg)'
+                    }}>
+                      {user.username[0].toUpperCase()}
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-light)' }}>{user.username}</div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                        {user.totalPoints || 0} pts
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => sendFriendRequest(user.id)}
+                    className="btn-primary"
+                    style={{ padding: '6px 12px', fontSize: '12px' }}
+                  >
+                    <i className="fas fa-user-plus"></i> Añadir
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
@@ -187,12 +203,12 @@ export default function Friends() {
             <span className="tile-dot"></span>
           </div>
           <div className="tile-title">
-            📨 solicitudes ({friendRequests.length})
+            <i className="fas fa-envelope"></i> solicitudes ({friendRequests.length})
           </div>
         </div>
         <div className="tile-content">
           {friendRequests.length === 0 ? (
-            <div style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
+            <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '20px' }}>
               No hay solicitudes pendientes
             </div>
           ) : (
@@ -203,43 +219,49 @@ export default function Friends() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  padding: '10px',
-                  borderBottom: '1px solid var(--border-color)'
+                  padding: '12px',
+                  borderBottom: '1px solid var(--border-color)',
+                  background: 'var(--tile-dark)',
+                  marginBottom: '8px',
+                  borderRadius: '4px'
                 }}
               >
-                <div>
-                  <div style={{ fontWeight: 600 }}>{request.requester.username}</div>
-                  <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                    Racha: {request.friendshipStreak || 0}d
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '50%',
+                    background: 'var(--accent)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    color: 'var(--tile-bg)'
+                  }}>
+                    {request.requester.username[0].toUpperCase()}
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 600, color: 'var(--text-light)' }}>{request.requester.username}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                      {request.requester.totalPoints || 0} pts
+                    </div>
                   </div>
                 </div>
-                <div>
+                <div style={{ display: 'flex', gap: '6px' }}>
                   <button
                     onClick={() => acceptFriendRequest(request.id)}
-                    style={{
-                      padding: '5px 10px',
-                      background: '#4CAF50',
-                      border: 'none',
-                      color: 'white',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      marginRight: '5px'
-                    }}
+                    className="btn-primary"
+                    style={{ padding: '6px 10px', fontSize: '12px', background: '#4CAF50', borderColor: '#4CAF50' }}
                   >
-                    ✓
+                    <i className="fas fa-check"></i>
                   </button>
                   <button
                     onClick={() => rejectFriendRequest(request.id)}
-                    style={{
-                      padding: '5px 10px',
-                      background: '#f44336',
-                      border: 'none',
-                      color: 'white',
-                      borderRadius: '4px',
-                      cursor: 'pointer'
-                    }}
+                    className="btn-secondary"
+                    style={{ padding: '6px 10px', fontSize: '12px', background: '#f44336', borderColor: '#f44336', color: 'white' }}
                   >
-                    ✗
+                    <i className="fas fa-times"></i>
                   </button>
                 </div>
               </div>
@@ -264,64 +286,73 @@ export default function Friends() {
           {loading ? (
             <div style={{ textAlign: 'center' }}>Cargando...</div>
           ) : friends.length === 0 ? (
-            <div style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
-              No tienes amigos aún. ¡Busca usuarios para añadir!
+            <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '40px' }}>
+              <i className="fas fa-user-friends" style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.5 }}></i>
+              <div>No tienes amigos aún. ¡Busca usuarios para añadir!</div>
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '15px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '16px' }}>
               {friends.map(friend => (
                 <div
                   key={friend.id}
                   style={{
                     background: 'var(--tile-dark)',
-                    padding: '15px',
+                    padding: '16px',
                     borderRadius: '8px',
-                    border: '1px solid var(--border-color)'
+                    border: '1px solid var(--border-color)',
+                    transition: 'transform 0.2s, box-shadow 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
                     <div style={{
-                      width: '40px',
-                      height: '40px',
+                      width: '48px',
+                      height: '48px',
                       borderRadius: '50%',
-                      background: 'var(--accent-color)',
+                      background: 'var(--accent)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      marginRight: '10px',
-                      fontSize: '18px',
-                      fontWeight: 'bold'
+                      marginRight: '12px',
+                      fontSize: '20px',
+                      fontWeight: 'bold',
+                      color: 'var(--tile-bg)',
+                      border: '2px solid var(--accent)'
                     }}>
-                      {friend.username[0].toUpperCase()}
+                      {friend.friend?.profilePictureUrl ? (
+                        <img src={friend.friend.profilePictureUrl} alt="" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                      ) : (
+                        friend.friend?.username[0]?.toUpperCase() || 'U'
+                      )}
                     </div>
                     <div>
-                      <div style={{ fontWeight: 600 }}>{friend.username}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-light)', fontSize: '14px' }}>{friend.friend?.username || 'Unknown'}</div>
                       <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                        {friend.totalPoints || 0} pts
+                        <i className="fas fa-coins"></i> {friend.friend?.totalPoints || 0} pts
                       </div>
                     </div>
                   </div>
-                  <div style={{ marginBottom: '10px' }}>
-                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                      <i className="fas fa-fire"></i> Racha de amistad: {friend.friendshipStreak || 0} días
+                  <div style={{ marginBottom: '12px', padding: '10px', background: 'var(--tile-bg)', borderRadius: '4px' }}>
+                    <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '6px' }}>
+                      <i className="fas fa-fire" style={{ color: '#ff6b6b' }}></i> Racha de amistad: <strong style={{ color: 'var(--accent)' }}>{friend.friendshipStreak || 0}</strong> días
                     </div>
                     <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                      <i className="fas fa-sparkles"></i> Bonus: +{((friend.friendshipStreak || 0) * 0.05).toFixed(2)}x
+                      <i className="fas fa-star" style={{ color: '#ffd93d' }}></i> Bonus: <strong style={{ color: 'var(--accent)' }}>+{((friend.friendshipStreak || 0) * 0.05).toFixed(2)}x</strong>
                     </div>
                   </div>
                   <button
                     onClick={() => removeFriend(friend.id)}
-                    style={{
-                      width: '100%',
-                      padding: '5px',
-                      background: '#f44336',
-                      border: 'none',
-                      color: 'white',
-                      borderRadius: '4px',
-                      cursor: 'pointer'
-                    }}
+                    className="btn-secondary"
+                    style={{ width: '100%', padding: '8px', fontSize: '12px', background: '#f44336', borderColor: '#f44336', color: 'white' }}
                   >
-                    Eliminar amigo
+                    <i className="fas fa-user-minus"></i> Eliminar amigo
                   </button>
                 </div>
               ))}

@@ -94,7 +94,7 @@
 
   .tiles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 330px);
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 24px;
     align-items: start;
   }
@@ -106,11 +106,12 @@
     display: flex;
     flex-direction: column;
     border-radius: 0;
-    width: 330px;
+    width: 100%;
+    min-width: 300px;
   }
 
   .tile.wide {
-    width: 690px;
+    grid-column: span 2;
   }
 
   .tile.full-width {
@@ -243,12 +244,13 @@
     font-family: monospace;
     font-size: 11px;
     line-height: 1.2;
-    white-space: pre;
+    white-space: pre-wrap;
+    word-break: break-all;
     color: var(--text-muted);
     border: 1px solid var(--border-color);
     text-align: center;
     margin-top: 12px;
-    overflow-x: auto;
+    overflow-x: hidden;
   }
 
   hr {
@@ -368,13 +370,14 @@
   /* ─ PERFIL MENU ─ */
   .profile-menu {
     position: absolute;
-    bottom: 100%;
+    bottom: calc(100% + 8px);
     right: 0;
     background: var(--tile-bg);
     border: 1px solid var(--border-color);
     width: 280px;
     padding: 16px;
     z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
   .profile-header {

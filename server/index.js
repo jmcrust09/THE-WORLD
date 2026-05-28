@@ -208,6 +208,11 @@ app.use('/api/eggs', require('./routes/eggs'));
 
 app.use('/api/friends', require('./routes/friends'));
 
+app.use('/api/users', require('./routes/users'));
+
+// Serve static files from public/uploads
+app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
+
 app.listen(PORT, () => {
   console.log(`🌍 THE WORLD backend is running on port ${PORT}`);
 });

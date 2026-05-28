@@ -112,9 +112,9 @@ export default function Shop() {
           </div>
         </div>
         <div className="tile-content">
-          <div>★ racha: x1.5 (9 días)</div>
-          <div>★ bonus rarezas: <strong>+1.85x</strong></div>
-          <div>★ favorita: +5% extra</div>
+          <div><i className="fas fa-star"></i> racha: x1.5 (9 días)</div>
+          <div><i className="fas fa-star"></i> bonus rarezas: <strong>+1.85x</strong></div>
+          <div><i className="fas fa-star"></i> favorita: +5% extra</div>
           <div className="progress-bg">
             <div className="progress-fill" style={{ width: '74%' }}></div>
           </div>
