@@ -1,0 +1,37 @@
+{
+  "animals": [
+    {
+      "id": 1,
+      "species": "Dragón de Fuego",
+      "rarity": "legendario",
+      "description": "Un dragón poderoso con control sobre el fuego",
+      "icon": "fa-dragon",
+      "cssClass": "bg-red-500",
+      "baseMultiplier": 2.0,
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-05-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "species": "Lobo de Hielo",
+      "rarity": "epico",
+      "description": "Un lobo con pelaje blanco y ojos azules",
+      "icon": "fa-wolf-pack-battalion",
+      "cssClass": "bg-blue-500",
+      "baseMultiplier": 1.5,
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-05-01T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "species": "Gato Común",
+      "rarity": "comun",
+      "description": "Un gato adorable y juguetón",
+      "icon": "fa-cat",
+      "cssClass": "bg-gray-500",
+      "baseMultiplier": 1.0,
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-05-01T00:00:00Z"
+    }
+  ]
+}

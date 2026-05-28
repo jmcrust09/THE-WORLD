@@ -1,0 +1,73 @@
+{
+  "eggs": [
+    {
+      "id": 1,
+      "name": "Huevo Común",
+      "type": "egg",
+      "cost": 100,
+      "description": "Un huevo básico que puede contener mascotas comunes",
+      "icon": "fa-egg",
+      "cssClass": "bg-gray-100",
+      "probabilities": {
+        "comun": 70,
+        "poco_comun": 25,
+        "raro": 5,
+        "epico": 0,
+        "legendario": 0,
+        "mitico": 0
+      },
+      "isEvent": false,
+      "isActive": true,
+      "availableFrom": null,
+      "availableUntil": null,
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-05-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Huevo Raro",
+      "type": "egg",
+      "cost": 500,
+      "description": "Un huevo con mayor probabilidad de mascotas raras",
+      "icon": "fa-egg",
+      "cssClass": "bg-blue-100",
+      "probabilities": {
+        "comun": 30,
+        "poco_comun": 40,
+        "raro": 25,
+        "epico": 5,
+        "legendario": 0,
+        "mitico": 0
+      },
+      "isEvent": false,
+      "isActive": true,
+      "availableFrom": null,
+      "availableUntil": null,
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-05-01T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Huevo Épico",
+      "type": "egg",
+      "cost": 2000,
+      "description": "Un huevo especial con mascotas épicas",
+      "icon": "fa-egg",
+      "cssClass": "bg-purple-100",
+      "probabilities": {
+        "comun": 10,
+        "poco_comun": 20,
+        "raro": 40,
+        "epico": 25,
+        "legendario": 5,
+        "mitico": 0
+      },
+      "isEvent": false,
+      "isActive": true,
+      "availableFrom": null,
+      "availableUntil": null,
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-05-01T00:00:00Z"
+    }
+  ]
+}

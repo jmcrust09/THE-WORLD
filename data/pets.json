@@ -1,0 +1,32 @@
+{
+  "pets": [
+    {
+      "id": 1,
+      "userId": 1,
+      "species": "Dragón de Fuego",
+      "name": "Ignis",
+      "rarity": "legendario",
+      "stage": "adulto",
+      "pointsAccumulated": 500,
+      "eggOrigin": "Huevo Épico",
+      "isFavorite": true,
+      "hatchedAt": "2026-05-10T10:00:00Z",
+      "createdAt": "2026-05-10T10:00:00Z",
+      "updatedAt": "2026-05-27T23:59:59Z"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "species": "Lobo de Hielo",
+      "name": "Frost",
+      "rarity": "epico",
+      "stage": "joven",
+      "pointsAccumulated": 200,
+      "eggOrigin": "Huevo Raro",
+      "isFavorite": false,
+      "hatchedAt": "2026-05-15T14:00:00Z",
+      "createdAt": "2026-05-15T14:00:00Z",
+      "updatedAt": "2026-05-27T23:59:59Z"
+    }
+  ]
+}

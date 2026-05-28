@@ -1,0 +1,46 @@
+{
+  "gartens": [
+    {
+      "id": 1,
+      "userId": 1,
+      "plantType": "Tomate",
+      "stage": "seed",
+      "plantedAt": "2026-05-26T08:00:00Z",
+      "lastWateredAt": "2026-05-26T08:00:00Z",
+      "harvestAt": null,
+      "growthProgress": 0,
+      "yield": 0,
+      "position": 1,
+      "createdAt": "2026-05-26T08:00:00Z",
+      "updatedAt": "2026-05-26T08:00:00Z"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "plantType": "Lechuga",
+      "stage": "sprout",
+      "plantedAt": "2026-05-25T10:00:00Z",
+      "lastWateredAt": "2026-05-26T08:00:00Z",
+      "harvestAt": null,
+      "growthProgress": 25,
+      "yield": 0,
+      "position": 2,
+      "createdAt": "2026-05-25T10:00:00Z",
+      "updatedAt": "2026-05-26T08:00:00Z"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "plantType": "Zanahoria",
+      "stage": "growing",
+      "plantedAt": "2026-05-24T12:00:00Z",
+      "lastWateredAt": "2026-05-26T08:00:00Z",
+      "harvestAt": null,
+      "growthProgress": 60,
+      "yield": 0,
+      "position": 3,
+      "createdAt": "2026-05-24T12:00:00Z",
+      "updatedAt": "2026-05-26T08:00:00Z"
+    }
+  ]
+}

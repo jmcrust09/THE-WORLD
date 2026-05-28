@@ -1,0 +1,69 @@
+{
+  "shopitems": [
+    {
+      "id": 1,
+      "name": "Semilla Pequeña",
+      "type": "food",
+      "cost": 50,
+      "description": "Una semilla básica para tu jardín",
+      "icon": "fa-seedling",
+      "cssClass": "bg-green-100",
+      "expValue": 10,
+      "effect": null,
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-05-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Manzana Brillante",
+      "type": "food",
+      "cost": 100,
+      "description": "Una manzana que da 20 puntos de experiencia",
+      "icon": "fa-apple-whole",
+      "cssClass": "bg-red-100",
+      "expValue": 20,
+      "effect": null,
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-05-01T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Zanahoria Mágica",
+      "type": "food",
+      "cost": 150,
+      "description": "Una zanahoria que da 30 puntos de experiencia",
+      "icon": "fa-carrot",
+      "cssClass": "bg-orange-100",
+      "expValue": 30,
+      "effect": null,
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-05-01T00:00:00Z"
+    },
+    {
+      "id": 4,
+      "name": "Poción de Energía",
+      "type": "potion",
+      "cost": 200,
+      "description": "Aumenta tu multiplicador por 1.5x por 1 hora",
+      "icon": "fa-flask",
+      "cssClass": "bg-yellow-100",
+      "expValue": 0,
+      "effect": "multiplier_1.5_1h",
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-05-01T00:00:00Z"
+    },
+    {
+      "id": 5,
+      "name": "Poción de Suerte",
+      "type": "potion",
+      "cost": 300,
+      "description": "Aumenta la probabilidad de mascotas raras por 1 hora",
+      "icon": "fa-clover",
+      "cssClass": "bg-green-100",
+      "expValue": 0,
+      "effect": "luck_boost_1h",
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-05-01T00:00:00Z"
+    }
+  ]
+}

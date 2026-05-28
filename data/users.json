@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "Jugador_Maestro",
+      "email": "admin@theworld.com",
+      "passwordHash": "$2b$10$placeholder_hash_for_admin",
+      "isGuest": false,
+      "isAdmin": true,
+      "isBanned": false,
+      "banReason": null,
+      "bannedAt": null,
+      "totalPoints": 5000,
+      "currentStreak": 7,
+      "bestStreak": 15,
+      "bonusMultiplier": 1.5,
+      "favoritePetId": 1,
+      "profilePictureUrl": null,
+      "lastTaskDate": "2026-05-27T23:59:59Z",
+      "createdAt": "2026-05-01T00:00:00Z",
+      "updatedAt": "2026-05-27T23:59:59Z"
+    },
+    {
+      "id": 2,
+      "username": "Novato_Productivo",
+      "email": "novato@theworld.com",
+      "passwordHash": "$2b$10$placeholder_hash_for_novato",
+      "isGuest": false,
+      "isAdmin": false,
+      "isBanned": false,
+      "banReason": null,
+      "bannedAt": null,
+      "totalPoints": 250,
+      "currentStreak": 3,
+      "bestStreak": 5,
+      "bonusMultiplier": 1.0,
+      "favoritePetId": null,
+      "profilePictureUrl": null,
+      "lastTaskDate": "2026-05-27T20:00:00Z",
+      "createdAt": "2026-05-15T00:00:00Z",
+      "updatedAt": "2026-05-27T20:00:00Z"
+    }
+  ]
+}

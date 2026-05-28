@@ -7,6 +7,9 @@ const Inventory = sequelize.define('Inventory', {
   quantity: { type: DataTypes.INTEGER, defaultValue: 1 },
   isEquipped: { type: DataTypes.BOOLEAN, defaultValue: false },
   obtainedAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
-}, { timestamps: true });
+}, { 
+  timestamps: true,
+  tableName: 'Inventories'
+});
 
 module.exports = Inventory;

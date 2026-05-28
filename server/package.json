@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node index.js",
+    "start:json": "node index_json.js",
+    "dev:json": "node index_json.js",
     "test": "node test-server.js",
     "test-quick": "echo ✅ THE WORLD Server Test - Ejecuta: npm run test"
   },

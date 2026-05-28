@@ -10,7 +10,8 @@ Todo el sistema se presenta en una interfaz que combina la calidez de los juegos
 
 - [Visión general](#visión-general)
 - [Características principales](#características-principales)
-- [Interfaz “caído” (cozy + retro)](#interfaz-caído-cozy--retro)
+- [Sistemas adicionales](#sistemas-adicionales)
+- [Interfaz "caído" (cozy + retro)](#interfaz-caído-cozy--retro)
 - [Sistema de actividades](#sistema-de-actividades)
 - [Sistema de puntos](#sistema-de-puntos)
 - [Sistema de huevos](#sistema-de-huevos)
@@ -19,7 +20,8 @@ Todo el sistema se presenta en una interfaz que combina la calidez de los juegos
 - [Flujo de usuario y onboarding](#flujo-de-usuario-y-onboarding)
 - [Arquitectura y stack tecnológico](#arquitectura-y-stack-tecnológico)
 - [Estructura del proyecto](#estructura-del-proyecto)
-- [Modelo de datos (MongoDB)](#modelo-de-datos-mongodb)
+- [Sistemas de base de datos](#sistemas-de-base-de-datos)
+- [Modelo de datos (PostgreSQL)](#modelo-de-datos-postgresql)
 - [Algoritmo de rareza (cálculo de eclosión)](#algoritmo-de-rareza-cálculo-de-eclosión)
 - [Componentes clave del frontend](#componentes-clave-del-frontend)
 - [Autenticación](#autenticación)
@@ -42,7 +44,7 @@ Todo el sistema se presenta en una interfaz que combina la calidez de los juegos
 
 El resultado es una web donde tus hábitos reales alimentan un ecosistema virtual único. Cada vez que marcas una tarea como completada, ganas puntos, tu mascota favorita se alegra, acumulas experiencia para que crezca y desbloqueas la posibilidad de conseguir nuevas criaturas. Las mascotas más raras no solo son un trofeo, sino que aumentan permanentemente la cantidad de puntos que recibes por cada actividad, incentivando la constancia y la mejora continua.
 
-> “Convierte tu productividad en un ecosistema vivo. Cada tarea completada te acerca a tu próxima mascota legendaria.”
+> "Convierte tu productividad en un ecosistema vivo. Cada tarea completada te acerca a tu próxima mascota legendaria."
 
 ---
 
@@ -57,12 +59,55 @@ El resultado es una web donde tus hábitos reales alimentan un ecosistema virtua
 - **Sistema de rarezas** (6 niveles): Común, Poco Común, Raro, Épico, Legendario, Mítico. Cada rareza tiene un color asociado, un multiplicador de puntos pasivo y una apariencia visual especial (brillo, aura).
 - **Bonus pasivo por mascota rara**: cada mascota aporta un multiplicador que se suma al total (ejemplo: una mascota Épica da +0.5x, una Legendaria +0.8x, una Mítica +1.5x). El bonus total se aplica a todas las futuras actividades.
 - **Tu propio mundo**: una galería donde puedes ver todas tus mascotas, seleccionar una favorita e interactuar con ella (recibe pequeñas reacciones y un bonus extra del 5% en las actividades).
-- **Sincronización en la nube**: tu progreso se guarda en MongoDB asociado a tu cuenta. Puedes acceder desde cualquier dispositivo.
-- **Consejos automáticos por algoritmos** (sin IA externa): el sistema analiza tu bitácora y calcula tu hábito estrella (el que más repites), el hábito a mejorar (el que más fallas), el día de máximo rendimiento y una “playlist de rescate” con las tareas fallidas ordenadas por prioridad. Estos consejos se muestran en un panel específico y se actualizan en tiempo real.
+- **Sincronización en la nube**: tu progreso se guarda en PostgreSQL asociado a tu cuenta. Puedes acceder desde cualquier dispositivo.
+- **Consejos automáticos por algoritmos** (sin IA externa): el sistema analiza tu bitácora y calcula tu hábito estrella (el que más repites), el hábito a mejorar (el que más fallas), el día de máximo rendimiento y una "playlist de rescate" con las tareas fallidas ordenadas por prioridad. Estos consejos se muestran en un panel específico y se actualizan en tiempo real.
 
 ---
 
-## Interfaz “caído” (cozy + retro)
+## Sistemas adicionales
+
+### Sistema de Amigos
+
+- **Solicitudes de amistad**: Envía y recibe solicitudes de amistad de otros usuarios.
+- **Lista de amigos**: Visualiza todos tus amigos aceptados.
+- **Rachas de amistad**: Sistema que rastrea cuántos días consecutivos ambos amigos han estado activos.
+- **Bonus por racha de amistad**: 3 días seguidos de actividad mutua otorgan un multiplicador adicional.
+- **Multiplicador acumulable**: Las rachas de amistad se suman al multiplicador total de puntos.
+
+### Sistema de Jardín
+
+- **9 slots de cultivo**: Cada usuario tiene 9 posiciones para plantar y cultivar.
+- **5 etapas de crecimiento**: seed → sprout → growing → mature → harvested.
+- **Sistema de riego**: Riega tus plantas para que crezcan más rápido.
+- **Cosecha**: Recoge tus plantas cuando estén maduras para obtener puntos.
+- **Progreso visual**: Barra de progreso que muestra el crecimiento de cada planta.
+
+### Sistema de Inventario
+
+- **Items de tienda**: Compra items en la tienda y almacénalos en tu inventario.
+- **Equipamiento**: Equipa items para usar sus efectos activos.
+- **Categorías de items**: Comida, pociones, decoraciones y más.
+- **Gestión de cantidad**: Controla cuántos items de cada tipo tienes.
+
+### Panel de Administración
+
+- **Gestión de usuarios**: Ver todos los usuarios registrados.
+- **Banear usuarios**: Banear/desbanear usuarios con motivo.
+- **Admin status**: Otorgar o revocar privilegios de administrador.
+- **Gestión de tienda**: Crear, editar y eliminar items de la tienda.
+- **Gestión de huevos**: Crear, editar y eliminar tipos de huevos.
+- **Botones de admin**: Acceso rápido desde la barra inferior para administradores.
+
+### Sistema de Perfiles
+
+- **Foto de perfil**: URL personalizable para la foto de perfil.
+- **Estadísticas públicas**: Muestra de puntos, rachas y mascotas.
+- **Configuración de privacidad**: Controla qué información es visible.
+- **Sección de usuario en UI**: Panel inferior con información del usuario actual.
+
+---
+
+## Interfaz "caído" (cozy + retro)
 
 La interfaz de **THE WORLD** sigue una filosofía híbrida: por un lado, la suavidad y calidez de los *cozy games*; por otro, la claridad y nostalgia de las terminales clásicas.
 
@@ -72,8 +117,8 @@ La interfaz de **THE WORLD** sigue una filosofía híbrida: por un lado, la suav
 - Animaciones de caída, flotación y rebote suaves.
 - Iconografía redondeada y amigable (Font Awesome).
 - Sonidos ambientales opcionales (completar tarea, comprar huevo, eclosión).
-- Transiciones tipo “parallax lento” en el fondo.
-- Microinteracciones satisfactorias (hover con escala, botones que “respiran”).
+- Transiciones tipo "parallax lento" en el fondo.
+- Microinteracciones satisfactorias (hover con escala, botones que "respiran").
 - Tipografía monoespaciada (`Courier New`) para textos informativos, combinada con fuentes sans-serif para los títulos.
 - Arte ASCII del mundo en la zona lateral izquierda (similar a la salida de `neofetch`), que actúa como logotipo del proyecto.
 
@@ -104,7 +149,7 @@ La interfaz de **THE WORLD** sigue una filosofía híbrida: por un lado, la suav
 ╚══════════════════════════════════════════════════╝
 ```
 
-### Paleta de colores (tema claro “caído”)
+### Paleta de colores (tema claro "caído")
 
 | Rol                  | Color      | Código HEX   |
 |----------------------|------------|--------------|
@@ -170,10 +215,10 @@ La racha cuenta los días consecutivos en los que el usuario ha completado al me
 ### Fórmula de puntos totales por actividad
 
 ```
-puntos_totales = puntos_base × multiplicador_racha × (1 + bonus_total_mascotas)
+puntos_totales = puntos_base × multiplicador_racha × (1 + bonus_total_mascotas + bonus_amigos)
 ```
 
-Donde `bonus_total_mascotas` es la suma de los multiplicadores de todas las mascotas que posee el usuario (ej: 0.5 por una Épica, 0.8 por una Legendaria, etc.). Si el usuario tiene mascota favorita, se añade un +0.05 extra.
+Donde `bonus_total_mascotas` es la suma de los multiplicadores de todas las mascotas que posee el usuario (ej: 0.5 por una Épica, 0.8 por una Legendaria, etc.) y `bonus_amigos` es el bonus por rachas de amistad. Si el usuario tiene mascota favorita, se añade un +0.05 extra.
 
 ### Ejemplo de registro de actividad (formato JSON)
 
@@ -204,6 +249,7 @@ Los puntos son la moneda principal del juego. Se acumulan principalmente complet
 | Actividad completada                    | 50 – 400 (según categoría/dificultad)|
 | Rachas diarias                          | x1.2 a x3.0                          |
 | Mascotas raras (bonus pasivo)           | +10% a +100% acumulable              |
+| Rachas de amistad                       | +5% a +20% acumulable                |
 | Eventos especiales (2x puntos)          | temporal                             |
 | Interacción con mascota favorita        | +5% extra en la siguiente actividad  |
 
@@ -331,7 +377,7 @@ El ciclo principal de juego está diseñado para ser intuitivo y adictivo en el 
 
 ## Arquitectura y stack tecnológico
 
-El proyecto se divide en frontend (React) y backend (Node.js + Express), con PostgreSQL como base de datos y Socket.io para actualizaciones en tiempo real.
+El proyecto se divide en frontend (React) y backend (Node.js + Express), con PostgreSQL como base de datos principal y Socket.io para actualizaciones en tiempo real. También existe una versión alternativa que usa archivos JSON en lugar de PostgreSQL.
 
 ```json
 {
@@ -347,13 +393,13 @@ El proyecto se divide en frontend (React) y backend (Node.js + Express), con Pos
   },
   "backend": {
     "runtime": "Node.js + Express",
-    "database": "PostgreSQL + Sequelize",
+    "database": "PostgreSQL + Sequelize (versión main) OR JSON files (versión JSON)",
     "auth": "JWT + OAuth2 (Google, GitHub)",
     "realtime": "Socket.io"
   },
   "deployment": {
     "platform": "Render",
-    "database": "Managed PostgreSQL"
+    "database": "Managed PostgreSQL (versión main) OR JSON files (versión JSON)"
   }
 }
 ```
@@ -374,107 +420,253 @@ the-world/
 │   │   ├── hooks/               # usePoints, usePets, useEggs, useStreak
 │   │   ├── store/               # Zustand stores (user, world)
 │   │   ├── utils/               # rarityCalculator, growthCalculator, eggProbabilities
-│   │   ├── pages/               # Home, Activities, EggShop, PetCollection, Profile
+│   │   ├── pages/               # Home, Activities, EggShop, PetCollection, Profile, Friends, AdminShop, AdminUsers
 │   │   └── styles/              # Tailwind + CSS personalizado (estilo neofetch)
 │   └── public/
 │       ├── assets/              # sprites de mascotas, huevos, sonidos
 │       └── ascii/               # arte ASCII del mundo
 ├── server/                      # Backend Node.js
-│   ├── models/                  # Usuario, Mascota, Actividad, Huevo, Transaccion
-│   ├── routes/                  # API endpoints (actividades, compras, mascotas)
+│   ├── models/                  # Usuario, Mascota, Actividad, Huevo, Transaccion, Friends, Garden, Inventory
+│   ├── routes/                  # API endpoints (actividades, compras, mascotas, friends, admin)
 │   ├── controllers/             # Lógica de negocio
 │   ├── algorithms/              # Cálculo de consejos (hábito estrella, etc.)
 │   ├── middleware/              # Autenticación JWT, manejo de errores
-│   └── socket/                  # Eventos en tiempo real
+│   ├── socket/                  # Eventos en tiempo real
+│   ├── dataManager.js           # Gestor de datos JSON (versión JSON)
+│   ├── index.js                 # Servidor PostgreSQL (versión main)
+│   └── index_json.js            # Servidor JSON (versión JSON)
+├── data/                        # Archivos JSON (versión JSON)
+│   ├── users.json
+│   ├── eggs.json
+│   ├── shopitems.json
+│   ├── tasks.json
+│   ├── pets.json
+│   ├── inventories.json
+│   ├── gartens.json
+│   ├── friends.json
+│   ├── friendrequests.json
+│   └── animals.json
+├── postgredb/                   # Scripts SQL (versión PostgreSQL)
+│   ├── update_db.js
+│   ├── README_DB.md
+│   └── *.sql                    # Archivos SQL de actualización
 ├── .env.example
 ├── package.json
-└── README.md
+├── README.md
+└── README_JSON.md                # Instructivo versión JSON
 ```
 
 ---
 
-## Modelo de datos (MongoDB)
+## Sistemas de base de datos
+
+El proyecto soporta dos sistemas de base de datos:
+
+### Versión PostgreSQL (Main)
+
+- Usa PostgreSQL como base de datos relacional
+- Usa Sequelize ORM para modelado y consultas
+- Ideal para producción y escalabilidad
+- Requiere configuración de conexión a base de datos
+- Archivos SQL en carpeta `postgredb/`
+- Server: `server/index.js`
+
+### Versión JSON (Alternativa)
+
+- Usa archivos JSON en carpeta `data/`
+- No requiere configuración de base de datos
+- Usa `dataManager.js` para operaciones CRUD
+- Similar al proyecto "Student Entity"
+- Ideal para desarrollo y pruebas
+- Server: `server/index_json.js`
+
+Para más detalles sobre la versión JSON, consulta `README_JSON.md`.
+
+---
+
+## Modelo de datos (PostgreSQL)
 
 Base de datos: `the_world`
 
-### Colección `usuarios`
+### Tabla `Users`
 
 ```javascript
 {
-  _id: ObjectId,
+  id: INTEGER PRIMARY KEY,
   username: String, unique,
   email: String, unique,
   passwordHash: String,
-  totalPoints: { type: Number, default: 0 },
-  currentStreak: { type: Number, default: 0 },
-  bestStreak: { type: Number, default: 0 },
-  bonusMultiplier: { type: Number, default: 1.0 },  // 1 + suma de multiplicadores de mascotas
-  favoritePetId: ObjectId,  // referencia a la mascota favorita
+  isGuest: Boolean,
+  isAdmin: Boolean,
+  isBanned: Boolean,
+  banReason: String,
+  bannedAt: Date,
+  totalPoints: Number, default: 0,
+  currentStreak: Number, default: 0,
+  bestStreak: Number, default: 0,
+  bonusMultiplier: Number, default: 1.0,
+  favoritePetId: INTEGER,
+  profilePictureUrl: String,
+  lastTaskDate: Date,
   createdAt: Date,
   updatedAt: Date
 }
 ```
 
-### Colección `actividades`
+### Tabla `Tasks`
 
 ```javascript
 {
-  _id: ObjectId,
-  userId: ObjectId, ref: 'Usuario',
-  day: String,        // 'lunes', 'martes', ...
-  schedule: String,   // 'mañana', 'tarde', 'noche'
+  id: INTEGER PRIMARY KEY,
+  userId: INTEGER, ref: 'Users',
+  day: String,
+  schedule: String,
+  title: String,
   task: String,
-  category: String,   // 'deporte', 'aprendizaje', etc.
-  priority: String,   // 'Indispensable', 'Necesaria', 'Deseable'
+  category: String,
+  priority: String,
   completed: Boolean,
   pointsEarned: Number,
-  timestamp: Date
+  timestamp: Date,
+  createdAt: Date,
+  updatedAt: Date
 }
 ```
 
-### Colección `mascotas`
+### Tabla `Pets`
 
 ```javascript
 {
-  _id: ObjectId,
-  userId: ObjectId, ref: 'Usuario',
-  species: String,      // 'Zorro', 'Dragón de Fuego', etc.
+  id: INTEGER PRIMARY KEY,
+  userId: INTEGER, ref: 'Users',
+  species: String,
   name: String,
-  rarity: String,       // 'comun','poco_comun','raro','epico','legendario','mitico'
-  stage: String,        // 'huevo','bebe','joven','adulto','evolucionado','ascendido'
-  pointsAccumulated: { type: Number, default: 0 },
-  eggOrigin: String,    // 'basico','premium','epico','legendario','mitico','evento'
+  rarity: String,
+  stage: String,
+  pointsAccumulated: Number, default: 0,
+  eggOrigin: String,
   isFavorite: Boolean,
   hatchedAt: Date,
-  lastInteraction: Date
+  createdAt: Date,
+  updatedAt: Date
 }
 ```
 
-### Colección `huevos_comprados`
+### Tabla `Eggs`
 
 ```javascript
 {
-  _id: ObjectId,
-  userId: ObjectId,
-  eggType: String,
+  id: INTEGER PRIMARY KEY,
+  name: String,
+  type: String,
   cost: Number,
-  petResultId: ObjectId,  // ref: 'Mascota', null si aún no eclosionó
-  status: String,         // 'waiting', 'hatching', 'hatched'
-  purchasedAt: Date,
-  hatchedAt: Date
+  description: String,
+  icon: String,
+  cssClass: String,
+  probabilities: JSON,
+  isEvent: Boolean,
+  isActive: Boolean,
+  availableFrom: Date,
+  availableUntil: Date,
+  createdAt: Date,
+  updatedAt: Date
 }
 ```
 
-### Colección `transacciones`
+### Tabla `ShopItems`
 
 ```javascript
 {
-  _id: ObjectId,
-  userId: ObjectId,
-  amount: Number,        // positivo = ganado, negativo = gastado
-  reason: String,        // 'actividad', 'compra_huevo', 'bonus_racha', 'evento'
-  referenceId: ObjectId, // id de la actividad o del huevo
-  timestamp: Date
+  id: INTEGER PRIMARY KEY,
+  name: String,
+  type: String,
+  cost: Number,
+  description: String,
+  icon: String,
+  cssClass: String,
+  expValue: Number,
+  effect: String,
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Tabla `Inventories`
+
+```javascript
+{
+  id: INTEGER PRIMARY KEY,
+  userId: INTEGER, ref: 'Users',
+  shopItemId: INTEGER,
+  quantity: Number, default: 1,
+  isEquipped: Boolean, default: false,
+  obtainedAt: Date,
+  equippedAt: Date,
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Tabla `Gartens`
+
+```javascript
+{
+  id: INTEGER PRIMARY KEY,
+  userId: INTEGER, ref: 'Users',
+  plantType: String,
+  stage: String, default: 'seed',
+  plantedAt: Date,
+  lastWateredAt: Date,
+  harvestAt: Date,
+  growthProgress: Number, default: 0,
+  yield: Number, default: 0,
+  position: INTEGER,
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Tabla `Friends`
+
+```javascript
+{
+  id: INTEGER PRIMARY KEY,
+  userId: INTEGER, ref: 'Users',
+  friendId: INTEGER, ref: 'Users',
+  friendshipStreak: Number, default: 0,
+  streakStartDate: Date,
+  lastInteractionDate: Date,
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Tabla `FriendRequests`
+
+```javascript
+{
+  id: INTEGER PRIMARY KEY,
+  senderId: INTEGER, ref: 'Users',
+  receiverId: INTEGER, ref: 'Users',
+  status: String, // pending, accepted, rejected
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Tabla `Animals`
+
+```javascript
+{
+  id: INTEGER PRIMARY KEY,
+  species: String, unique,
+  rarity: String,
+  description: String,
+  icon: String,
+  cssClass: String,
+  baseMultiplier: Number,
+  createdAt: Date,
+  updatedAt: Date
 }
 ```
 
@@ -482,7 +674,7 @@ Base de datos: `the_world`
 
 ## Algoritmo de rareza (cálculo de eclosión)
 
-El servidor ejecuta este algoritmo cuando un usuario hace clic en “Eclosionar” sobre un huevo comprado.
+El servidor ejecuta este algoritmo cuando un usuario hace clic en "Eclosionar" sobre un huevo comprado.
 
 ```javascript
 // utils/rarityCalculator.js
@@ -653,6 +845,10 @@ El arte ASCII se redimensiona automáticamente (fuente de 13px en escritorio, 10
 | Web accesible (no requiere app nativa)       | ✅        | ❌ (Roblox) | App móvil  | ✅       |
 | Huevos comprables con puntos, no con dinero real | ✅   | ❌ (Robux) | ❌         | ❌       |
 | Interacción tipo cozy game + estética terminal | ✅     | ❌        | ✅          | ❌       |
+| Sistema de amigos con rachas                  | ✅        | ✅        | ❌          | ❌       |
+| Sistema de jardín                            | ✅        | ❌        | ❌          | ❌       |
+| Sistema de inventario                        | ✅        | ✅        | ❌          | ❌       |
+| Panel de administración                       | ✅        | ❌        | ❌          | ❌       |
 
 ---
 
@@ -661,7 +857,7 @@ El arte ASCII se redimensiona automáticamente (fuente de 13px en escritorio, 10
 ### Requisitos previos
 
 - Node.js 18+ y npm
-- MongoDB Atlas (o local) – una instancia gratuita es suficiente
+- PostgreSQL (versión main) o ninguna (versión JSON)
 - Cuenta en Render (para despliegue)
 
 ### Instalación local
@@ -677,10 +873,15 @@ cd server && npm install && cd ..
 
 # Configurar variables de entorno (copiar .env.example a .env)
 cp server/.env.example server/.env
-# Editar server/.env con DATABASE_URL, JWT_SECRET, PORT
+# Editar server/.env con DATABASE_URL (versión main), JWT_SECRET, PORT
 
-# Ejecutar en desarrollo (concurrente)
+# Ejecutar en desarrollo (versión PostgreSQL)
+cd server
 npm run dev
+
+# Ejecutar en desarrollo (versión JSON)
+cd server
+npm run dev:json
 ```
 
 El frontend estará en `http://localhost:5173` y el backend en `http://localhost:5000`.
@@ -691,9 +892,9 @@ El frontend estará en `http://localhost:5173` y el backend en `http://localhost
 2. En Render, crea un **Web Service** y conecta el repositorio.
 3. Configura:
    - **Build Command**: `npm install && npm run build`
-   - **Start Command**: `npm start`
-   - Variables de entorno: las mismas del `.env` (`DATABASE_URL`, `JWT_SECRET`, `PORT`).
-4. Asegúrate de que el servicio PostgreSQL de Render esté conectado y la URL esté disponible en `DATABASE_URL`.
+   - **Start Command**: `npm start` (versión main) o `npm run start:json` (versión JSON)
+   - Variables de entorno: las mismas del `.env` (`DATABASE_URL`, `JWT_SECRET`, `PORT`) para versión main.
+4. Asegúrate de que el servicio PostgreSQL de Render esté conectado y la URL esté disponible en `DATABASE_URL` (versión main).
 5. Render generará una URL como `https://the-world.onrender.com`.
 
 > Para el enrutamiento con React Router, añade un archivo `_redirects` en la carpeta `dist` con el contenido:  
@@ -713,15 +914,20 @@ El desarrollo está planificado en cuatro fases:
 - 10 mascotas base
 - Rarezas Común, Raro, Épico
 
-### Fase 2 – Crecimiento (en desarrollo)
+### Fase 2 – Crecimiento (completada)
 - Sistema de 6 etapas de crecimiento
 - Tres tipos de huevo adicionales (Premium, Épico, Legendario)
 - Rareza Legendario
 - Rachas diarias y multiplicadores
 - Multiplicadores pasivos por mascota rara
 - Interacción básica con la mascota (clic, caricias)
+- Sistema de amigos con rachas
+- Sistema de jardín
+- Sistema de inventario
+- Panel de administración
+- Sistema de perfiles
 
-### Fase 3 – Social (planificada)
+### Fase 3 – Social (en desarrollo)
 - Intercambio de mascotas entre usuarios
 - Mascotas de evento por tiempo limitado
 - Huevo Mítico
@@ -776,5 +982,3 @@ Licencia: Uso libre.
              ==-===+#+++=----==-====-             
                   =-========+===                  
 ```
-
-> **THE WORLD** – Cada tarea cuenta. Cada mascota importa. Construye tu mundo, un hábito a la vez.

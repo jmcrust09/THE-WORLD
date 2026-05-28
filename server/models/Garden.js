@@ -11,6 +11,9 @@ const Garden = sequelize.define('Garden', {
   growthProgress: { type: DataTypes.INTEGER, defaultValue: 0 }, // 0-100
   yield: { type: DataTypes.INTEGER, defaultValue: 0 },
   position: { type: DataTypes.INTEGER, allowNull: false } // Slot position in garden (1-9)
-}, { timestamps: true });
+}, { 
+  timestamps: true,
+  tableName: 'Gartens'
+});
 
 module.exports = Garden;

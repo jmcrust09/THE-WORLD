@@ -1,0 +1,49 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "userId": 1,
+      "day": "Lunes",
+      "schedule": "mañana",
+      "title": "Ejercicio de mañana",
+      "task": "Hacer 30 minutos de ejercicio",
+      "category": "Salud",
+      "priority": "Alta",
+      "completed": true,
+      "pointsEarned": 50,
+      "timestamp": "2026-05-26T08:00:00Z",
+      "createdAt": "2026-05-26T00:00:00Z",
+      "updatedAt": "2026-05-26T08:00:00Z"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "day": "Lunes",
+      "schedule": "tarde",
+      "title": "Estudiar matemáticas",
+      "task": "Completar capítulo 3",
+      "category": "Estudio",
+      "priority": "Media",
+      "completed": true,
+      "pointsEarned": 30,
+      "timestamp": "2026-05-26T15:00:00Z",
+      "createdAt": "2026-05-26T00:00:00Z",
+      "updatedAt": "2026-05-26T15:00:00Z"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "day": "Martes",
+      "schedule": "noche",
+      "title": "Leer libro",
+      "task": "Leer 20 páginas del libro actual",
+      "category": "Personal",
+      "priority": "Baja",
+      "completed": false,
+      "pointsEarned": 0,
+      "timestamp": null,
+      "createdAt": "2026-05-26T00:00:00Z",
+      "updatedAt": "2026-05-26T00:00:00Z"
+    }
+  ]
+}

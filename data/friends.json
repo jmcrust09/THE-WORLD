@@ -1,0 +1,14 @@
+{
+  "friends": [
+    {
+      "id": 1,
+      "userId": 1,
+      "friendId": 2,
+      "friendshipStreak": 5,
+      "streakStartDate": "2026-05-20T00:00:00Z",
+      "lastInteractionDate": "2026-05-27T23:59:59Z",
+      "createdAt": "2026-05-20T00:00:00Z",
+      "updatedAt": "2026-05-27T23:59:59Z"
+    }
+  ]
+}
