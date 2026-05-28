@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async (login, password) => {
+  const login = async ({ login, password }) => {
     const res = await axios.post('/api/auth/login', { login, password });
     localStorage.setItem('token', res.data.token);
     axios.defaults.headers.common['x-auth-token'] = res.data.token;
